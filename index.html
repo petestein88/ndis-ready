@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NDIS Ready — Audit-ready compliance for NDIS providers</title>
+  <meta name="description" content="Get audit-ready for your NDIS registration. 65 personalised policy documents, compliance tracking, and AI-powered tools — built for SIL providers." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Pacifico&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    :root {
+      --rose: #f4c5c5; --rose-deep: #e8a0a0; --lavender: #d8d0f0; --lavender-deep: #b8acdf;
+      --sage: #c5ddd0; --sage-deep: #9ec4b0; --peach: #f7dfc8; --peach-deep: #efcba8;
+      --cream: #faf8f4; --white: #ffffff; --ink: #2a2535; --ink-mid: #5a5370; --ink-soft: #9990b0;
+      --red-alert: #d42b2b; --font-brand: 'Pacifico', cursive;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --radius: 16px; --radius-sm: 10px; --radius-pill: 999px;
+    }
+    body { font-family: var(--font-body); background: var(--cream); color: var(--ink); line-height: 1.65; font-size: 1rem; }
+    .deadline-banner { background: var(--rose); text-align: center; padding: 0.9rem 2rem; font-size: 0.92rem; font-weight: 500; color: var(--ink); line-height: 1.5; }
+    .deadline-banner .countdown { color: var(--red-alert); font-weight: 800; font-size: 1rem; }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 2rem; background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 100; }
+    .nav-logo { font-family: var(--font-brand); font-size: 1.5rem; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    .nav-logo .badge { background: var(--peach); color: var(--ink-mid); font-family: var(--font-body); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: var(--radius-pill); }
+    nav a.nav-cta { background: var(--ink); color: var(--white); font-size: 0.875rem; font-weight: 600; padding: 0.6rem 1.4rem; border-radius: var(--radius-pill); text-decoration: none; transition: background 0.2s; }
+    nav a.nav-cta:hover { background: #3d3650; }
+    .hero { max-width: 860px; margin: 0 auto; padding: 5rem 2rem 4rem; text-align: center; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--peach); color: var(--ink); font-size: 0.8rem; font-weight: 600; padding: 0.35rem 1rem; border-radius: var(--radius-pill); margin-bottom: 1.5rem; letter-spacing: 0.02em; }
+    .hero h1 { font-family: var(--font-display); font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.15; color: var(--ink); margin-bottom: 1.25rem; }
+    .hero h1 em { font-style: italic; color: var(--lavender-deep); }
+    .hero p { font-size: 1.15rem; color: var(--ink-mid); max-width: 560px; margin: 0 auto 0.75rem; line-height: 1.7; }
+    .hero p.sub { font-size: 1.05rem; margin-bottom: 2.5rem; }
+    .stay-word { font-style: italic; font-weight: 700; color: var(--lavender-deep); }
+    .hero-actions { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--ink); color: var(--white); font-size: 1rem; font-weight: 600; padding: 0.85rem 2rem; border-radius: var(--radius-pill); text-decoration: none; transition: background 0.2s, transform 0.15s; display: inline-block; }
+    .btn-primary:hover { background: #3d3650; transform: translateY(-1px); }
+    .btn-secondary { background: transparent; color: var(--ink-mid); font-size: 0.95rem; font-weight: 500; padding: 0.85rem 1.5rem; border-radius: var(--radius-pill); text-decoration: none; border: 1.5px solid rgba(0,0,0,0.15); transition: border-color 0.2s; }
+    .btn-secondary:hover { border-color: rgba(0,0,0,0.35); }
+    .shapes-strip { display: flex; justify-content: center; align-items: center; gap: 1.5rem; padding: 1.5rem 2rem; overflow: hidden; }
+    .shape { flex-shrink: 0; opacity: 0.7; }
+    .section { padding: 5rem 2rem; }
+    .section-inner { max-width: 960px; margin: 0 auto; }
+    .section-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.75rem; }
+    .section h2 { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.2; color: var(--ink); margin-bottom: 1rem; }
+    .section > .section-inner > p.lead { color: var(--ink-mid); font-size: 1.05rem; max-width: 640px; margin-bottom: 3rem; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+    .step-card { background: var(--white); border-radius: var(--radius); padding: 2rem 1.75rem; border: 1px solid rgba(0,0,0,0.06); }
+    .step-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; }
+    .step-card h3 { font-family: var(--font-display); font-size: 1.15rem; margin-bottom: 0.5rem; }
+    .step-card p { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.6; }
+    .step-num { font-size: 0.75rem; font-weight: 700; color: var(--ink-soft); letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .features-bg { background: var(--white); }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+    .feature-card { border-radius: var(--radius); padding: 1.75rem; border: 1px solid rgba(0,0,0,0.06); }
+    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; }
+    .feature-card p { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.6; }
+    .scenarios { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+    .scenario-card { border-radius: var(--radius); padding: 2rem; }
+    .scenario-card h3 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 0.75rem; }
+    .scenario-card p { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.65; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .price-card { background: var(--white); border-radius: var(--radius); padding: 2.25rem 2rem; border: 1px solid rgba(0,0,0,0.08); display: flex; flex-direction: column; }
+    .price-card.featured { background: var(--ink); color: var(--white); border-color: transparent; }
+    .price-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.5rem; }
+    .price-card.featured .price-label { color: var(--lavender); }
+    .price-amount { font-family: var(--font-display); font-size: 2.5rem; color: var(--ink); line-height: 1; margin-bottom: 0.25rem; }
+    .price-card.featured .price-amount { color: var(--white); }
+    .price-period { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 0.5rem; }
+    .price-card.featured .price-period { color: var(--lavender); }
+    .price-note { font-size: 0.78rem; color: var(--sage-deep); font-weight: 600; margin-bottom: 1.5rem; }
+    .price-card.featured .price-note { color: var(--sage); }
+    .price-card ul { list-style: none; margin-bottom: 2rem; flex: 1; }
+    .price-card ul li { font-size: 0.875rem; color: var(--ink-mid); padding: 0.35rem 0; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+    .price-card.featured ul li { color: rgba(255,255,255,0.85); }
+    .price-card ul li::before { content: "✓"; color: var(--sage-deep); font-weight: 700; flex-shrink: 0; }
+    .price-card.featured ul li::before { color: var(--sage); }
+    .price-card ul li.minus::before { content: "–"; color: var(--ink-soft); }
+    .btn-price { display: block; text-align: center; font-size: 0.9rem; font-weight: 600; padding: 0.8rem 1.5rem; border-radius: var(--radius-pill); text-decoration: none; transition: all 0.2s; }
+    .btn-price-light { background: var(--cream); color: var(--ink); border: 1.5px solid rgba(0,0,0,0.12); }
+    .btn-price-light:hover { border-color: rgba(0,0,0,0.3); }
+    .btn-price-dark { background: var(--white); color: var(--ink); }
+    .btn-price-dark:hover { background: var(--lavender); }
+    .cta-section { background: var(--lavender); text-align: center; padding: 5rem 2rem; }
+    .cta-section h2 { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.8rem); color: var(--ink); margin-bottom: 1rem; }
+    .cta-section p { color: var(--ink-mid); font-size: 1.05rem; margin-bottom: 2rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+    footer { background: var(--ink); color: rgba(255,255,255,0.5); padding: 2.5rem 2rem; text-align: center; font-size: 0.85rem; }
+    footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+    .footer-logo { font-family: var(--font-brand); color: var(--lavender); font-size: 1.3rem; margin-bottom: 0.5rem; }
+    @media (max-width: 640px) { nav { padding: 1rem 1.25rem; } .hero { padding: 3.5rem 1.25rem 3rem; } .section { padding: 3.5rem 1.25rem; } }
+  </style>
+</head>
+<body>
+
+<div class="deadline-banner">
+  ⏰ &nbsp;1 July 2026 deadline: All SIL providers must be registered with the NDIS Commission. &nbsp;<span class="countdown" id="countdown-text">Loading...</span>
+</div>
+
+<nav>
+  <a href="#" class="nav-logo">NDIS Ready <span class="badge">beta</span></a>
+  <a href="#pricing" class="nav-cta">Get started →</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="#e8a0a0"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    Built for SIL providers — new and existing
+  </div>
+  <h1>Get <em>audit-ready</em> without the $10k consultant bill</h1>
+  <p>NDIS Ready gives you everything you need to register, pass your certification audit, and <span class="stay-word">stay</span> compliant — in one simple platform.</p>
+  <p class="sub">No consultants. No confusing spreadsheets. Just a clear path through registration.</p>
+  <div class="hero-actions">
+    <a href="#pricing" class="btn-primary">Start for free</a>
+    <a href="#how-it-works" class="btn-secondary">See how it works</a>
+  </div>
+</section>
+
+<div class="shapes-strip" aria-hidden="true">
+  <svg class="shape" width="36" height="36" viewBox="0 0 24 24" fill="var(--rose-deep)"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+  <svg class="shape" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--lavender-deep)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+  <svg class="shape" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--peach-deep)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+  <svg class="shape" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="var(--sage-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="7 13 10 16 17 9"/></svg>
+  <svg class="shape" width="36" height="36" viewBox="0 0 24 24" fill="var(--lavender-deep)"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <svg class="shape" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--rose-deep)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M9 12l2 2 4-4"/></svg>
+</div>
+
+<section class="section" id="how-it-works">
+  <div class="section-inner">
+    <p class="section-label">How it works</p>
+    <h2>From overwhelmed to audit-ready in three steps</h2>
+    <p class="lead">No consultants. No confusing spreadsheets. Just a clear path through registration.</p>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-icon" style="background:var(--peach);">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <div class="step-num">Step 01</div>
+        <h3>Answer 10 questions</h3>
+        <p>Tell us about your services, your team, and your current situation. Takes five minutes.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon" style="background:var(--lavender);">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <div class="step-num">Step 02</div>
+        <h3>We build your compliance kit</h3>
+        <p>NDIS Ready selects every document you need and pre-fills them with your details automatically.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon" style="background:var(--sage);">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        </div>
+        <div class="step-num">Step 03</div>
+        <h3>Track, update, <span class="stay-word">stay</span> compliant</h3>
+        <p>Your dashboard shows exactly what's done, what needs updating, and what's missing — in real time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section features-bg" id="features">
+  <div class="section-inner">
+    <p class="section-label">What's included</p>
+    <h2>Everything the NDIS Commission wants to see</h2>
+    <p class="lead">Built directly from the Practice Standards — so nothing is missing.</p>
+    <div class="features-grid" style="margin-top:2.5rem;">
+      <div class="feature-card" style="background:var(--rose);border-color:var(--rose-deep);">
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="var(--rose-deep)"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>65 policy templates</h3>
+        <p>Every document required for certification, personalised to your organisation and services.</p>
+      </div>
+      <div class="feature-card" style="background:var(--lavender);border-color:var(--lavender-deep);">
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="7 13 10 16 17 9"/></svg>Audit readiness dashboard</h3>
+        <p>A live compliance score showing exactly what's ready, what's missing, and what expires soon.</p>
+      </div>
+      <div class="feature-card" style="background:var(--sage);border-color:var(--sage-deep);">
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg>AI document assistant</h3>
+        <p>Upload your existing docs and our AI maps them, flags gaps, and rewrites incident notes to be Commission-compliant.</p>
+      </div>
+      <div class="feature-card" style="background:var(--peach);border-color:var(--peach-deep);">
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>Incident &amp; complaints management</h3>
+        <p>Structured workflows for capturing, reporting, and closing incidents with a full audit trail.</p>
+      </div>
+      <div class="feature-card" style="background:var(--cream);border-color:rgba(0,0,0,0.08);">
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Worker screening register</h3>
+        <p>Track NDIS clearances, First Aid, and all qualifications — with automatic expiry alerts.</p>
+      </div>
+      <div class="feature-card" style="background:var(--cream);border-color:rgba(0,0,0,0.08);">
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>One-click audit evidence pack</h3>
+        <p>Export a complete, auditor-ready PDF bundle of all your evidence in one click.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="scenarios">
+  <div class="section-inner">
+    <p class="section-label">Who it's for</p>
+    <h2>Made for providers at every stage</h2>
+    <div class="scenarios">
+      <div class="scenario-card" style="background:var(--rose);">
+        <h3>First-time registrants</h3>
+        <p>You've been doing support work for years and want to go out on your own. We guide you through every document you need to get registered before 1 July 2026.</p>
+      </div>
+      <div class="scenario-card" style="background:var(--lavender);">
+        <h3>Small SIL providers (2–15 staff)</h3>
+        <p>You're registered but your policies are scattered across Google Drive, old Word docs, and your head. NDIS Ready brings it all into one place.</p>
+      </div>
+      <div class="scenario-card" style="background:var(--sage);">
+        <h3>Providers approaching re-registration</h3>
+        <p>Your next audit is 6–12 months away. Use NDIS Ready to identify gaps now, not the week before the auditor arrives.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section features-bg" id="pricing">
+  <div class="section-inner">
+    <p class="section-label">Pricing</p>
+    <h2>Simple, honest pricing</h2>
+    <p class="lead">Pay once to get registered. Subscribe to stay that way.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-label">Free</div>
+        <div class="price-amount">$0</div>
+        <div class="price-period">No credit card required</div>
+        <div class="price-note">See exactly what you need</div>
+        <ul>
+          <li>Registration readiness quiz</li>
+          <li>Your personalised document checklist</li>
+          <li>AI notes rewriter (5 uses)</li>
+          <li>Compliance dashboard preview</li>
+          <li class="minus">Policy documents not included</li>
+          <li class="minus">No ongoing access</li>
+        </ul>
+        <a href="#" class="btn-price btn-price-light">Start free</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-label">✦ Registration Kit</div>
+        <div class="price-amount">$249</div>
+        <div class="price-period">one-time payment</div>
+        <div class="price-note">Everything to get registered</div>
+        <ul>
+          <li>All 65 policy templates, personalised to your organisation</li>
+          <li>AI document assistant — upload existing docs, fill gaps</li>
+          <li>Audit readiness dashboard (3 months access)</li>
+          <li>One-click audit evidence pack export</li>
+          <li>Worker screening register</li>
+          <li>Incident &amp; complaints management</li>
+          <li>Email expiry alerts during access period</li>
+          <li>Email support</li>
+        </ul>
+        <a href="#" class="btn-price btn-price-dark">Get the kit — $249</a>
+      </div>
+      <div class="price-card" style="background:linear-gradient(145deg,var(--lavender),var(--sage));border:2px solid var(--lavender-deep);">
+        <div class="price-label" style="color:var(--ink-mid);">⭐ Best Value Bundle</div>
+        <div class="price-amount" style="color:var(--ink);">$499</div>
+        <div class="price-period" style="color:var(--ink-mid);">per year — save $338</div>
+        <div class="price-note" style="color:var(--ink);background:rgba(255,255,255,0.45);padding:0.4rem 0.75rem;border-radius:8px;display:inline-block;margin-bottom:1.5rem;">Registration Kit + 12 months Stay Ready</div>
+        <ul style="margin-bottom:2rem;flex:1;">
+          <li style="color:var(--ink-mid);">Everything in Registration Kit</li>
+          <li style="color:var(--ink-mid);">Full 12 months compliance dashboard</li>
+          <li style="color:var(--ink-mid);">Continuous improvement register</li>
+          <li style="color:var(--ink-mid);">Ongoing incident &amp; complaints tracking</li>
+          <li style="color:var(--ink-mid);">Worker credential expiry alerts</li>
+          <li style="color:var(--ink-mid);">Policy review reminders (annual cycle)</li>
+          <li style="color:var(--ink-mid);">AI notes rewriter (unlimited)</li>
+          <li style="color:var(--ink-mid);">Priority email support</li>
+        </ul>
+        <a href="#" class="btn-price" style="background:var(--ink);color:var(--white);display:block;text-align:center;font-size:0.9rem;font-weight:600;padding:0.8rem 1.5rem;border-radius:999px;text-decoration:none;">Get the bundle — $499/yr</a>
+        <p style="text-align:center;font-size:0.75rem;color:var(--ink-mid);margin-top:0.75rem;">Worth $837 if bought separately</p>
+      </div>
+      <div class="price-card">
+        <div class="price-label">Stay Ready</div>
+        <div class="price-amount">$49</div>
+        <div class="price-period">per month — cancel anytime</div>
+        <div class="price-note">For registered providers staying audit-ready</div>
+        <ul>
+          <li>Full compliance dashboard, always live</li>
+          <li>Continuous improvement register</li>
+          <li>Ongoing incident &amp; complaints tracking</li>
+          <li>Worker credential expiry alerts</li>
+          <li>Policy review reminders (annual cycle)</li>
+          <li>AI notes rewriter (unlimited)</li>
+          <li>Audit evidence pack export anytime</li>
+          <li class="minus">Policy document generation not included</li>
+        </ul>
+        <a href="#" class="btn-price btn-price-light">Subscribe — $49/mo</a>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:0.85rem;color:var(--ink-soft);margin-top:2rem;">
+      💡 Most providers choose the <strong>Best Value Bundle</strong> — get registered and <em>stay</em> compliant for one upfront payment, saving $338 vs buying separately.
+    </p>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div style="margin-bottom:1rem;" aria-hidden="true">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="var(--rose-deep)" style="display:inline-block;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+  </div>
+  <h2>The 1 July deadline is close.<br/>Let’s get you NDIS Ready.</h2>
+  <p>Join hundreds of NDIS providers already preparing with NDIS Ready.</p>
+  <a href="#pricing" class="btn-primary">Start for free today</a>
+</section>
+
+<footer>
+  <div class="footer-logo">NDIS Ready</div>
+  <p style="margin-bottom:0.75rem;">by <a href="https://sacred.systems" target="_blank" rel="noopener">Sacred Systems Pty Ltd</a> &nbsp;·&nbsp; <a href="mailto:hello@ndis-ready.com.au">hello@ndis-ready.com.au</a></p>
+  <p>This platform provides compliance tools and document templates. It does not constitute legal or registration advice.</p>
+</footer>
+
+<script>
+  function updateCountdown() {
+    var deadline = new Date('2026-07-01T00:00:00+10:00');
+    var now = new Date();
+    var diffMs = deadline - now;
+    var el = document.getElementById('countdown-text');
+    if (!el) return;
+    if (diffMs <= 0) { el.textContent = 'Deadline has passed.'; return; }
+    var days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+    el.textContent = days + ' day' + (days !== 1 ? 's' : '') + ' to go — are you NDIS Ready?';
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 60000);
+</script>
+
+</body>
+</html>
