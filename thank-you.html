@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NDIS Ready — You're in! 🎉</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Pacifico&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --rose:#f4c5c5;--rose-deep:#e8a0a0;
+  --lavender:#d8d0f0;--lavender-deep:#b8acdf;
+  --sage:#c5ddd0;--sage-deep:#9ec4b0;
+  --peach:#f7dfc8;--peach-deep:#efcba8;
+  --cream:#faf8f4;--white:#ffffff;
+  --ink:#2a2535;--ink-mid:#5a5370;--ink-soft:#9990b0;
+  --green:#437a22;
+  --font-brand:'Pacifico',cursive;
+  --font-display:'DM Serif Display',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  --radius:16px;--radius-sm:10px;--radius-pill:999px;
+}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;}
+body{font-family:var(--font-body);background:var(--cream);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.06);}
+.nav-logo{font-family:var(--font-brand);font-size:1.5rem;color:var(--lavender-deep);text-decoration:none;}
+.main{flex:1;display:flex;align-items:center;justify-content:center;padding:4rem 1.5rem;}
+.card{background:var(--white);border-radius:var(--radius);box-shadow:0 8px 48px rgba(42,37,53,0.1);padding:3rem 2.5rem;max-width:580px;width:100%;text-align:center;}
+.confetti{font-size:3.5rem;margin-bottom:1.25rem;display:block;animation:pop 0.6s cubic-bezier(0.175,0.885,0.32,1.275) both;}
+@keyframes pop{from{transform:scale(0) rotate(-10deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.card h1{font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.4rem);line-height:1.2;margin-bottom:0.75rem;color:var(--ink);}
+.card h1 em{font-style:italic;color:var(--lavender-deep);}
+.card .sub{font-size:1rem;color:var(--ink-mid);line-height:1.7;margin-bottom:2rem;max-width:440px;margin-left:auto;margin-right:auto;}
+.what-next{background:var(--sage);border-radius:var(--radius-sm);padding:1.5rem;margin-bottom:2rem;text-align:left;}
+.what-next h3{font-family:var(--font-display);font-size:1.05rem;margin-bottom:0.75rem;color:var(--ink);}
+.step-list{display:flex;flex-direction:column;gap:0.6rem;}
+.step-item{display:flex;align-items:flex-start;gap:0.75rem;font-size:0.875rem;color:var(--ink-mid);line-height:1.5;}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--sage-deep);color:var(--white);font-size:0.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.btn{font-family:var(--font-body);font-size:0.95rem;font-weight:600;padding:0.8rem 2rem;border-radius:var(--radius-pill);border:none;cursor:pointer;transition:all 0.18s;text-decoration:none;display:inline-block;}
+.btn-primary{background:var(--ink);color:var(--white);}
+.btn-primary:hover{background:#3d3650;transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--ink-mid);border:1.5px solid rgba(0,0,0,0.15);font-size:0.875rem;padding:0.65rem 1.4rem;}
+.btn-ghost:hover{border-color:rgba(0,0,0,0.35);color:var(--ink);}
+.btns{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;}
+.trust-row{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:2rem;flex-wrap:wrap;}
+.trust-item{font-size:0.8rem;color:var(--ink-soft);display:flex;align-items:center;gap:0.35rem;}
+footer{padding:1.5rem 2rem;text-align:center;font-size:0.82rem;color:var(--ink-soft);border-top:1px solid rgba(0,0,0,0.06);background:var(--white);}
+footer a{color:var(--ink-soft);text-decoration:none;}
+@media(max-width:480px){.card{padding:2rem 1.25rem;}nav{padding:1rem 1.25rem;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">NDIS Ready</a>
+</nav>
+<div class="main">
+  <div class="card">
+    <span class="confetti">🎉</span>
+    <h1>You're <em>officially</em> on your way to audit-ready!</h1>
+    <p class="sub">Your payment was successful. Check your inbox — your documents and access details are on their way to you now.</p>
+
+    <div class="what-next">
+      <h3>What happens next</h3>
+      <div class="step-list">
+        <div class="step-item"><div class="step-num">1</div><span><strong>Check your email</strong> — your document pack and login details will arrive within the next 30 minutes. Check your spam folder if you don't see it.</span></div>
+        <div class="step-item"><div class="step-num">2</div><span><strong>Customise your documents</strong> — open each Word file and replace the highlighted fields with your organisation's details.</span></div>
+        <div class="step-item"><div class="step-num">3</div><span><strong>Use your compliance dashboard</strong> — track what's complete, what needs review, and what's coming up.</span></div>
+        <div class="step-item"><div class="step-num">4</div><span><strong>Questions?</strong> Email us at <a href="mailto:hello@ndis-ready.com.au" style="color:var(--ink);font-weight:600;">hello@ndis-ready.com.au</a> — we respond within one business day.</span></div>
+      </div>
+    </div>
+
+    <div class="btns">
+      <a href="/" class="btn btn-primary">Back to NDIS Ready →</a>
+      <a href="mailto:hello@ndis-ready.com.au" class="btn btn-ghost">Email us</a>
+    </div>
+
+    <div class="trust-row">
+      <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Secure payment via Stripe</span>
+      <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.25 1.21 2 2 0 012.22 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.39 7.62a16 16 0 006 6l1.06-1.06a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> Support within 1 business day</span>
+      <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="9 12 11 14 15 10"/></svg> ACL-protected purchase</span>
+    </div>
+  </div>
+</div>
+<footer>
+  Sacred Systems Pty Ltd &nbsp;·&nbsp; ABN 23 690 792 655 &nbsp;·&nbsp; <a href="/terms-of-service.html">Terms of Service</a> &nbsp;·&nbsp; <a href="/privacy.html">Privacy Policy</a>
+</footer>
+</body>
+</html>
