@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NDIS Ready — Your Compliance Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --rose:#f4c5c5;--rose-deep:#e8a0a0;
+  --lavender:#d8d0f0;--lavender-deep:#b8acdf;
+  --sage:#c5ddd0;--sage-deep:#9ec4b0;
+  --peach:#f7dfc8;--peach-deep:#efcba8;
+  --cream:#faf8f4;--white:#ffffff;
+  --ink:#2a2535;--ink-mid:#5a5370;--ink-soft:#9990b0;
+  --green-badge:#437a22;
+  --font-brand:'Pacifico',cursive;
+  --font-display:'DM Serif Display',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  --radius:16px;--radius-sm:10px;--radius-pill:999px;
+}
+html{-webkit-font-smoothing:antialiased;}
+body{font-family:var(--font-body);background:var(--cream);color:var(--ink);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.06);position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:var(--font-brand);font-size:1.5rem;color:var(--lavender-deep);text-decoration:none;letter-spacing:0.01em;}
+.nav-logo .badge{background:var(--peach);color:var(--ink-mid);font-family:var(--font-body);font-size:0.62rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);margin-left:0.5rem;}
+.btn{font-family:var(--font-body);font-size:0.9rem;font-weight:600;padding:0.65rem 1.5rem;border-radius:var(--radius-pill);border:none;cursor:pointer;transition:all 0.18s;text-decoration:none;display:inline-block;}
+.btn-primary{background:var(--ink);color:var(--white);}
+.btn-primary:hover{background:#3d3650;transform:translateY(-1px);}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.btn-ghost{background:transparent;color:var(--ink-mid);border:1.5px solid rgba(0,0,0,0.15);}
+.btn-ghost:hover{border-color:rgba(0,0,0,0.35);color:var(--ink);}
+.btn-lg{font-size:1rem;padding:0.85rem 2rem;}
+.page{max-width:1100px;margin:0 auto;padding:3rem 1.5rem 5rem;}
+.grid{display:grid;grid-template-columns:1fr 340px;gap:2rem;align-items:start;}
+.main-col{display:flex;flex-direction:column;gap:1.5rem;}
+.side-col{display:flex;flex-direction:column;gap:1.25rem;position:sticky;top:90px;}
+.profile-band{background:var(--white);border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius);padding:2rem 2.25rem;box-shadow:0 4px 24px rgba(42,37,53,0.06);}
+.profile-tag{display:inline-flex;align-items:center;gap:0.4rem;background:var(--sage);color:var(--ink);font-size:0.78rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:var(--radius-pill);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.05em;}
+.profile-band h1{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.2;margin-bottom:0.5rem;}
+.profile-band h1 em{font-style:italic;color:var(--lavender-deep);}
+.profile-band .sub{font-size:0.95rem;color:var(--ink-mid);line-height:1.6;max-width:600px;}
+.score-row{display:flex;align-items:center;gap:2.5rem;margin-top:1.75rem;flex-wrap:wrap;}
+.score-ring-wrap{text-align:center;flex-shrink:0;}
+.score-ring-wrap svg{width:120px;height:120px;}
+.score-ring-label{font-size:0.75rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.06em;margin-top:0.4rem;font-weight:600;}
+.score-breakdown{flex:1;min-width:200px;}
+.breakdown-item{display:flex;align-items:center;gap:0.6rem;padding:0.4rem 0;border-bottom:1px solid rgba(0,0,0,0.05);font-size:0.875rem;}
+.breakdown-item:last-child{border-bottom:none;}
+.breakdown-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.breakdown-count{font-weight:700;color:var(--ink);min-width:28px;}
+.breakdown-label{color:var(--ink-mid);}
+.priority-badge{font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:var(--radius-pill);text-transform:uppercase;letter-spacing:0.04em;white-space:nowrap;}
+.p1{background:#fde8e8;color:#c0392b;}
+.p2{background:var(--peach);color:#7a4a00;}
+.p3{background:rgba(0,0,0,0.06);color:var(--ink-soft);}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:0.75rem;}
+.section-head h2{font-family:var(--font-display);font-size:1.3rem;color:var(--ink);}
+.section-count{font-size:0.8rem;font-weight:600;color:var(--ink-soft);background:rgba(0,0,0,0.05);padding:3px 10px;border-radius:var(--radius-pill);}
+.category{background:var(--white);border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 12px rgba(42,37,53,0.04);}
+.category-header{display:flex;align-items:center;gap:0.75rem;padding:1rem 1.25rem;cursor:pointer;user-select:none;border-bottom:1px solid rgba(0,0,0,0.05);}
+.category-header:hover{background:rgba(0,0,0,0.02);}
+.cat-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0;}
+.cat-title{font-size:0.95rem;font-weight:700;flex:1;}
+.cat-meta{font-size:0.78rem;color:var(--ink-soft);}
+.cat-chevron{font-size:0.75rem;color:var(--ink-soft);transition:transform 0.2s;}
+.category.open .cat-chevron{transform:rotate(180deg);}
+.doc-rows{display:none;}
+.category.open .doc-rows{display:block;}
+.doc-row{display:flex;align-items:center;gap:0.75rem;padding:0.85rem 1.25rem;border-bottom:1px solid rgba(0,0,0,0.04);transition:background 0.15s;}
+.doc-row:last-child{border-bottom:none;}
+.doc-row:hover{background:rgba(0,0,0,0.02);}
+.doc-row.free{background:rgba(197,221,208,0.2);}
+.doc-row.free:hover{background:rgba(197,221,208,0.35);}
+.doc-check{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.75rem;}
+.check-free{background:var(--sage);color:var(--green-badge);}
+.check-locked{background:rgba(0,0,0,0.05);color:var(--ink-soft);}
+.doc-info{flex:1;min-width:0;}
+.doc-title{font-size:0.875rem;font-weight:500;line-height:1.3;}
+.doc-std{font-size:0.75rem;color:var(--ink-soft);margin-top:1px;}
+.doc-actions{display:flex;align-items:center;gap:0.5rem;flex-shrink:0;}
+.doc-badge{font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:var(--radius-pill);white-space:nowrap;}
+.badge-free-sample{background:var(--sage-deep);color:var(--white);}
+.badge-paid{background:rgba(0,0,0,0.06);color:var(--ink-soft);}
+.lock-icon{font-size:0.8rem;color:var(--ink-soft);}
+.side-card{background:var(--white);border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius);padding:1.5rem;box-shadow:0 2px 12px rgba(42,37,53,0.04);}
+.side-card.peach{background:var(--peach);border-color:var(--peach-deep);}
+.side-card.lavender{background:var(--lavender);border-color:var(--lavender-deep);}
+.side-card h3{font-family:var(--font-display);font-size:1.1rem;margin-bottom:0.4rem;}
+.side-card p{font-size:0.85rem;color:var(--ink-mid);line-height:1.6;margin-bottom:1rem;}
+.email-input{width:100%;padding:0.7rem 1rem;border:1.5px solid rgba(0,0,0,0.12);border-radius:var(--radius-pill);font-size:0.875rem;font-family:var(--font-body);background:var(--white);color:var(--ink);outline:none;transition:border-color 0.18s;margin-bottom:0.75rem;}
+.email-input:focus{border-color:var(--lavender-deep);}
+.progress-mini{margin-bottom:1rem;}
+.progress-mini-bar{height:8px;background:rgba(0,0,0,0.08);border-radius:var(--radius-pill);overflow:hidden;margin-top:0.4rem;}
+.progress-mini-fill{height:100%;background:linear-gradient(90deg,var(--lavender-deep),var(--sage-deep));border-radius:var(--radius-pill);transition:width 1s ease;}
+.progress-mini-label{display:flex;justify-content:space-between;font-size:0.75rem;font-weight:600;color:var(--ink-soft);}
+.stat-row{display:flex;justify-content:space-between;gap:0.5rem;margin-bottom:1rem;}
+.stat{text-align:center;flex:1;padding:0.75rem 0.5rem;background:rgba(0,0,0,0.03);border-radius:var(--radius-sm);}
+.stat-num{font-family:var(--font-display);font-size:1.5rem;color:var(--ink);}
+.stat-lbl{font-size:0.7rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;}
+.checklist{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem;}
+.check-item{display:flex;align-items:flex-start;gap:0.5rem;font-size:0.82rem;color:var(--ink-mid);line-height:1.4;}
+.check-item::before{content:'✓';color:var(--sage-deep);font-weight:700;flex-shrink:0;margin-top:1px;}
+.teaser-band{background:var(--lavender);border:1px solid var(--lavender-deep);border-radius:var(--radius);padding:1.5rem;text-align:center;}
+.teaser-band h3{font-family:var(--font-display);font-size:1.05rem;margin-bottom:0.4rem;}
+.teaser-band p{font-size:0.85rem;color:var(--ink-mid);margin-bottom:1rem;line-height:1.5;}
+.blurred-docs{display:flex;flex-direction:column;gap:0.35rem;margin-bottom:1rem;filter:blur(3px);pointer-events:none;opacity:0.7;}
+.blurred-doc{height:38px;background:var(--white);border-radius:6px;border:1px solid rgba(0,0,0,0.08);}
+.loading{text-align:center;padding:4rem 2rem;color:var(--ink-soft);}
+@media(max-width:768px){.grid{grid-template-columns:1fr;}.side-col{position:static;}.score-row{gap:1.5rem;}.page{padding:2rem 1rem 4rem;}nav{padding:1rem 1.25rem;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">NDIS Ready <span class="badge">Beta</span></a>
+  <a href="quiz.html" class="btn btn-ghost">← Retake quiz</a>
+</nav>
+<div class="page" id="pageContent">
+  <div class="loading" id="loadingState">
+    <div style="font-size:2rem;margin-bottom:1rem">⏳</div>
+    <div style="font-family:var(--font-display);font-size:1.3rem;margin-bottom:0.5rem">Building your compliance profile…</div>
+    <div style="font-size:0.9rem">This takes just a moment</div>
+  </div>
+</div>
+<script>
+const RULES = {
+  core:[
+    {id:'C01',title:'Incident Management Policy & Procedure',std:'Core Module 1.8',tier:'free',priority:1},
+    {id:'C02',title:'Complaints Management Policy & Procedure',std:'Core Module 1.9',tier:'free',priority:1},
+    {id:'C03',title:'Risk Management Framework',std:'Core Module 1.1',tier:'free',priority:1},
+    {id:'C04',title:'Privacy & Confidentiality Policy',std:'Core Module 1.7',tier:'paid',priority:2},
+    {id:'C05',title:'Participant Rights & Responsibilities Policy',std:'Core Module 1.2',tier:'paid',priority:2},
+    {id:'C06',title:'Worker Screening & Recruitment Policy',std:'Core Module 1.3',tier:'paid',priority:2},
+    {id:'C07',title:'Code of Conduct',std:'Core Module 1.3',tier:'paid',priority:2},
+    {id:'C08',title:'Emergency & Disaster Management Plan',std:'Core Module 1.6',tier:'paid',priority:2},
+    {id:'C09',title:'Work Health & Safety (WHS) Policy',std:'Core Module 1.5',tier:'paid',priority:2},
+    {id:'C10',title:'Business Continuity Plan',std:'Core Module 1.6',tier:'paid',priority:3},
+    {id:'C11',title:'Continuous Improvement Policy',std:'Core Module 1.1',tier:'paid',priority:3},
+    {id:'C12',title:'Conflict of Interest Policy',std:'Core Module 1.1',tier:'paid',priority:3},
+    {id:'C13',title:'Feedback & Complaints Register',std:'Core Module 1.9',tier:'paid',priority:2},
+    {id:'C14',title:'Incident Register',std:'Core Module 1.8',tier:'paid',priority:2},
+    {id:'C15',title:'Risk Register',std:'Core Module 1.1',tier:'paid',priority:2},
+    {id:'C16',title:'Participant Service Agreement Template',std:'Core Module 1.2',tier:'paid',priority:1},
+    {id:'C17',title:'Privacy Consent Form',std:'Core Module 1.7',tier:'paid',priority:2},
+    {id:'C18',title:'Governance & Accountability Policy',std:'Core Module 1.1',tier:'paid',priority:3},
+  ],
+  certification:[
+    {id:'CT01',title:'Support Planning Policy & Procedure',std:'Certification Module 2.1',tier:'paid',priority:1},
+    {id:'CT02',title:'Individual Support Plan Template',std:'Certification Module 2.1',tier:'paid',priority:1},
+    {id:'CT03',title:'Positive Behaviour Support Policy',std:'Certification Module 2.2',tier:'paid',priority:1},
+    {id:'CT04',title:'Restrictive Practices Policy & Reporting Procedure',std:'Certification Module 2.2',tier:'paid',priority:1},
+    {id:'CT05',title:'Safe Environment Policy',std:'Certification Module 2.3',tier:'paid',priority:2},
+    {id:'CT06',title:'Personal Care & Daily Living Policy',std:'Certification Module 2.4',tier:'paid',priority:1},
+    {id:'CT07',title:'Community Participation & Inclusion Policy',std:'Certification Module 2.5',tier:'paid',priority:2},
+    {id:'CT08',title:'Transitions & Discharge Policy',std:'Certification Module 2.6',tier:'paid',priority:2},
+    {id:'CT09',title:'Safeguarding Vulnerable Persons Policy',std:'Certification Module 2.3',tier:'paid',priority:1},
+    {id:'CT10',title:'Reportable Incident Procedure (NDIS Commission)',std:'Certification Module 2.2',tier:'paid',priority:1},
+    {id:'CT11',title:'Participant Support File Checklist',std:'Certification Module 2.1',tier:'paid',priority:2},
+    {id:'CT12',title:'Goal Setting & Review Procedure',std:'Certification Module 2.1',tier:'paid',priority:2},
+    {id:'CT13',title:'Advocacy & Independent Support Policy',std:'Certification Module 2.1',tier:'paid',priority:3},
+    {id:'CT14',title:'Cultural Diversity & Inclusion Policy',std:'Certification Module 2.1',tier:'paid',priority:3},
+  ],
+  hr_small:[
+    {id:'HR01',title:'Employment Contract Template',std:'Core Module 1.3',tier:'paid',priority:1},
+    {id:'HR02',title:'Staff Induction Policy & Checklist',std:'Core Module 1.3',tier:'paid',priority:1},
+    {id:'HR03',title:'Leave Management Policy',std:'Core Module 1.3',tier:'paid',priority:2},
+    {id:'HR04',title:'Worker Credential & Clearance Register',std:'Core Module 1.3',tier:'paid',priority:1},
+    {id:'HR05',title:'Performance Management Policy',std:'Core Module 1.3',tier:'paid',priority:2},
+    {id:'HR06',title:'Disciplinary & Grievance Procedure',std:'Core Module 1.3',tier:'paid',priority:2},
+    {id:'HR07',title:'Volunteer & Contractor Management Policy',std:'Core Module 1.3',tier:'paid',priority:3},
+  ],
+  hr_large:[
+    {id:'HR01',title:'Employment Contract Template',std:'Core Module 1.3',tier:'paid',priority:1},
+    {id:'HR02',title:'Staff Induction Policy & Checklist',std:'Core Module 1.3',tier:'paid',priority:1},
+    {id:'HR03',title:'Leave Management Policy',std:'Core Module 1.3',tier:'paid',priority:2},
+    {id:'HR04',title:'Worker Credential & Clearance Register',std:'Core Module 1.3',tier:'paid',priority:1},
+    {id:'HR05',title:'Performance Management Policy',std:'Core Module 1.3',tier:'paid',priority:2},
+    {id:'HR06',title:'Disciplinary & Grievance Procedure',std:'Core Module 1.3',tier:'paid',priority:2},
+    {id:'HR07',title:'Volunteer & Contractor Management Policy',std:'Core Module 1.3',tier:'paid',priority:3},
+    {id:'HR08',title:'Organisational Chart & Governance Structure',std:'Core Module 1.1',tier:'paid',priority:2},
+    {id:'HR09',title:'Training & Professional Development Policy',std:'Core Module 1.3',tier:'paid',priority:2},
+    {id:'HR10',title:'Rostering & Shift Management Policy',std:'Core Module 1.3',tier:'paid',priority:2},
+    {id:'HR11',title:'Workplace Bullying & Harassment Policy',std:'Core Module 1.3 / WHS Act',tier:'paid',priority:2},
+  ],
+  home_visits:[
+    {id:'HV01',title:'Lone Worker Safety Policy',std:'Core Module 1.5',tier:'paid',priority:1},
+    {id:'HV02',title:'Home Visit Risk Assessment Template',std:'Core Module 1.5',tier:'paid',priority:1},
+    {id:'HV03',title:'Participant Home Environment Safety Checklist',std:'Core Module 1.5',tier:'paid',priority:2},
+    {id:'HV04',title:'Keys & Access Management Policy',std:'Core Module 1.5',tier:'paid',priority:2},
+    {id:'HV05',title:'In-Home Support Consent & Boundaries Policy',std:'Certification Module 2.3',tier:'paid',priority:2},
+  ],
+  children_some:[
+    {id:'CS01',title:'Child Safe Policy',std:'Core Module 1.3 / Child Safe Standards',tier:'paid',priority:1},
+    {id:'CS02',title:'Working with Children Check Register',std:'Core Module 1.3',tier:'paid',priority:1},
+    {id:'CS03',title:'Mandatory Reporting Procedure',std:'State legislation',tier:'paid',priority:1},
+    {id:'CS04',title:'Child Safe Code of Conduct',std:'Child Safe Standards',tier:'paid',priority:1},
+  ],
+  children_primary:[
+    {id:'CS01',title:'Child Safe Policy',std:'Core Module 1.3 / Child Safe Standards',tier:'paid',priority:1},
+    {id:'CS02',title:'Working with Children Check Register',std:'Core Module 1.3',tier:'paid',priority:1},
+    {id:'CS03',title:'Mandatory Reporting Procedure',std:'State legislation',tier:'paid',priority:1},
+    {id:'CS04',title:'Child Safe Code of Conduct',std:'Child Safe Standards',tier:'paid',priority:1},
+    {id:'CS05',title:'Safeguarding Children Risk Assessment',std:'Child Safe Standards',tier:'paid',priority:2},
+    {id:'CS06',title:'Parent & Carer Engagement Policy',std:'Child Safe Standards',tier:'paid',priority:2},
+  ],
+  medication:[
+    {id:'MED01',title:'Medication Management Policy & Procedure',std:'Certification Module 2.4',tier:'paid',priority:1},
+    {id:'MED02',title:'Medication Administration Record (MAR) Template',std:'Certification Module 2.4',tier:'paid',priority:1},
+    {id:'MED03',title:'Medication Error Reporting Procedure',std:'Certification Module 2.4',tier:'paid',priority:1},
+    {id:'MED04',title:'Self-Administration of Medication Policy',std:'Certification Module 2.4',tier:'paid',priority:2},
+  ],
+  medication_complex:[
+    {id:'MED01',title:'Medication Management Policy & Procedure',std:'Certification Module 2.4',tier:'paid',priority:1},
+    {id:'MED02',title:'Medication Administration Record (MAR) Template',std:'Certification Module 2.4',tier:'paid',priority:1},
+    {id:'MED03',title:'Medication Error Reporting Procedure',std:'Certification Module 2.4',tier:'paid',priority:1},
+    {id:'MED04',title:'Self-Administration of Medication Policy',std:'Certification Module 2.4',tier:'paid',priority:2},
+    {id:'MED05',title:'Health Support Planning Procedure',std:'Certification Module 2.4',tier:'paid',priority:1},
+    {id:'MED06',title:'Nursing & Clinical Governance Policy',std:'Certification Module 2.4',tier:'paid',priority:1},
+    {id:'MED07',title:'Health Emergency Response Procedure',std:'Certification Module 2.4',tier:'paid',priority:1},
+  ],
+};
+
+function getProfile(){
+  const params=new URLSearchParams(window.location.search);
+  if(!params.get('status'))return{status:0,org_type:1,audit_pathway:1,employees:1,home_visits:1,children:0,medication:1,existing_docs:0,services:[0,2,3],org_name:'Your Organisation'};
+  return{
+    status:parseInt(params.get('status')??0),
+    org_type:parseInt(params.get('org_type')??0),
+    audit_pathway:parseInt(params.get('audit_pathway')??2),
+    employees:parseInt(params.get('employees')??0),
+    home_visits:parseInt(params.get('home_visits')??0),
+    children:parseInt(params.get('children')??0),
+    medication:parseInt(params.get('medication')??0),
+    existing_docs:parseInt(params.get('existing_docs')??0),
+    services:(params.get('services')||'').split(',').filter(Boolean).map(Number),
+    org_name:params.get('org_name')||'Your Organisation',
+  };
+}
+
+function buildDocList(profile){
+  const p=profile;
+  const services=p.services||[];
+  const hasCert=p.audit_pathway===1||services.some(i=>[2,3,4,6,7].includes(i));
+  let sections=[];
+  sections.push({key:'core',label:'Core — Required by All Providers',color:'#b8acdf',docs:RULES.core});
+  if(hasCert)sections.push({key:'certification',label:'Certification Audit Pathway',color:'#e8a0a0',docs:RULES.certification});
+  if(p.employees===2)sections.push({key:'hr',label:'HR & Employment (6+ staff)',color:'#efcba8',docs:RULES.hr_large});
+  else if(p.employees===1)sections.push({key:'hr',label:'HR & Employment (1–5 staff)',color:'#efcba8',docs:RULES.hr_small});
+  if(p.home_visits===1)sections.push({key:'home_visits',label:'In-Home Support Safeguards',color:'#9ec4b0',docs:RULES.home_visits});
+  if(p.children===2)sections.push({key:'children',label:'Child Safe Requirements (Primary)',color:'#f4c5c5',docs:RULES.children_primary});
+  else if(p.children===1)sections.push({key:'children',label:'Child Safe Requirements',color:'#f4c5c5',docs:RULES.children_some});
+  if(p.medication===2)sections.push({key:'medication',label:'Medication & Complex Health',color:'#c5ddd0',docs:RULES.medication_complex});
+  else if(p.medication===1)sections.push({key:'medication',label:'Medication Management',color:'#c5ddd0',docs:RULES.medication});
+  return{sections,hasCert};
+}
+
+function calcTotal(sections){
+  const seen=new Set();let total=0;
+  sections.forEach(s=>s.docs.forEach(d=>{if(!seen.has(d.id)){seen.add(d.id);total++;}}));
+  return Math.min(total,65);
+}
+
+const ORG_LABELS=['Sole Trader','Small Team (2–10)','Mid-size Org (11–50)','Large Org (50+)'];
+
+function render(){
+  const profile=getProfile();
+  const{sections,hasCert}=buildDocList(profile);
+  const totalDocs=calcTotal(sections);
+  const freeDocs=3;
+  const paidDocs=totalDocs-freeDocs;
+  const orgLabel=ORG_LABELS[profile.org_type]||'Provider';
+  const auditLabel=hasCert?'Certification Audit':'Verification Audit';
+  const breakdown=sections.map(s=>({label:s.label,count:s.docs.length,color:s.color}));
+  const circumference=314;
+  const pct=totalDocs/65;
+
+  document.getElementById('pageContent').innerHTML=`
+    <div class="grid">
+      <div class="main-col">
+        <div class="profile-band">
+          <div class="profile-tag">✓ Profile complete</div>
+          <h1>You need <em>${totalDocs} of 65</em> compliance documents</h1>
+          <div class="sub">${orgLabel} · ${auditLabel} — based on your quiz answers. Your first 3 documents are ready to download free below.</div>
+          <div class="score-row">
+            <div class="score-ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(0,0,0,0.07)" stroke-width="10"/>
+                <circle cx="60" cy="60" r="50" fill="none" stroke="url(#sg)" stroke-width="10"
+                  stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"
+                  stroke-linecap="round" transform="rotate(-90 60 60)" id="scoreArc"/>
+                <defs><linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#b8acdf"/>
+                  <stop offset="100%" stop-color="#9ec4b0"/>
+                </linearGradient></defs>
+                <text x="60" y="56" text-anchor="middle" font-size="26" font-weight="700" fill="#2a2535" font-family="DM Sans,sans-serif" id="arcNum">0</text>
+                <text x="60" y="72" text-anchor="middle" font-size="10" fill="#9990b0" font-family="DM Sans,sans-serif">of 65 docs</text>
+              </svg>
+              <div class="score-ring-label">Your pack</div>
+            </div>
+            <div class="score-breakdown">
+              ${breakdown.map(b=>`<div class="breakdown-item"><div class="breakdown-dot" style="background:${b.color}"></div><span class="breakdown-count">${b.count}</span><span class="breakdown-label">${b.label}</span></div>`).join('')}
+            </div>
+          </div>
+        </div>
+        <div class="section-head">
+          <h2>Your compliance document checklist</h2>
+          <span class="section-count">${totalDocs} documents</span>
+        </div>
+        ${sections.map((s,si)=>`
+          <div class="category ${si===0?'open':''}" id="cat-${s.key}">
+            <div class="category-header" onclick="toggleCat('${s.key}')">
+              <div class="cat-dot" style="background:${s.color}"></div>
+              <span class="cat-title">${s.label}</span>
+              <span class="cat-meta">${s.docs.length} docs</span>
+              <span class="cat-chevron">▼</span>
+            </div>
+            <div class="doc-rows">
+              ${s.docs.sort((a,b)=>a.priority-b.priority).map(d=>`
+                <div class="doc-row ${d.tier==='free'?'free':''}">
+                  <div class="doc-check ${d.tier==='free'?'check-free':'check-locked'}">${d.tier==='free'?'✓':'○'}</div>
+                  <div class="doc-info">
+                    <div class="doc-title">${d.title}</div>
+                    <div class="doc-std">${d.std}</div>
+                  </div>
+                  <div class="doc-actions">
+                    <span class="priority-badge p${d.priority}">P${d.priority}</span>
+                    <span class="doc-badge ${d.tier==='free'?'badge-free-sample':'badge-paid'}">${d.tier==='free'?'Free sample':'Paid'}</span>
+                    ${d.tier==='paid'?'<span class="lock-icon">🔒</span>':''}
+                  </div>
+                </div>`).join('')}
+            </div>
+          </div>`).join('')}
+        <div class="teaser-band">
+          <h3>+ ${Math.max(0,65-totalDocs)} more documents available in the full library</h3>
+          <p>Subscribe to unlock the complete library of 65 documents, all pre-filled with your organisation's details.</p>
+          <div class="blurred-docs"><div class="blurred-doc"></div><div class="blurred-doc"></div><div class="blurred-doc"></div></div>
+          <a href="/" class="btn btn-primary btn-lg">Unlock all ${totalDocs} documents →</a>
+        </div>
+      </div>
+      <div class="side-col">
+        <div class="side-card peach">
+          <h3>Your 3 free documents</h3>
+          <p>Enter your email and we'll send personalised versions of your first 3 compliance documents.</p>
+          <div style="display:flex;flex-direction:column;gap:0.35rem;margin-bottom:1rem;">
+            ${RULES.core.filter(d=>d.tier==='free').map(d=>`<div style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;font-weight:500;"><span style="color:#437a22;font-weight:700;">✓</span> ${d.title}</div>`).join('')}
+          </div>
+          <input class="email-input" type="email" id="sideEmail" placeholder="hello@yourorg.com.au"/>
+          <button class="btn btn-primary" style="width:100%" onclick="submitEmail()">Send my free docs →</button>
+        </div>
+        <div class="side-card">
+          <h3 style="margin-bottom:0.75rem">Your compliance score</h3>
+          <div class="stat-row">
+            <div class="stat"><div class="stat-num">${freeDocs}</div><div class="stat-lbl">Free docs</div></div>
+            <div class="stat"><div class="stat-num">${paidDocs}</div><div class="stat-lbl">To unlock</div></div>
+            <div class="stat"><div class="stat-num">${totalDocs}</div><div class="stat-lbl">Total needed</div></div>
+          </div>
+          <div class="progress-mini">
+            <div class="progress-mini-label"><span>Compliance readiness</span><span id="pctLabel">0%</span></div>
+            <div class="progress-mini-bar"><div class="progress-mini-fill" id="miniBar" style="width:0%"></div></div>
+          </div>
+          <p style="font-size:0.8rem;color:var(--ink-soft);line-height:1.5">Most providers complete their full pack in 2–3 hours using NDIS Ready. Consultants charge $5,000–$20,000 for the same outcome.</p>
+        </div>
+        <div class="side-card lavender">
+          <h3>Get audit-ready today</h3>
+          <p>Everything you need to pass your NDIS audit, personalised to your organisation.</p>
+          <div class="checklist">
+            <div class="check-item">All ${totalDocs} documents pre-filled with your details</div>
+            <div class="check-item">Downloadable Word format — fully editable</div>
+            <div class="check-item">Audit readiness dashboard included</div>
+            <div class="check-item">Email support throughout your audit</div>
+          </div>
+          <a href="/" class="btn btn-primary" style="width:100%;text-align:center;display:block">View pricing →</a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  setTimeout(()=>{
+    const arc=document.getElementById('scoreArc');
+    const numEl=document.getElementById('arcNum');
+    const miniBar=document.getElementById('miniBar');
+    const pctEl=document.getElementById('pctLabel');
+    if(arc){arc.style.transition='stroke-dashoffset 1.2s ease';arc.style.strokeDashoffset=circumference-(pct*circumference);}
+    if(numEl){let n=0;const t=setInterval(()=>{n+=Math.ceil(totalDocs/40);if(n>=totalDocs){n=totalDocs;clearInterval(t);}numEl.textContent=n;},30);}
+    if(miniBar){const rp=Math.round((freeDocs/totalDocs)*100);setTimeout(()=>{miniBar.style.width=rp+'%';if(pctEl)pctEl.textContent=rp+'%';},300);}
+  },100);
+}
+
+function toggleCat(key){const el=document.getElementById('cat-'+key);if(el)el.classList.toggle('open');}
+
+async function submitEmail(){
+  const email=document.getElementById('sideEmail').value;
+  if(!email||!email.includes('@')){alert('Please enter a valid email address.');return;}
+  const btn=event.target;
+  btn.textContent='Sending…';
+  btn.disabled=true;
+  document.getElementById('sideEmail').disabled=true;
+  const profile=getProfile();
+  try{
+    const resp=await fetch('/api/capture-email',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        email,
+        org_name:profile.org_name||'',
+        answers:{status:profile.status,org_type:profile.org_type,audit_pathway:profile.audit_pathway,employees:profile.employees,home_visits:profile.home_visits,children:profile.children,medication:profile.medication,existing_docs:profile.existing_docs},
+        services:profile.services||[],
+      }),
+    });
+    if(resp.ok){btn.textContent='✓ Check your inbox!';btn.style.background='#437a22';}
+    else throw new Error('API error');
+  }catch(e){
+    btn.textContent='Send my free docs →';
+    btn.disabled=false;
+    document.getElementById('sideEmail').disabled=false;
+    alert('Something went wrong — please try again or email us at hello@ndis-ready.com.au');
+  }
+}
+
+setTimeout(render,600);
+</script>
+</body>
+</html>

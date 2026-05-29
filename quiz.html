@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NDIS Ready — Find your compliance documents</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --rose:#f4c5c5;--rose-deep:#e8a0a0;
+  --lavender:#d8d0f0;--lavender-deep:#b8acdf;
+  --sage:#c5ddd0;--sage-deep:#9ec4b0;
+  --peach:#f7dfc8;--peach-deep:#efcba8;
+  --cream:#faf8f4;--white:#ffffff;
+  --ink:#2a2535;--ink-mid:#5a5370;--ink-soft:#9990b0;
+  --font-brand:'Pacifico',cursive;
+  --font-display:'DM Serif Display',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  --radius:16px;--radius-sm:10px;--radius-pill:999px;
+}
+html{-webkit-font-smoothing:antialiased;}
+body{font-family:var(--font-body);background:var(--cream);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.06);}
+.nav-logo{font-family:var(--font-brand);font-size:1.4rem;color:var(--lavender-deep);text-decoration:none;}
+.progress-bar-wrap{background:rgba(0,0,0,0.07);height:5px;width:100%;}
+.progress-bar-fill{height:5px;background:linear-gradient(90deg,var(--lavender-deep),var(--sage-deep));transition:width 0.4s ease;width:0%;}
+.quiz-shell{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem 1rem;}
+.quiz-card{background:var(--white);border-radius:var(--radius);box-shadow:0 8px 40px rgba(42,37,53,0.1);padding:2.5rem 2.25rem;width:100%;max-width:580px;}
+.step-label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:0.75rem;display:flex;align-items:center;justify-content:space-between;}
+.quiz-q{font-family:var(--font-display);font-size:clamp(1.25rem,3vw,1.65rem);line-height:1.3;color:var(--ink);margin-bottom:0.5rem;}
+.quiz-sub{font-size:0.88rem;color:var(--ink-mid);margin-bottom:1.75rem;line-height:1.5;}
+.options{display:flex;flex-direction:column;gap:0.6rem;}
+.opt{display:flex;align-items:flex-start;gap:0.85rem;padding:0.9rem 1.1rem;border:2px solid rgba(0,0,0,0.09);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.15s;background:var(--cream);}
+.opt:hover{border-color:var(--lavender-deep);background:var(--lavender);}
+.opt.selected{border-color:var(--lavender-deep);background:var(--lavender);}
+.opt.multi-selected{border-color:var(--sage-deep);background:var(--sage);}
+.opt-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+.opt-text{flex:1;}
+.opt-label{font-size:0.92rem;font-weight:600;color:var(--ink);line-height:1.3;}
+.opt-desc{font-size:0.78rem;color:var(--ink-mid);margin-top:2px;line-height:1.4;}
+.nav-row{display:flex;align-items:center;justify-content:space-between;margin-top:2rem;gap:1rem;}
+.btn{font-family:var(--font-body);font-size:0.9rem;font-weight:600;padding:0.7rem 1.6rem;border-radius:var(--radius-pill);border:none;cursor:pointer;transition:all 0.18s;}
+.btn-primary{background:var(--ink);color:var(--white);}
+.btn-primary:hover{background:#3d3650;}
+.btn-primary:disabled{opacity:0.35;cursor:not-allowed;}
+.btn-ghost{background:transparent;color:var(--ink-mid);border:1.5px solid rgba(0,0,0,0.12);}
+.btn-ghost:hover{border-color:rgba(0,0,0,0.3);}
+.multi-hint{font-size:0.78rem;color:var(--ink-soft);text-align:center;margin-top:0.75rem;}
+@media(max-width:480px){.quiz-card{padding:1.75rem 1.25rem;}.nav-logo{font-size:1.2rem;}nav{padding:1rem 1.25rem;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">NDIS Ready</a>
+  <span style="font-size:0.8rem;color:var(--ink-soft);" id="pctLabel">0% complete</span>
+</nav>
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+
+<div class="quiz-shell">
+  <div class="quiz-card" id="quizCard"></div>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    id:'status',
+    q:'What best describes where you are right now?',
+    sub:'This helps us understand your starting point.',
+    type:'single',
+    options:[
+      {icon:'🌱',label:'Not yet registered',desc:'I want to register as an NDIS provider'},
+      {icon:'📋',label:'Registration in progress',desc:'I have started the process with the NDIS Commission'},
+      {icon:'✅',label:'Already registered',desc:'I am registered and want to stay compliant or prepare for re-registration'},
+    ]
+  },
+  {
+    id:'org_type',
+    q:'What size is your organisation?',
+    sub:'This determines which HR and governance documents you need.',
+    type:'single',
+    options:[
+      {icon:'🧑',label:'Sole trader / just me',desc:'No employees — I deliver support myself'},
+      {icon:'👥',label:'Small team (2–10 staff)',desc:'A small group of workers'},
+      {icon:'🏢',label:'Mid-size (11–50 staff)',desc:'A growing organisation with management structure'},
+      {icon:'🏛️',label:'Large organisation (50+ staff)',desc:'Multiple sites or service lines'},
+    ]
+  },
+  {
+    id:'audit_pathway',
+    q:'Which audit pathway applies to you?',
+    sub:'Not sure? Most new SIL providers need Certification.',
+    type:'single',
+    options:[
+      {icon:'🎖️',label:'Certification audit',desc:'Required for higher-risk supports like SIL, SDA, behaviour support'},
+      {icon:'📄',label:'Verification audit',desc:'For lower-risk supports like community access or plan management'},
+      {icon:'❓',label:'Not sure yet',desc:'We will recommend the right pathway based on your services'},
+    ]
+  },
+  {
+    id:'services',
+    q:'Which supports will you deliver?',
+    sub:'Select all that apply — this maps exactly which documents you need.',
+    type:'multi',
+    options:[
+      {icon:'🏠',label:'Supported Independent Living (SIL)',desc:'24/7 support in shared or individual accommodation'},
+      {icon:'🤝',label:'Community participation / social support',desc:'Outings, social activities, community access'},
+      {icon:'⚕️',label:'Personal care / daily living',desc:'Hygiene, meals, mobility support'},
+      {icon:'💊',label:'Medication assistance',desc:'Prompting or administering medications'},
+      {icon:'🧒',label:'Supports for children / early childhood',desc:'Under-18 participants'},
+      {icon:'🗺️',label:'Support coordination',desc:'Helping participants use their plan'},
+      {icon:'💰',label:'Plan management',desc:'Managing NDIS funds on behalf of participants'},
+      {icon:'🧠',label:'Behaviour support',desc:'Positive behaviour support plans or restrictive practices'},
+    ]
+  },
+  {
+    id:'employees',
+    q:'Do you have paid employees or contractors?',
+    sub:'This determines your HR documentation requirements.',
+    type:'single',
+    options:[
+      {icon:'🧑',label:'No — just me',desc:'Sole trader, no paid workers'},
+      {icon:'👥',label:'Yes — 1 to 5 workers',desc:'Small team, some HR docs needed'},
+      {icon:'🏢',label:'Yes — 6 or more workers',desc:'Larger team, full HR framework required'},
+    ]
+  },
+  {
+    id:'home_visits',
+    q:'Will you provide supports in participants\' homes?',
+    sub:'Lone worker safety and home environment policies apply.',
+    type:'single',
+    options:[
+      {icon:'✅',label:'Yes — I will visit participants at home',desc:'Home visits are part of my service delivery'},
+      {icon:'🚫',label:'No — support is in a centre or community only',desc:'No home visits planned'},
+    ]
+  },
+  {
+    id:'children',
+    q:'Will you support children or young people under 18?',
+    sub:'Child safe standards add additional mandatory requirements.',
+    type:'single',
+    options:[
+      {icon:'🚫',label:'No — adults only',desc:'All participants are 18 or over'},
+      {icon:'🧒',label:'Sometimes — mixed caseload',desc:'Some participants may be under 18'},
+      {icon:'👶',label:'Yes — primarily children or young people',desc:'Most or all participants are under 18'},
+    ]
+  },
+  {
+    id:'medication',
+    q:'Will you assist with medication?',
+    sub:'This includes prompting, administering, or managing medications.',
+    type:'single',
+    options:[
+      {icon:'🚫',label:'No medication assistance',desc:'I will not be involved in medication support'},
+      {icon:'💊',label:'Prompting and self-administration only',desc:'Reminding participants to take their own medication'},
+      {icon:'⚕️',label:'Administration and complex health support',desc:'Physically administering medication or managing health care plans'},
+    ]
+  },
+  {
+    id:'existing_docs',
+    q:'Do you have any existing compliance documents?',
+    sub:'This helps us understand how much ground we need to cover.',
+    type:'single',
+    options:[
+      {icon:'❌',label:'Starting from scratch',desc:'No documents yet'},
+      {icon:'📁',label:'A few documents',desc:'Some policies exist but lots of gaps'},
+      {icon:'📚',label:'Most documents exist',desc:'Reasonably documented but need review and updates'},
+    ]
+  },
+];
+
+let current = 0;
+let answers = {};
+let multiSelections = {};
+
+function pct() { return Math.round((current / QUESTIONS.length) * 100); }
+
+function render() {
+  const q = QUESTIONS[current];
+  document.getElementById('progressFill').style.width = pct() + '%';
+  document.getElementById('pctLabel').textContent = pct() + '% complete';
+  const card = document.getElementById('quizCard');
+
+  const isMulti = q.type === 'multi';
+  const sel = isMulti ? (multiSelections[q.id] || []) : answers[q.id];
+
+  card.innerHTML = `
+    <div class="step-label">
+      <span>Question ${current + 1} of ${QUESTIONS.length}</span>
+    </div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-sub">${q.sub}</div>
+    <div class="options">
+      ${q.options.map((o, i) => {
+        const cls = isMulti
+          ? (sel.includes(i) ? 'opt multi-selected' : 'opt')
+          : (sel === i ? 'opt selected' : 'opt');
+        return `<div class="${cls}" onclick="pick(${i})">
+          <span class="opt-icon">${o.icon}</span>
+          <div class="opt-text">
+            <div class="opt-label">${o.label}</div>
+            ${o.desc ? `<div class="opt-desc">${o.desc}</div>` : ''}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    ${isMulti ? '<div class="multi-hint">Select all that apply</div>' : ''}
+    <div class="nav-row">
+      ${current > 0 ? '<button class="btn btn-ghost" onclick="goBack()">← Back</button>' : '<div></div>'}
+      <button class="btn btn-primary" id="nextBtn" onclick="goNext()" ${canProceed() ? '' : 'disabled'}>
+        ${current === QUESTIONS.length - 1 ? 'See my results →' : 'Next →'}
+      </button>
+    </div>
+  `;
+}
+
+function canProceed() {
+  const q = QUESTIONS[current];
+  if (q.type === 'multi') return (multiSelections[q.id] || []).length > 0;
+  return answers[q.id] !== undefined;
+}
+
+function pick(i) {
+  const q = QUESTIONS[current];
+  if (q.type === 'multi') {
+    const sel = multiSelections[q.id] || [];
+    const idx = sel.indexOf(i);
+    if (idx > -1) sel.splice(idx, 1); else sel.push(i);
+    multiSelections[q.id] = sel;
+  } else {
+    answers[q.id] = i;
+  }
+  render();
+}
+
+function goBack() {
+  if (current > 0) { current--; render(); }
+}
+
+function goNext() {
+  if (!canProceed()) return;
+  if (current === QUESTIONS.length - 1) { showResults(); return; }
+  current++;
+  render();
+}
+
+function buildResultsURL() {
+  const a = answers;
+  const ms = multiSelections;
+  const services = (ms['services'] || []).join(',');
+  const params = new URLSearchParams({
+    status:        a['status']        ?? 0,
+    org_type:      a['org_type']      ?? 0,
+    audit_pathway: a['audit_pathway'] ?? 2,
+    employees:     a['employees']     ?? 0,
+    home_visits:   a['home_visits']   ?? 0,
+    children:      a['children']      ?? 0,
+    medication:    a['medication']    ?? 0,
+    existing_docs: a['existing_docs'] ?? 0,
+    services:      services,
+  });
+  return 'results.html?' + params.toString();
+}
+
+function showResults() {
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('pctLabel').textContent = '100% complete';
+  document.getElementById('quizCard').innerHTML = `
+    <div style="text-align:center;padding:3rem 1rem;">
+      <div style="font-size:2.5rem;margin-bottom:1.25rem">🎯</div>
+      <div style="font-family:var(--font-display);font-size:1.6rem;line-height:1.2;margin-bottom:0.6rem;color:var(--ink)">
+        Building your compliance profile…
+      </div>
+      <div style="font-size:0.9rem;color:var(--ink-mid);margin-bottom:2rem;line-height:1.5;">
+        Mapping your answers to the NDIS Practice Standards
+      </div>
+      <div style="width:100%;height:7px;background:rgba(0,0,0,0.08);border-radius:999px;overflow:hidden;">
+        <div id="loadBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--lavender-deep),var(--sage-deep));border-radius:999px;transition:width 0.9s ease;"></div>
+      </div>
+      <div style="margin-top:1rem;font-size:0.8rem;color:var(--ink-soft);">Taking you to your results…</div>
+    </div>
+  `;
+  setTimeout(() => { document.getElementById('loadBar').style.width = '75%'; }, 50);
+  setTimeout(() => { document.getElementById('loadBar').style.width = '100%'; }, 700);
+  setTimeout(() => { window.location.href = buildResultsURL(); }, 1300);
+}
+
+render();
+</script>
+</body>
+</html>
