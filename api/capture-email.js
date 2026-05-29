@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -55,19 +55,19 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         from: 'NDIS Ready <hello@ndis-ready.com.au>',
         to: [cleanEmail],
-        subject: `Your ${docCount} NDIS compliance documents — 3 free samples inside`,
+        subject: `Your ${docCount} NDIS compliance documents - 3 free samples inside`,
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;">
-          <h2 style="color:#2a2535;">Your compliance profile is ready 🎯</h2>
+          <h2 style="color:#2a2535;">Your compliance profile is ready</h2>
           <p>Based on your answers, you need <strong>${docCount} of the 65 NDIS compliance documents</strong> for your <strong>${profileLabel}</strong> profile.</p>
           <div style="background:#c5ddd0;border-radius:12px;padding:24px;margin:24px 0;">
             <strong>Your 3 free sample documents:</strong><br/><br/>
-            ✓ Incident Management Policy &amp; Procedure<br/>
-            ✓ Complaints Management Policy &amp; Procedure<br/>
-            ✓ Risk Management Framework
+            Incident Management Policy &amp; Procedure<br/>
+            Complaints Management Policy &amp; Procedure<br/>
+            Risk Management Framework
           </div>
           <p>These will be sent to you within 24 hours, pre-filled with your organisation details.</p>
-          <a href="https://ndis-ready.com.au" style="display:inline-block;background:#2a2535;color:#fff;padding:14px 28px;border-radius:999px;text-decoration:none;font-weight:600;">Unlock all ${docCount} documents →</a>
-          <p style="color:#999;font-size:12px;margin-top:32px;">NDIS Ready · hello@ndis-ready.com.au</p>
+          <a href="https://ndis-ready.com.au" style="display:inline-block;background:#2a2535;color:#fff;padding:14px 28px;border-radius:999px;text-decoration:none;font-weight:600;">Unlock all ${docCount} documents</a>
+          <p style="color:#999;font-size:12px;margin-top:32px;">NDIS Ready - hello@ndis-ready.com.au</p>
         </div>`,
       }),
     });
@@ -81,7 +81,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         from: 'NDIS Ready <hello@ndis-ready.com.au>',
         to: ['hello@ndis-ready.com.au'],
-        subject: `🎯 New lead: ${cleanEmail} (${profileLabel})`,
+        subject: `New lead: ${cleanEmail} (${profileLabel})`,
         html: `<p><strong>New quiz lead</strong></p><p>Email: ${cleanEmail}</p><p>Org: ${cleanOrgName}</p><p>Profile: ${profileLabel}</p><p>Docs needed: ${docCount}</p>`,
       }),
     });
@@ -92,7 +92,7 @@ export default async function handler(req, res) {
     console.error('capture-email error:', err);
     return res.status(500).json({ error: 'Something went wrong. Please try again.' });
   }
-}
+};
 
 function calcDocCount(answers, services) {
   let count = 18;
@@ -110,7 +110,7 @@ function calcDocCount(answers, services) {
 
 function buildProfileLabel(answers) {
   const orgLabels = ['Sole Trader', 'Small Team', 'Mid-size Org', 'Large Org'];
-  const org = orgLabels[answers.org_type ?? 0];
+  const org = orgLabels[answers.org_type != null ? answers.org_type : 0];
   const audit = answers.audit_pathway === 1 ? 'Certification' : 'Verification';
-  return `${org} · ${audit} Audit`;
+  return `${org} - ${audit} Audit`;
 }
