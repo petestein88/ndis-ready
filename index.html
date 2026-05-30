@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NDIS Ready — Audit-ready compliance for NDIS providers</title>
   <meta name="description" content="Get audit-ready for your NDIS registration. 65 personalised policy documents, compliance tracking, and AI-powered tools — built for SIL providers." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Pacifico&display=swap" rel="stylesheet" />
@@ -84,9 +85,9 @@
     .price-card ul { list-style: none; margin-bottom: 2rem; flex: 1; }
     .price-card ul li { font-size: 0.875rem; color: var(--ink-mid); padding: 0.35rem 0; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
     .price-card.featured ul li { color: rgba(255,255,255,0.85); }
-    .price-card ul li::before { content: "✓"; color: var(--sage-deep); font-weight: 700; flex-shrink: 0; }
+    .price-card ul li::before { content: "\2713"; color: var(--sage-deep); font-weight: 700; flex-shrink: 0; }
     .price-card.featured ul li::before { color: var(--sage); }
-    .price-card ul li.minus::before { content: "–"; color: var(--ink-soft); }
+    .price-card ul li.minus::before { content: "\2013"; color: var(--ink-soft); }
     .btn-price { display: block; text-align: center; font-size: 0.9rem; font-weight: 600; padding: 0.8rem 1.5rem; border-radius: var(--radius-pill); text-decoration: none; transition: all 0.2s; }
     .btn-price-light { background: var(--cream); color: var(--ink); border: 1.5px solid rgba(0,0,0,0.12); }
     .btn-price-light:hover { border-color: rgba(0,0,0,0.3); }
@@ -108,8 +109,27 @@
 </div>
 
 <nav>
-  <a href="#" class="nav-logo">NDIS Ready <span class="badge">beta</span></a>
-  <a href="quiz.html" class="nav-cta">Take the quiz →</a>
+  <a href="#" class="nav-logo">
+    <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="navSG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+          <stop offset="0%" stop-color="#c4b5f4"/>
+          <stop offset="100%" stop-color="#b8acdf"/>
+        </linearGradient>
+        <filter id="navTex">
+          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise"/>
+          <feColorMatrix type="saturate" values="0" in="noise" result="gn"/>
+          <feBlend in="SourceGraphic" in2="gn" mode="multiply" result="bl"/>
+          <feComposite in="bl" in2="SourceGraphic" operator="in"/>
+        </filter>
+      </defs>
+      <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="url(#navSG)" filter="url(#navTex)"/>
+      <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="none" stroke="#9a88cc" stroke-width="3"/>
+      <path d="M50 65 Q32 52 32 42 Q32 34 40 34 Q45 34 50 40 Q55 34 60 34 Q68 34 68 42 Q68 52 50 65 Z" fill="#e8a0a0" filter="url(#navTex)"/>
+    </svg>
+    NDIS Ready <span class="badge">beta</span>
+  </a>
+  <a href="#quiz" class="nav-cta">Take the quiz →</a>
 </nav>
 
 <section class="hero">
@@ -121,7 +141,7 @@
   <p>NDIS Ready gives you everything you need to register, pass your certification audit, and <span class="stay-word">stay</span> compliant — in one simple platform.</p>
   <p class="sub">No consultants. No confusing spreadsheets. Just a clear path through registration.</p>
   <div class="hero-actions">
-    <a href="quiz.html" class="btn-primary">Take the free quiz →</a>
+    <a href="#quiz" class="btn-primary">Take the free quiz →</a>
     <a href="#how-it-works" class="btn-secondary">See how it works</a>
   </div>
 </section>
@@ -163,7 +183,7 @@
         </div>
         <div class="step-num">Step 03</div>
         <h3>Track, update, <span class="stay-word">stay</span> compliant</h3>
-        <p>Your dashboard shows exactly what's done, what needs updating, and what's missing — in real time.</p>
+        <p>Your dashboard shows exactly what’s done, what needs updating, and what’s missing — in real time.</p>
       </div>
     </div>
   </div>
@@ -171,7 +191,7 @@
 
 <section class="section features-bg" id="features">
   <div class="section-inner">
-    <p class="section-label">What's included</p>
+    <p class="section-label">What’s included</p>
     <h2>Everything the NDIS Commission wants to see</h2>
     <p class="lead">Built directly from the Practice Standards — so nothing is missing.</p>
     <div class="features-grid" style="margin-top:2.5rem;">
@@ -181,7 +201,7 @@
       </div>
       <div class="feature-card" style="background:var(--lavender);border-color:var(--lavender-deep);">
         <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="7 13 10 16 17 9"/></svg>Audit readiness dashboard</h3>
-        <p>A live compliance score showing exactly what's ready, what's missing, and what expires soon.</p>
+        <p>A live compliance score showing exactly what’s ready, what’s missing, and what expires soon.</p>
       </div>
       <div class="feature-card" style="background:var(--sage);border-color:var(--sage-deep);">
         <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg>AI document assistant</h3>
@@ -205,16 +225,16 @@
 
 <section class="section" id="scenarios">
   <div class="section-inner">
-    <p class="section-label">Who it's for</p>
+    <p class="section-label">Who it’s for</p>
     <h2>Made for providers at every stage</h2>
     <div class="scenarios">
       <div class="scenario-card" style="background:var(--rose);">
         <h3>First-time registrants</h3>
-        <p>You've been doing support work for years and want to go out on your own. We guide you through every document you need to get registered before 1 July 2026.</p>
+        <p>You’ve been doing support work for years and want to go out on your own. We guide you through every document you need to get registered before 1 July 2026.</p>
       </div>
       <div class="scenario-card" style="background:var(--lavender);">
         <h3>Small SIL providers (2–15 staff)</h3>
-        <p>You're registered but your policies are scattered across Google Drive, old Word docs, and your head. NDIS Ready brings it all into one place.</p>
+        <p>You’re registered but your policies are scattered across Google Drive, old Word docs, and your head. NDIS Ready brings it all into one place.</p>
       </div>
       <div class="scenario-card" style="background:var(--sage);">
         <h3>Providers approaching re-registration</h3>
@@ -224,7 +244,6 @@
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
 <section class="section testimonials-bg" id="testimonials">
   <div class="section-inner">
     <p class="section-label">What providers say</p>
@@ -233,7 +252,7 @@
     <div class="testimonials-grid">
       <div class="testimonial-card">
         <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-quote">"I was completely overwhelmed by the NDIS registration process. NDIS Ready gave me a clear checklist and built out all 65 policies in a fraction of the time it would have taken me. I passed my audit first go."</p>
+        <p class="testimonial-quote">“I was completely overwhelmed by the NDIS registration process. NDIS Ready gave me a clear checklist and built out all 65 policies in a fraction of the time it would have taken me. I passed my audit first go.”</p>
         <div class="testimonial-author">
           <span class="testimonial-name">Michelle T.</span>
           <span class="testimonial-role">Sole trader SIL provider, QLD</span>
@@ -241,7 +260,7 @@
       </div>
       <div class="testimonial-card">
         <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-quote">"We were paying a consultant $800 a month just to keep our policies updated. NDIS Ready replaced that entirely. The dashboard makes it obvious what needs attention and when — it's like having a compliance manager built in."</p>
+        <p class="testimonial-quote">“We were paying a consultant $800 a month just to keep our policies updated. NDIS Ready replaced that entirely. The dashboard makes it obvious what needs attention and when — it’s like having a compliance manager built in.”</p>
         <div class="testimonial-author">
           <span class="testimonial-name">David K.</span>
           <span class="testimonial-role">Director, 8-staff SIL provider, VIC</span>
@@ -249,7 +268,7 @@
       </div>
       <div class="testimonial-card">
         <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-quote">"The quiz at the start was eye-opening. I thought I was mostly across everything, but it flagged three areas I had completely missed. Worth it just for that."</p>
+        <p class="testimonial-quote">“The quiz at the start was eye-opening. I thought I was mostly across everything, but it flagged three areas I had completely missed. Worth it just for that.”</p>
         <div class="testimonial-author">
           <span class="testimonial-name">Priya S.</span>
           <span class="testimonial-role">Registered SIL provider, NSW</span>
@@ -259,7 +278,6 @@
   </div>
 </section>
 
-<!-- PRICING -->
 <section class="section features-bg" id="pricing">
   <div class="section-inner">
     <p class="section-label">Pricing</p>
@@ -279,10 +297,10 @@
           <li class="minus">Policy documents not included</li>
           <li class="minus">No ongoing access</li>
         </ul>
-        <a href="quiz.html" class="btn-price btn-price-light">Take the free quiz</a>
+        <a href="#quiz" class="btn-price btn-price-light">Take the free quiz</a>
       </div>
       <div class="price-card featured">
-        <div class="price-label">✦ Registration Kit</div>
+        <div class="price-label">✶ Registration Kit</div>
         <div class="price-amount">$249</div>
         <div class="price-period">one-time payment</div>
         <div class="price-note">Everything to get registered</div>
@@ -296,10 +314,10 @@
           <li>Email expiry alerts during access period</li>
           <li>Email support</li>
         </ul>
-        <a href="https://buy.stripe.com/8x2bJ3fbvgoR1bg9qj9fW00" target="_blank" rel="noopener noreferrer" class="btn-price btn-price-dark">Get the Registration Kit →</a>
+        <a href="#quiz" class="btn-price btn-price-dark">Get the Registration Kit →</a>
       </div>
       <div class="price-card" style="background:linear-gradient(145deg,var(--lavender),var(--sage));border:2px solid var(--lavender-deep);">
-        <div class="price-label" style="color:var(--ink-mid);">⭐ Best Value Bundle</div>
+        <div class="price-label" style="color:var(--ink-mid);">&#11088; Best Value Bundle</div>
         <div class="price-amount" style="color:var(--ink);">$499</div>
         <div class="price-period" style="color:var(--ink-mid);">per year — save $338</div>
         <div class="price-note" style="color:var(--ink);background:rgba(255,255,255,0.45);padding:0.4rem 0.75rem;border-radius:8px;display:inline-block;margin-bottom:1.5rem;">Registration Kit + 12 months Stay Ready</div>
@@ -313,7 +331,7 @@
           <li style="color:var(--ink-mid);">AI notes rewriter (unlimited)</li>
           <li style="color:var(--ink-mid);">Priority email support</li>
         </ul>
-        <a href="https://buy.stripe.com/dRmaEZaVfc8B4ns8mf9fW01" target="_blank" rel="noopener noreferrer" class="btn-price" style="background:var(--ink);color:var(--white);display:block;text-align:center;font-size:0.9rem;font-weight:600;padding:0.8rem 1.5rem;border-radius:999px;text-decoration:none;">Get the Value Bundle →</a>
+        <a href="#quiz" class="btn-price" style="background:var(--ink);color:var(--white);display:block;text-align:center;font-size:0.9rem;font-weight:600;padding:0.8rem 1.5rem;border-radius:999px;text-decoration:none;">Get the Value Bundle →</a>
         <p style="text-align:center;font-size:0.75rem;color:var(--ink-mid);margin-top:0.75rem;">Worth $837 if bought separately</p>
       </div>
       <div class="price-card">
@@ -332,7 +350,7 @@
           <li class="minus">Policy document generation not included</li>
         </ul>
         <span class="btn-price btn-price-light" style="opacity:0.55;cursor:not-allowed;text-align:center;">🔒 Coming Soon</span>
-        <p style="text-align:center;font-size:0.75rem;color:var(--ink-soft);margin-top:0.65rem;">We're building the ongoing platform now. Take the quiz to get early access.</p>
+        <p style="text-align:center;font-size:0.75rem;color:var(--ink-soft);margin-top:0.65rem;">We’re building the ongoing platform now. Take the quiz to get early access.</p>
       </div>
     </div>
     <p style="text-align:center;font-size:0.85rem;color:var(--ink-soft);margin-top:2rem;">
@@ -341,12 +359,11 @@
   </div>
 </section>
 
-<!-- QUIZ CTA -->
 <section class="section" id="quiz" style="background:var(--peach);text-align:center;">
   <div class="section-inner" style="max-width:640px;">
     <p class="section-label" style="text-align:center;">Free — takes 5 minutes</p>
     <h2 style="text-align:center;margin-bottom:1rem;">Find out exactly what you need to get registered</h2>
-    <p style="color:var(--ink-mid);font-size:1.05rem;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto;">Answer 9 questions about your services and situation. We'll show you a personalised checklist of every document and step you need — before you spend a cent.</p>
+    <p style="color:var(--ink-mid);font-size:1.05rem;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto;">Answer 9 questions about your services and situation. We’ll show you a personalised checklist of every document and step you need — before you spend a cent.</p>
     <a href="quiz.html" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.5rem;">Take the free quiz →</a>
     <p style="margin-top:1rem;font-size:0.85rem;color:var(--ink-soft);">No credit card. No sign-up required. Just answers.</p>
   </div>
@@ -356,9 +373,9 @@
   <div style="margin-bottom:1rem;" aria-hidden="true">
     <svg width="48" height="48" viewBox="0 0 24 24" fill="var(--rose-deep)" style="display:inline-block;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
   </div>
-  <h2>The 1 July deadline is close.<br/>Let's get you NDIS Ready.</h2>
+  <h2>The 1 July deadline is close.<br/>Let’s get you NDIS Ready.</h2>
   <p>Join hundreds of NDIS providers already preparing with NDIS Ready.</p>
-  <a href="quiz.html" class="btn-primary">Take the free quiz today</a>
+  <a href="#quiz" class="btn-primary">Take the free quiz today</a>
 </section>
 
 <footer>
