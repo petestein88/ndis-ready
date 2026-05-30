@@ -13,12 +13,14 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid email address' });
     }
 
-    const cleanEmail = email.toLowerCase().trim();
+    const cleanEmail   = email.toLowerCase().trim();
     const cleanOrgName = (org_name || 'Your Organisation').trim().substring(0, 200);
 
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+    const resendKey   = process.env.RESEND_API_KEY;
 
+    // ── 1. Save lead to Supabase ───────────────────────────────────────────
     const dbResponse = await fetch(`${supabaseUrl}/rest/v1/leads`, {
       method: 'POST',
       headers: {
@@ -42,10 +44,11 @@ module.exports = async function handler(req, res) {
       console.error('Supabase error:', dbError);
     }
 
-    const resendKey = process.env.RESEND_API_KEY;
-    const docCount = calcDocCount(answers || {}, services || []);
+    // ── 2. Calculate compliance profile ───────────────────────────────────
+    const docCount     = calcDocCount(answers || {}, services || []);
     const profileLabel = buildProfileLabel(answers || {});
 
+    // ── 3. Send confirmation email (no attachment — docs sent separately) ──
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -55,23 +58,25 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         from: 'NDIS Ready <hello@ndis-ready.com.au>',
         to: [cleanEmail],
-        subject: `Your ${docCount} NDIS compliance documents - 3 free samples inside`,
+        subject: `Your NDIS compliance profile: ${docCount} documents identified`,
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;">
-          <h2 style="color:#2a2535;">Your compliance profile is ready</h2>
+          <h2 style="color:#016970;">Your compliance profile is ready</h2>
           <p>Based on your answers, you need <strong>${docCount} of the 65 NDIS compliance documents</strong> for your <strong>${profileLabel}</strong> profile.</p>
-          <div style="background:#c5ddd0;border-radius:12px;padding:24px;margin:24px 0;">
-            <strong>Your 3 free sample documents:</strong><br/><br/>
-            Incident Management Policy &amp; Procedure<br/>
-            Complaints Management Policy &amp; Procedure<br/>
-            Risk Management Framework
+          <div style="background:#f0f9f8;border:1px solid #b2d8d8;border-radius:10px;padding:20px 24px;margin:24px 0;">
+            <strong style="color:#016970;">Your 3 free sample documents are on their way.</strong><br/><br/>
+            Check your inbox in the next few minutes — we\'re sending you:<br/><br/>
+            &bull; Incident Management Policy &amp; Procedure<br/>
+            &bull; Complaints Management Policy &amp; Procedure<br/>
+            &bull; Risk Management Framework
           </div>
-          <p>These will be sent to you within 24 hours, pre-filled with your organisation details.</p>
-          <a href="https://ndis-ready.com.au" style="display:inline-block;background:#2a2535;color:#fff;padding:14px 28px;border-radius:999px;text-decoration:none;font-weight:600;">Unlock all ${docCount} documents</a>
-          <p style="color:#999;font-size:12px;margin-top:32px;">NDIS Ready - hello@ndis-ready.com.au</p>
+          <p>Each document is pre-written to NDIS Practice Standards and ready to customise with your organisation details.</p>
+          <a href="https://ndis-ready.com.au/#pricing" style="display:inline-block;background:#016970;color:#fff;padding:14px 28px;border-radius:999px;text-decoration:none;font-weight:600;">Unlock all ${docCount} documents &rarr;</a>
+          <p style="color:#999;font-size:12px;margin-top:32px;">NDIS Ready &mdash; hello@ndis-ready.com.au &mdash; ndis-ready.com.au</p>
         </div>`,
       }),
     });
 
+    // ── 4. Internal lead notification ──────────────────────────────────────
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -85,6 +90,18 @@ module.exports = async function handler(req, res) {
         html: `<p><strong>New quiz lead</strong></p><p>Email: ${cleanEmail}</p><p>Org: ${cleanOrgName}</p><p>Profile: ${profileLabel}</p><p>Docs needed: ${docCount}</p>`,
       }),
     });
+
+    // ── 5. Fire-and-forget: trigger document delivery ──────────────────────
+    // We call send-documents in the background. We do NOT await it so the
+    // response to the user is instant. If it fails, the error is logged and
+    // we can retry manually via the Vercel logs.
+    const host = req.headers['x-forwarded-host'] || req.headers['host'] || 'ndis-ready.com.au';
+    const protocol = host.includes('localhost') ? 'http' : 'https';
+    fetch(`${protocol}://${host}/api/send-documents`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: cleanEmail, org_name: cleanOrgName }),
+    }).catch(err => console.error('send-documents trigger failed:', err));
 
     return res.status(200).json({ success: true, docCount, profileLabel });
 
