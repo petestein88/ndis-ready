@@ -4,8 +4,8 @@
 // Verifies Stripe signature, routes events to handlers
 // =============================================================
 
-import Stripe from 'stripe';
-import { createClient } from '@supabase/supabase-js';
+const Stripe = require('stripe');
+const { createClient } = require('@supabase/supabase-js');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(
@@ -14,7 +14,7 @@ const supabase = createClient(
 );
 
 // Vercel — disable body parsing so we get raw buffer for signature verification
-export const config = { api: { bodyParser: false } };
+module.exports.config = { api: { bodyParser: false } };
 
 async function getRawBody(req) {
   return new Promise((resolve, reject) => {
@@ -25,7 +25,7 @@ async function getRawBody(req) {
   });
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -50,11 +50,10 @@ export default async function handler(req, res) {
   try {
     switch (event.type) {
 
-      // ── One-time payment succeeded ──────────────────────────
       case 'checkout.session.completed': {
         const session = event.data.object;
         if (session.payment_status === 'paid') {
-          await handleCheckoutCompleted(session);
+          await handleCheckoutCompleted(session, req);
         }
         break;
       }
@@ -69,7 +68,7 @@ export default async function handler(req, res) {
 
       case 'payment_intent.payment_failed': {
         const pi = event.data.object;
-        await handlePaymentFailed(pi);
+        await handlePaymentFailed(pi, req);
         break;
       }
 
@@ -79,7 +78,6 @@ export default async function handler(req, res) {
         break;
       }
 
-      // ── Subscriptions ───────────────────────────────────────
       case 'customer.subscription.created': {
         const sub = event.data.object;
         await handleSubscriptionCreated(sub);
@@ -118,18 +116,19 @@ export default async function handler(req, res) {
 
   } catch (err) {
     console.error(`Error handling event ${event.type}:`, err);
+    // Always return 200 to Stripe so it doesn't retry indefinitely
     return res.status(200).json({ received: true, warning: err.message });
   }
-}
+};
 
 // =============================================================
 // EVENT HANDLERS
 // =============================================================
 
-async function handleCheckoutCompleted(session) {
-  const email = session.customer_details?.email || session.customer_email;
-  const name  = session.customer_details?.name  || '';
-  const amountPaid  = session.amount_total;
+async function handleCheckoutCompleted(session, req) {
+  const email      = session.customer_details?.email || session.customer_email;
+  const name       = session.customer_details?.name  || '';
+  const amountPaid = session.amount_total;
   const productTier = amountPaid >= 49900 ? 'value_bundle' : 'registration_kit';
 
   console.log(`Payment confirmed: ${email} — ${productTier} ($${amountPaid / 100})`);
@@ -160,6 +159,8 @@ async function handleCheckoutCompleted(session) {
     .from('leads')
     .select('*')
     .eq('email', email)
+    .order('created_at', { ascending: false })
+    .limit(1)
     .single();
 
   // 3. Trigger document generation
@@ -183,7 +184,7 @@ async function handleCheckoutCompleted(session) {
   if (!generateRes.ok) {
     const errText = await generateRes.text();
     console.error('Document generation failed:', errText);
-    // Don't throw — order is saved, we can retry manually
+    // Non-fatal — order is saved, can retry manually via Vercel logs
   }
 }
 
@@ -191,7 +192,7 @@ async function handlePaymentIntentSucceeded(pi) {
   await logEvent('payment_intent_succeeded', pi.id, pi.receipt_email);
 }
 
-async function handlePaymentFailed(pi) {
+async function handlePaymentFailed(pi, req) {
   const email = pi.receipt_email
     || pi.last_payment_error?.payment_method?.billing_details?.email;
 
@@ -211,7 +212,7 @@ async function handlePaymentFailed(pi) {
         email,
         data:  { retryUrl: 'https://ndis-ready.com.au/#pricing' },
       }),
-    });
+    }).catch(err => console.warn('payment_failed email send error:', err));
   }
 }
 
@@ -251,7 +252,6 @@ async function handleRefund(charge) {
   console.log(`Refund processed for payment intent: ${charge.payment_intent}`);
 }
 
-// customer_email matches the Supabase column name in webhook_log
 async function logEvent(type, stripeId, customerEmail, metadata = {}) {
   await supabase.from('webhook_log').insert({
     event_type:     type,
@@ -259,5 +259,5 @@ async function logEvent(type, stripeId, customerEmail, metadata = {}) {
     customer_email: customerEmail,
     metadata:       metadata,
     received_at:    new Date().toISOString(),
-  });
+  }).catch(err => console.warn('webhook_log insert failed (non-fatal):', err));
 }

@@ -4,7 +4,7 @@
 // Handles all transactional emails via Resend
 // =============================================================
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         ? 'Free Compliance Sample'
         : 'Registration Kit';
 
-      subject = `✅ Your NDIS compliance documents are ready`;
+      subject = `Your NDIS compliance documents are ready`;
       html = `
 <!DOCTYPE html>
 <html>
@@ -45,20 +45,18 @@ export default async function handler(req, res) {
 
   <!-- Body -->
   <tr><td style="padding:40px;">
-    <h2 style="margin:0 0 8px;color:#28251d;font-size:22px;">Your documents are ready, ${name || orgName || 'there'}! 🎉</h2>
-    <p style="color:#7a7974;font-size:15px;line-height:1.6;margin:0 0 24px;">Your <strong>${tierLabel}</strong> is complete. You have <strong>${docCount} compliance documents</strong> personalised for <strong>${orgName || 'your organisation'}</strong> — all ready to download.</p>
+    <h2 style="margin:0 0 8px;color:#28251d;font-size:22px;">Your documents are ready, ${name || orgName || 'there'}!</h2>
+    <p style="color:#7a7974;font-size:15px;line-height:1.6;margin:0 0 24px;">Your <strong>${tierLabel}</strong> is complete. You have <strong>${docCount} compliance documents</strong> personalised for <strong>${orgName || 'your organisation'}</strong> ready to download.</p>
 
-    <!-- CTA Button -->
     <table cellpadding="0" cellspacing="0" style="margin:0 0 32px;">
     <tr><td style="background:#01696f;border-radius:8px;">
-      <a href="${downloadUrl}" style="display:inline-block;padding:16px 32px;color:#ffffff;font-size:16px;font-weight:600;text-decoration:none;letter-spacing:-0.2px;">Download My ${docCount} Documents →</a>
+      <a href="${downloadUrl}" style="display:inline-block;padding:16px 32px;color:#ffffff;font-size:16px;font-weight:600;text-decoration:none;">Download My ${docCount} Documents &rarr;</a>
     </td></tr></table>
 
-    <p style="color:#7a7974;font-size:13px;margin:0 0 32px;">⏱ This link expires in 7 days (${new Date(expiresAt).toLocaleDateString('en-AU')}).</p>
+    <p style="color:#7a7974;font-size:13px;margin:0 0 32px;">This link expires in 7 days (${new Date(expiresAt).toLocaleDateString('en-AU')}).</p>
 
-    <!-- What's included -->
     <div style="background:#f7f6f2;border-radius:8px;padding:24px;margin-bottom:32px;">
-      <h3 style="margin:0 0 16px;color:#28251d;font-size:16px;">What's included in your kit:</h3>
+      <h3 style="margin:0 0 16px;color:#28251d;font-size:16px;">What's included:</h3>
       <ul style="margin:0;padding:0 0 0 20px;color:#28251d;font-size:14px;line-height:2;">
         <li>All documents pre-populated with your organisation's details</li>
         <li>Structured to meet NDIS Practice Standards 2021 Quality Indicators</li>
@@ -68,22 +66,21 @@ export default async function handler(req, res) {
       </ul>
     </div>
 
-    <!-- Next steps -->
     <h3 style="margin:0 0 12px;color:#28251d;font-size:16px;">Your next steps:</h3>
     <ol style="margin:0 0 32px;padding:0 0 0 20px;color:#28251d;font-size:14px;line-height:2.2;">
       <li>Download your document bundle using the button above</li>
       <li>Add your ABN and any remaining organisation-specific details</li>
-      <li>Have a staff member or director sign the key governance documents</li>
+      <li>Have a director sign the key governance documents</li>
       <li>Upload to your NDIS provider portal when applying for registration</li>
     </ol>
 
-    <p style="color:#7a7974;font-size:13px;border-top:1px solid #dcd9d5;padding-top:24px;margin:0;">Questions? Reply to this email or contact us at <a href="mailto:hello@ndis-ready.com.au" style="color:#01696f;">hello@ndis-ready.com.au</a></p>
+    <p style="color:#7a7974;font-size:13px;border-top:1px solid #dcd9d5;padding-top:24px;margin:0;">Questions? Reply to this email or contact <a href="mailto:hello@ndis-ready.com.au" style="color:#01696f;">hello@ndis-ready.com.au</a></p>
   </td></tr>
 
   <!-- Footer -->
   <tr><td style="background:#f7f6f2;padding:24px 40px;border-top:1px solid #dcd9d5;">
     <p style="margin:0;color:#7a7974;font-size:12px;text-align:center;">NDIS Ready | <a href="https://ndis-ready.com.au" style="color:#01696f;">ndis-ready.com.au</a> | <a href="https://ndis-ready.com.au/privacy.html" style="color:#01696f;">Privacy Policy</a></p>
-    <p style="margin:4px 0 0;color:#bab9b4;font-size:11px;text-align:center;">This email was sent to ${email} because you purchased from NDIS Ready.</p>
+    <p style="margin:4px 0 0;color:#bab9b4;font-size:11px;text-align:center;">Sent to ${email} following your NDIS Ready purchase.</p>
   </td></tr>
 
 </table>
@@ -101,7 +98,7 @@ export default async function handler(req, res) {
   <h2 style="color:#28251d;">Payment unsuccessful</h2>
   <p style="color:#7a7974;">Hi ${name || 'there'},</p>
   <p style="color:#7a7974;">Unfortunately your payment for NDIS Ready could not be processed. This can happen due to insufficient funds, an expired card, or a temporary issue with your bank.</p>
-  <p><a href="${retryUrl}" style="background:#01696f;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;display:inline-block;margin-top:8px;">Try Again →</a></p>
+  <p><a href="${retryUrl}" style="background:#01696f;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;display:inline-block;margin-top:8px;">Try Again &rarr;</a></p>
   <p style="color:#bab9b4;font-size:12px;margin-top:32px;">Questions? Email <a href="mailto:hello@ndis-ready.com.au" style="color:#01696f;">hello@ndis-ready.com.au</a></p>
 </div></body></html>`;
       break;
@@ -111,7 +108,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: `Unknown email type: ${type}` });
   }
 
-  // Send via Resend
   try {
     const resendRes = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -141,4 +137,4 @@ export default async function handler(req, res) {
     console.error('send-email error:', err);
     return res.status(500).json({ error: err.message });
   }
-}
+};
