@@ -10,7 +10,7 @@ import { createClient } from '@supabase/supabase-js';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.STRIPE_SERVICE_KEY || process.env.SUPABASE_SERVICE_KEY
+  process.env.SUPABASE_SERVICE_KEY
 );
 
 // Vercel — disable body parsing so we get raw buffer for signature verification
@@ -60,8 +60,6 @@ export default async function handler(req, res) {
       }
 
       case 'payment_intent.succeeded': {
-        // Backup handler — checkout.session.completed is primary
-        // Only process if not already handled via checkout session
         const pi = event.data.object;
         if (!pi.metadata?.checkout_session_id) {
           await handlePaymentIntentSucceeded(pi);
@@ -120,7 +118,6 @@ export default async function handler(req, res) {
 
   } catch (err) {
     console.error(`Error handling event ${event.type}:`, err);
-    // Still return 200 to Stripe so it doesn't retry — we log the error
     return res.status(200).json({ received: true, warning: err.message });
   }
 }
@@ -132,7 +129,7 @@ export default async function handler(req, res) {
 async function handleCheckoutCompleted(session) {
   const email = session.customer_details?.email || session.customer_email;
   const name  = session.customer_details?.name  || '';
-  const amountPaid = session.amount_total; // in cents
+  const amountPaid  = session.amount_total;
   const productTier = amountPaid >= 49900 ? 'value_bundle' : 'registration_kit';
 
   console.log(`Payment confirmed: ${email} — ${productTier} ($${amountPaid / 100})`);
@@ -141,7 +138,7 @@ async function handleCheckoutCompleted(session) {
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .upsert({
-      stripe_session_id:    session.id,
+      stripe_session_id:     session.id,
       stripe_payment_intent: session.payment_intent,
       email,
       name,
@@ -166,63 +163,65 @@ async function handleCheckoutCompleted(session) {
     .single();
 
   // 3. Trigger document generation
-  const generateRes = await fetch(
-    `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://ndis-ready.com.au'}/api/generate-documents`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        orderId:     order.id,
-        email,
-        name,
-        productTier,
-        quizAnswers: lead?.quiz_answers || null,
-        orgName:     lead?.org_name    || name,
-      }),
-    }
-  );
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'https://ndis-ready.com.au';
+
+  const generateRes = await fetch(`${baseUrl}/api/generate-documents`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      orderId:     order.id,
+      email,
+      name,
+      productTier,
+      quizAnswers: lead?.quiz_answers || null,
+      orgName:     lead?.org_name    || name,
+    }),
+  });
 
   if (!generateRes.ok) {
     const errText = await generateRes.text();
     console.error('Document generation failed:', errText);
-    // Don't throw — we'll retry manually. Order is saved.
+    // Don't throw — order is saved, we can retry manually
   }
 }
 
 async function handlePaymentIntentSucceeded(pi) {
-  // Fallback for direct PaymentIntent payments (not via Checkout)
   await logEvent('payment_intent_succeeded', pi.id, pi.receipt_email);
 }
 
 async function handlePaymentFailed(pi) {
-  const email = pi.receipt_email || pi.last_payment_error?.payment_method?.billing_details?.email;
-  console.log(`Payment failed for: ${email}`);
+  const email = pi.receipt_email
+    || pi.last_payment_error?.payment_method?.billing_details?.email;
 
+  console.log(`Payment failed for: ${email}`);
   await logEvent('payment_failed', pi.id, email);
 
-  // Send failure email via Resend
   if (email) {
-    await fetch(
-      `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://ndis-ready.com.au'}/api/send-email`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type:  'payment_failed',
-          email,
-          data:  { retryUrl: 'https://ndis-ready.com.au/#pricing' },
-        }),
-      }
-    );
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'https://ndis-ready.com.au';
+
+    await fetch(`${baseUrl}/api/send-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type:  'payment_failed',
+        email,
+        data:  { retryUrl: 'https://ndis-ready.com.au/#pricing' },
+      }),
+    });
   }
 }
 
 async function handleSubscriptionCreated(sub) {
-  await logEvent('subscription_created', sub.id, null, { plan: sub.items?.data?.[0]?.price?.nickname });
+  await logEvent('subscription_created', sub.id, null, {
+    plan: sub.items?.data?.[0]?.price?.nickname,
+  });
 }
 
 async function handleSubscriptionCanceled(sub) {
-  // Mark user as inactive in orders table
   await supabase
     .from('orders')
     .update({ status: 'canceled', canceled_at: new Date().toISOString() })
@@ -232,7 +231,9 @@ async function handleSubscriptionCanceled(sub) {
 }
 
 async function handleInvoicePaid(inv) {
-  await logEvent('invoice_paid', inv.id, inv.customer_email, { amount: inv.amount_paid });
+  await logEvent('invoice_paid', inv.id, inv.customer_email, {
+    amount: inv.amount_paid,
+  });
 }
 
 async function handleInvoiceFailed(inv) {
@@ -241,7 +242,6 @@ async function handleInvoiceFailed(inv) {
 }
 
 async function handleRefund(charge) {
-  // Mark order as refunded — this will disable document access
   await supabase
     .from('orders')
     .update({ status: 'refunded', refunded_at: new Date().toISOString() })
@@ -251,12 +251,13 @@ async function handleRefund(charge) {
   console.log(`Refund processed for payment intent: ${charge.payment_intent}`);
 }
 
-async function logEvent(type, stripeId, email, metadata = {}) {
+// customer_email matches the Supabase column name in webhook_log
+async function logEvent(type, stripeId, customerEmail, metadata = {}) {
   await supabase.from('webhook_log').insert({
-    event_type:  type,
-    stripe_id:   stripeId,
-    email:       email,
-    metadata:    metadata,
-    received_at: new Date().toISOString(),
+    event_type:     type,
+    stripe_id:      stripeId,
+    customer_email: customerEmail,
+    metadata:       metadata,
+    received_at:    new Date().toISOString(),
   });
 }
