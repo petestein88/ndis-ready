@@ -146,7 +146,7 @@
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
         </div>
         <div class="step-num">Step 01</div>
-        <h3>Answer 10 questions</h3>
+        <h3>Answer 9 questions</h3>
         <p>Tell us about your services, your team, and your current situation. Takes five minutes.</p>
       </div>
       <div class="step-card">
@@ -319,7 +319,7 @@
       <div class="price-card">
         <div class="price-label">Stay Ready</div>
         <div class="price-amount">$49</div>
-        <div class="price-period">per month — cancel anytime</div>
+        <div class="price-period">per month — coming soon</div>
         <div class="price-note">For registered providers staying audit-ready</div>
         <ul>
           <li>Full compliance dashboard, always live</li>
@@ -331,7 +331,8 @@
           <li>Audit evidence pack export anytime</li>
           <li class="minus">Policy document generation not included</li>
         </ul>
-        <a href="quiz.html" class="btn-price btn-price-light">Start with the quiz →</a>
+        <span class="btn-price btn-price-light" style="opacity:0.55;cursor:not-allowed;text-align:center;">🔒 Coming Soon</span>
+        <p style="text-align:center;font-size:0.75rem;color:var(--ink-soft);margin-top:0.65rem;">We're building the ongoing platform now. Take the quiz to get early access.</p>
       </div>
     </div>
     <p style="text-align:center;font-size:0.85rem;color:var(--ink-soft);margin-top:2rem;">
@@ -345,7 +346,7 @@
   <div class="section-inner" style="max-width:640px;">
     <p class="section-label" style="text-align:center;">Free — takes 5 minutes</p>
     <h2 style="text-align:center;margin-bottom:1rem;">Find out exactly what you need to get registered</h2>
-    <p style="color:var(--ink-mid);font-size:1.05rem;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto;">Answer 10 questions about your services and situation. We'll show you a personalised checklist of every document and step you need — before you spend a cent.</p>
+    <p style="color:var(--ink-mid);font-size:1.05rem;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto;">Answer 9 questions about your services and situation. We'll show you a personalised checklist of every document and step you need — before you spend a cent.</p>
     <a href="quiz.html" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.5rem;">Take the free quiz →</a>
     <p style="margin-top:1rem;font-size:0.85rem;color:var(--ink-soft);">No credit card. No sign-up required. Just answers.</p>
   </div>
@@ -377,7 +378,12 @@
     var diffMs = deadline - now;
     var el = document.getElementById('countdown-text');
     if (!el) return;
-    if (diffMs <= 0) { el.textContent = 'Deadline has passed.'; return; }
+    if (diffMs <= 0) {
+      el.textContent = 'NDIS registration is now mandatory — are you ready?';
+      var banner = el.closest('.deadline-banner');
+      if (banner) banner.style.background = 'var(--rose-deep)';
+      return;
+    }
     var days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
     el.textContent = days + ' day' + (days !== 1 ? 's' : '') + ' to go — are you NDIS Ready?';
   }
