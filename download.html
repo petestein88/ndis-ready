@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NDIS Ready — Your Documents</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Pacifico&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --rose:#f4c5c5;--rose-deep:#e8a0a0;
+  --lavender:#d8d0f0;--lavender-deep:#b8acdf;
+  --sage:#c5ddd0;--sage-deep:#9ec4b0;
+  --peach:#f7dfc8;--peach-deep:#efcba8;
+  --cream:#faf8f4;--white:#ffffff;
+  --ink:#2a2535;--ink-mid:#5a5370;--ink-soft:#9990b0;
+  --teal:#01696f;--teal-light:#e8f4f4;
+  --green:#437a22;--green-light:#d4dfcc;
+  --error:#a12c7b;--error-light:#f9eef5;
+  --font-brand:'Pacifico',cursive;
+  --font-display:'DM Serif Display',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  --radius:16px;--radius-sm:10px;--radius-pill:999px;
+  --shadow:0 8px 48px rgba(42,37,53,0.1);
+  --shadow-sm:0 2px 12px rgba(42,37,53,0.07);
+}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;}
+body{font-family:var(--font-body);background:var(--cream);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.06);position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:var(--font-brand);font-size:1.5rem;color:var(--lavender-deep);text-decoration:none;}
+.nav-right{font-size:0.85rem;color:var(--ink-soft);}
+.nav-right a{color:var(--teal);text-decoration:none;font-weight:600;}
+
+/* LAYOUT */
+.page{flex:1;max-width:900px;margin:0 auto;padding:3rem 1.5rem 5rem;width:100%;}
+
+/* STATES */
+.state{display:flex;align-items:center;justify-content:center;min-height:60vh;}
+.state-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:3rem 2.5rem;max-width:520px;width:100%;text-align:center;}
+.state-icon{font-size:3rem;margin-bottom:1rem;display:block;}
+.state-card h2{font-family:var(--font-display);font-size:1.8rem;margin-bottom:0.75rem;color:var(--ink);}
+.state-card p{color:var(--ink-mid);line-height:1.7;margin-bottom:1.5rem;}
+.spinner{width:48px;height:48px;border:3px solid var(--lavender);border-top-color:var(--lavender-deep);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 1.5rem;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* HEADER */
+.dl-header{margin-bottom:2.5rem;}
+.dl-header .badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--green-light);color:var(--green);font-size:0.8rem;font-weight:700;padding:0.3rem 0.85rem;border-radius:var(--radius-pill);margin-bottom:1rem;letter-spacing:0.03em;text-transform:uppercase;}
+.dl-header h1{font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.15;margin-bottom:0.5rem;color:var(--ink);}
+.dl-header h1 em{font-style:italic;color:var(--lavender-deep);}
+.dl-header .meta{font-size:0.9rem;color:var(--ink-soft);display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;margin-top:0.5rem;}
+.dl-header .meta span{display:flex;align-items:center;gap:0.35rem;}
+
+/* EXPIRY BAR */
+.expiry-bar{background:var(--peach);border-radius:var(--radius-sm);padding:0.85rem 1.25rem;margin-bottom:2rem;display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;color:var(--ink-mid);}
+.expiry-bar svg{flex-shrink:0;color:#c47a00;}
+.expiry-bar strong{color:var(--ink);}
+
+/* DOWNLOAD ALL */
+.dl-all-bar{background:var(--teal);border-radius:var(--radius-sm);padding:1.25rem 1.5rem;margin-bottom:2.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.dl-all-bar p{color:rgba(255,255,255,0.9);font-size:0.9rem;margin:0;}
+.dl-all-bar p strong{color:#fff;}
+.btn-dl-all{background:#fff;color:var(--teal);font-family:var(--font-body);font-size:0.9rem;font-weight:700;padding:0.7rem 1.4rem;border-radius:var(--radius-pill);border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;transition:all 0.18s;flex-shrink:0;}
+.btn-dl-all:hover{background:var(--teal-light);transform:translateY(-1px);}
+
+/* CATEGORY SECTIONS */
+.category{margin-bottom:2.5rem;}
+.category-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1.5px solid rgba(42,37,53,0.08);}
+.category-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.category-title{font-family:var(--font-display);font-size:1.15rem;color:var(--ink);}
+.category-count{font-size:0.8rem;color:var(--ink-soft);background:rgba(42,37,53,0.06);padding:0.2rem 0.6rem;border-radius:var(--radius-pill);margin-left:auto;}
+
+/* DOC GRID */
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:0.75rem;}
+.doc-card{background:var(--white);border-radius:var(--radius-sm);border:1px solid rgba(42,37,53,0.08);padding:1rem 1.1rem;display:flex;align-items:flex-start;gap:0.85rem;transition:all 0.18s;text-decoration:none;color:inherit;}
+.doc-card:hover{box-shadow:var(--shadow-sm);border-color:var(--lavender);transform:translateY(-1px);}
+.doc-icon{width:36px;height:36px;border-radius:8px;background:var(--lavender);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.doc-icon svg{color:var(--lavender-deep);}
+.doc-info{flex:1;min-width:0;}
+.doc-name{font-size:0.875rem;font-weight:600;color:var(--ink);line-height:1.4;margin-bottom:0.3rem;}
+.doc-meta{font-size:0.75rem;color:var(--ink-soft);display:flex;align-items:center;gap:0.4rem;}
+.doc-dl-icon{color:var(--ink-soft);flex-shrink:0;transition:color 0.18s;}
+.doc-card:hover .doc-dl-icon{color:var(--teal);}
+
+/* FOOTER */
+footer{padding:1.5rem 2rem;text-align:center;font-size:0.82rem;color:var(--ink-soft);border-top:1px solid rgba(0,0,0,0.06);background:var(--white);}
+footer a{color:var(--ink-soft);text-decoration:none;}
+
+/* BTN */
+.btn{font-family:var(--font-body);font-size:0.95rem;font-weight:600;padding:0.8rem 2rem;border-radius:var(--radius-pill);border:none;cursor:pointer;transition:all 0.18s;text-decoration:none;display:inline-block;}
+.btn-primary{background:var(--ink);color:var(--white);}
+.btn-primary:hover{background:#3d3650;transform:translateY(-1px);}
+.btn-teal{background:var(--teal);color:#fff;}
+.btn-teal:hover{background:#0c4e54;transform:translateY(-1px);}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  nav{padding:1rem 1.25rem;}
+  .page{padding:2rem 1rem 4rem;}
+  .dl-all-bar{flex-direction:column;align-items:flex-start;}
+  .state-card{padding:2rem 1.25rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">NDIS Ready</a>
+  <div class="nav-right">Need help? <a href="mailto:hello@ndis-ready.com.au">hello@ndis-ready.com.au</a></div>
+</nav>
+
+<!-- LOADING STATE -->
+<div class="state" id="state-loading">
+  <div class="state-card">
+    <div class="spinner"></div>
+    <h2>Loading your documents…</h2>
+    <p>Retrieving your personalised compliance pack. This only takes a moment.</p>
+  </div>
+</div>
+
+<!-- INVALID TOKEN STATE -->
+<div class="state" id="state-invalid" style="display:none">
+  <div class="state-card">
+    <span class="state-icon">🔒</span>
+    <h2>Invalid download link</h2>
+    <p>This download link doesn’t exist or has already been used. If you believe this is an error, please contact us and we’ll resend your documents immediately.</p>
+    <a href="mailto:hello@ndis-ready.com.au?subject=Download link issue" class="btn btn-teal">Contact Support</a>
+  </div>
+</div>
+
+<!-- EXPIRED TOKEN STATE -->
+<div class="state" id="state-expired" style="display:none">
+  <div class="state-card">
+    <span class="state-icon">⏰</span>
+    <h2>This link has expired</h2>
+    <p>Download links are valid for 7 days for security reasons. Email us and we’ll generate a fresh link for you right away — no charge.</p>
+    <a href="mailto:hello@ndis-ready.com.au?subject=Expired download link — please resend" class="btn btn-teal">Request New Link</a>
+  </div>
+</div>
+
+<!-- SUCCESS STATE -->
+<div class="page" id="state-success" style="display:none">
+
+  <div class="dl-header">
+    <div class="badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Payment Confirmed
+    </div>
+    <h1>Your compliance <em>documents</em> are ready</h1>
+    <p style="color:var(--ink-mid);font-size:0.95rem;line-height:1.7;margin-top:0.5rem;max-width:600px;">All documents below are personalised for <strong id="org-name-display">your organisation</strong> and structured to meet the NDIS Practice Standards 2021. Click any document to download it as a Word file.</p>
+    <div class="meta">
+      <span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span id="doc-count-display">0</span> documents
+      </span>
+      <span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="9 12 11 14 15 10"/></svg>
+        NDIS Practice Standards 2021
+      </span>
+      <span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Word format (.docx)
+      </span>
+    </div>
+  </div>
+
+  <div class="expiry-bar" id="expiry-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span>Download links expire on <strong id="expiry-date-display"></strong>. Save your documents before then.</span>
+  </div>
+
+  <div class="dl-all-bar">
+    <p>Want everything at once? <strong>Download all documents</strong> individually using the links below, or contact us if you’d like them zipped.</p>
+    <a href="mailto:hello@ndis-ready.com.au?subject=Please zip my documents" class="btn-dl-all">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Request Zip File
+    </a>
+  </div>
+
+  <div id="categories-container"></div>
+
+  <div style="margin-top:2.5rem;background:var(--white);border-radius:var(--radius-sm);padding:1.5rem;border:1px solid rgba(42,37,53,0.08);">
+    <h3 style="font-family:var(--font-display);font-size:1.05rem;margin-bottom:0.75rem;">Your next steps</h3>
+    <ol style="padding-left:1.25rem;color:var(--ink-mid);font-size:0.9rem;line-height:2.1;">
+      <li>Download all documents above</li>
+      <li>Add your ABN and any remaining organisation-specific details to each file</li>
+      <li>Have a director or CEO sign the key governance documents</li>
+      <li>Upload to your NDIS provider portal when applying for registration</li>
+      <li>Questions? <a href="mailto:hello@ndis-ready.com.au" style="color:var(--teal);font-weight:600;">hello@ndis-ready.com.au</a></li>
+    </ol>
+  </div>
+
+</div>
+
+<footer>
+  Sacred Systems Pty Ltd &nbsp;·&nbsp; ABN 23 690 792 655 &nbsp;·&nbsp; <a href="/terms-of-service.html">Terms of Service</a> &nbsp;·&nbsp; <a href="/privacy.html">Privacy Policy</a>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://wqnuoxbfpvgknlsmyqdt.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxbnVveGJmcHZna25sc215cWR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1MjkxMDEsImV4cCI6MjA2NDEwNTEwMX0.sVXPmqBvNlvD0HmHBQB6FOk3lLXd4Ev8v6q5BpUzJgY';
+
+const CATEGORY_META = {
+  governance:    { label: 'Governance & Management',    color: '#b8acdf', dot: '#7c6bb5' },
+  hr:            { label: 'Human Resources & Workforce', color: '#9ec4b0', dot: '#437a22' },
+  rights:        { label: 'Participant Rights',           color: '#efcba8', dot: '#c47a00' },
+  support:       { label: 'Support Delivery',             color: '#f4c5c5', dot: '#c05050' },
+  safety:        { label: 'Work Health & Safety',         color: '#b8acdf', dot: '#5a5370' },
+  incidents:     { label: 'Incidents, Complaints & CQI',  color: '#9ec4b0', dot: '#01696f' },
+  safeguarding:  { label: 'Safeguarding & Abuse Prevention', color: '#f4c5c5', dot: '#a12c7b' },
+  sil:           { label: 'SIL-Specific Documents',       color: '#efcba8', dot: '#964219' },
+};
+
+function showState(id) {
+  ['state-loading','state-invalid','state-expired','state-success']
+    .forEach(s => document.getElementById(s).style.display = s === id ? '' : 'none');
+}
+
+function formatDate(iso) {
+  return new Date(iso).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function fileIcon() {
+  return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+}
+
+function dlIcon() {
+  return `<svg class="doc-dl-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+}
+
+function renderDocuments(manifest) {
+  const grouped = {};
+  manifest.forEach(doc => {
+    if (!grouped[doc.category]) grouped[doc.category] = [];
+    grouped[doc.category].push(doc);
+  });
+
+  const container = document.getElementById('categories-container');
+  container.innerHTML = '';
+
+  Object.entries(grouped).forEach(([cat, docs]) => {
+    const meta = CATEGORY_META[cat] || { label: cat, color: '#d8d0f0', dot: '#b8acdf' };
+
+    const section = document.createElement('div');
+    section.className = 'category';
+    section.innerHTML = `
+      <div class="category-header">
+        <div class="category-dot" style="background:${meta.dot}"></div>
+        <span class="category-title">${meta.label}</span>
+        <span class="category-count">${docs.length} doc${docs.length !== 1 ? 's' : ''}</span>
+      </div>
+      <div class="doc-grid">${docs.map(doc => `
+        <a href="${doc.url}" target="_blank" rel="noopener noreferrer" class="doc-card" download>
+          <div class="doc-icon" style="background:${meta.color}20;">
+            ${fileIcon()}
+          </div>
+          <div class="doc-info">
+            <div class="doc-name">${doc.name}</div>
+            <div class="doc-meta">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="9 12 11 14 15 10"/></svg>
+              .docx
+            </div>
+          </div>
+          ${dlIcon()}
+        </a>`).join('')}
+      </div>`;
+    container.appendChild(section);
+  });
+}
+
+async function markDownloaded(token) {
+  await fetch(`${SUPABASE_URL}/rest/v1/document_access?access_token=eq.${encodeURIComponent(token)}`, {
+    method: 'PATCH',
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal',
+    },
+    body: JSON.stringify({ downloaded_at: new Date().toISOString() }),
+  }).catch(() => {}); // non-fatal
+}
+
+async function init() {
+  const params = new URLSearchParams(window.location.search);
+  const token  = params.get('token');
+
+  if (!token) {
+    showState('state-invalid');
+    return;
+  }
+
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/document_access?access_token=eq.${encodeURIComponent(token)}&select=*`,
+      {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+      }
+    );
+
+    if (!res.ok) throw new Error('Fetch failed');
+
+    const rows = await res.json();
+
+    if (!rows || rows.length === 0) {
+      showState('state-invalid');
+      return;
+    }
+
+    const record = rows[0];
+
+    // Check expiry
+    if (new Date(record.expires_at) < new Date()) {
+      showState('state-expired');
+      return;
+    }
+
+    // Populate UI
+    const vars    = record.variables || {};
+    const orgName = vars.org_name || record.email || 'your organisation';
+    const manifest = record.manifest || [];
+
+    document.getElementById('org-name-display').textContent   = orgName;
+    document.getElementById('doc-count-display').textContent  = manifest.length;
+    document.getElementById('expiry-date-display').textContent = formatDate(record.expires_at);
+    document.title = `NDIS Ready — ${orgName} Documents`;
+
+    renderDocuments(manifest);
+    showState('state-success');
+
+    // Mark first access timestamp (non-blocking)
+    if (!record.downloaded_at) markDownloaded(token);
+
+  } catch (err) {
+    console.error('Download page error:', err);
+    showState('state-invalid');
+  }
+}
+
+init();
+</script>
+</body>
+</html>
