@@ -1,28 +1,30 @@
 /**
  * POST /api/send-documents
  *
- * Fetches the 3 free sample .docx files from Supabase Storage,
- * encodes them as base64, and sends them as email attachments
- * via the Resend API.
+ * Fetches the 3 free sample .docx files from Supabase Storage
+ * using signed URLs (consistent with generate-documents.js),
+ * encodes them as base64, and sends as email attachments via Resend.
  *
  * Expected body: { email, org_name }
  *
  * Called internally by capture-email.js (fire-and-forget)
- * and can also be called directly (e.g. from a retry flow).
+ * and can also be called directly (e.g. retry flow).
  */
+
+const { createClient } = require('@supabase/supabase-js');
 
 const DOCS = [
   {
     filename: 'Incident-Management-Policy-GOV-IMP-001.docx',
-    storage_path: 'templates/free-samples/incident-management-policy.docx',
+    storage_path: 'free-samples/incident-management-policy.docx',
   },
   {
     filename: 'Complaints-Management-Policy-GOV-CMP-002.docx',
-    storage_path: 'templates/free-samples/complaints-management-policy.docx',
+    storage_path: 'free-samples/complaints-management-policy.docx',
   },
   {
     filename: 'Risk-Management-Framework-GOV-RMF-003.docx',
-    storage_path: 'templates/free-samples/risk-management-framework.docx',
+    storage_path: 'free-samples/risk-management-framework.docx',
   },
 ];
 
@@ -40,24 +42,30 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Valid email required' });
   }
 
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
-  const resendKey   = process.env.RESEND_API_KEY;
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_KEY
+  );
+  const resendKey    = process.env.RESEND_API_KEY;
   const cleanOrgName = (org_name || 'Your Organisation').trim().substring(0, 200);
 
   try {
-    // ── 1. Fetch all 3 docs from Supabase Storage ──────────────────────────
+    // ── 1. Generate signed URLs and fetch each doc from Supabase Storage ──
     const attachments = [];
 
     for (const doc of DOCS) {
-      const storageUrl = `${supabaseUrl}/storage/v1/object/authenticated/${doc.storage_path}`;
+      // Generate a short-lived signed URL (60 seconds — just long enough to fetch)
+      const { data: signedData, error: signError } = await supabase.storage
+        .from('templates')
+        .createSignedUrl(doc.storage_path, 60);
 
-      const fileRes = await fetch(storageUrl, {
-        headers: {
-          'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}`,
-        },
-      });
+      if (signError || !signedData?.signedUrl) {
+        console.error(`Failed to sign URL for ${doc.storage_path}:`, signError?.message);
+        throw new Error(`Storage sign failed for ${doc.filename}`);
+      }
+
+      // Fetch the actual file bytes via the signed URL
+      const fileRes = await fetch(signedData.signedUrl);
 
       if (!fileRes.ok) {
         console.error(`Failed to fetch ${doc.storage_path}: ${fileRes.status} ${fileRes.statusText}`);
@@ -69,7 +77,7 @@ module.exports = async function handler(req, res) {
 
       attachments.push({
         filename: doc.filename,
-        content: base64,
+        content:  base64,
       });
     }
 
@@ -77,13 +85,13 @@ module.exports = async function handler(req, res) {
     const emailRes = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type':  'application/json',
         'Authorization': `Bearer ${resendKey}`,
       },
       body: JSON.stringify({
-        from: 'NDIS Ready <hello@ndis-ready.com.au>',
-        to: [email],
-        subject: 'Your 3 free NDIS compliance documents — ready to use',
+        from:        'NDIS Ready <hello@ndis-ready.com.au>',
+        to:          [email],
+        subject:     'Your 3 free NDIS compliance documents — ready to use',
         attachments,
         html: `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;color:#2a2535;">
@@ -100,11 +108,11 @@ module.exports = async function handler(req, res) {
     </ul>
   </div>
 
-  <p>Each document uses <code style="background:#f4f4f4;padding:2px 6px;border-radius:4px;">{{DOUBLE_BRACE}}</code> placeholders — simply do a Find &amp; Replace in Word to add your organisation name, dates, and contact details.</p>
+  <p>Each document uses <strong>[ORGANISATION NAME]</strong> style placeholders — simply do a Find &amp; Replace in Word to add your organisation name, dates, and contact details.</p>
 
   <p><strong>These 3 documents alone could take weeks to write from scratch.</strong> If you need all the documents identified in your compliance profile, our full kit has everything pre-written and ready to go.</p>
 
-  <a href="https://ndis-ready.com.au/#pricing" style="display:inline-block;background:#016970;color:#fff;padding:14px 28px;border-radius:999px;text-decoration:none;font-weight:600;margin:8px 0 24px;">Unlock your full document kit</a>
+  <a href="https://ndis-ready.com.au/#pricing" style="display:inline-block;background:#016970;color:#fff;padding:14px 28px;border-radius:999px;text-decoration:none;font-weight:600;margin:8px 0 24px;">Unlock your full document kit &rarr;</a>
 
   <p style="color:#999;font-size:12px;border-top:1px solid #eee;padding-top:20px;margin-top:8px;">
     NDIS Ready &mdash; hello@ndis-ready.com.au &mdash; ndis-ready.com.au<br/>
@@ -120,21 +128,13 @@ module.exports = async function handler(req, res) {
       return res.status(500).json({ error: 'Failed to send document email', detail: errText });
     }
 
-    // ── 3. Log delivery to Supabase document_downloads table ───────────────
-    await fetch(`${supabaseUrl}/rest/v1/document_downloads`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
-      },
-      body: JSON.stringify({
-        email,
-        org_name: cleanOrgName,
-        documents: DOCS.map(d => d.filename),
-        tier: 'free_sample',
-        delivered_at: new Date().toISOString(),
-      }),
+    // ── 3. Log delivery to document_downloads table (non-fatal) ───────────
+    await supabase.from('document_downloads').insert({
+      email,
+      org_name:     cleanOrgName,
+      documents:    DOCS.map(d => d.filename),
+      tier:         'free_sample',
+      delivered_at: new Date().toISOString(),
     }).catch(err => console.warn('document_downloads log failed (non-fatal):', err));
 
     return res.status(200).json({ success: true, sent: DOCS.length });

@@ -20,44 +20,80 @@ module.exports = async function handler(req, res) {
     const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
     const resendKey   = process.env.RESEND_API_KEY;
 
-    // ── 1. Save lead to Supabase ───────────────────────────────────────────
-    const dbResponse = await fetch(`${supabaseUrl}/rest/v1/leads`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
-        'Prefer': 'return=representation',
-      },
-      body: JSON.stringify({
-        email: cleanEmail,
-        org_name: cleanOrgName,
-        quiz_answers: answers || {},
-        services: services || [],
-        source: 'quiz',
-        created_at: new Date().toISOString(),
-      }),
-    });
+    // ── 1. Upsert lead to Supabase (prevent duplicates) ───────────────────
+    // If email already exists: update quiz_answers and org_name, do NOT
+    // re-send free documents (already_exists flag prevents duplicate delivery).
+    const existingRes = await fetch(
+      `${supabaseUrl}/rest/v1/leads?email=eq.${encodeURIComponent(cleanEmail)}&select=id,created_at`,
+      {
+        headers: {
+          'apikey':        supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+        },
+      }
+    );
+    const existingRows = existingRes.ok ? await existingRes.json() : [];
+    const alreadyExists = Array.isArray(existingRows) && existingRows.length > 0;
 
-    if (!dbResponse.ok) {
-      const dbError = await dbResponse.text();
-      console.error('Supabase error:', dbError);
+    if (alreadyExists) {
+      // Update existing lead with latest quiz answers
+      await fetch(
+        `${supabaseUrl}/rest/v1/leads?email=eq.${encodeURIComponent(cleanEmail)}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type':  'application/json',
+            'apikey':        supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Prefer':        'return=minimal',
+          },
+          body: JSON.stringify({
+            org_name:     cleanOrgName,
+            quiz_answers: answers || {},
+            services:     services || [],
+          }),
+        }
+      );
+    } else {
+      // Insert new lead
+      const dbResponse = await fetch(`${supabaseUrl}/rest/v1/leads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type':  'application/json',
+          'apikey':        supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Prefer':        'return=representation',
+        },
+        body: JSON.stringify({
+          email:        cleanEmail,
+          org_name:     cleanOrgName,
+          quiz_answers: answers || {},
+          services:     services || [],
+          source:       'quiz',
+          created_at:   new Date().toISOString(),
+        }),
+      });
+
+      if (!dbResponse.ok) {
+        const dbError = await dbResponse.text();
+        console.error('Supabase insert error:', dbError);
+      }
     }
 
     // ── 2. Calculate compliance profile ───────────────────────────────────
     const docCount     = calcDocCount(answers || {}, services || []);
     const profileLabel = buildProfileLabel(answers || {});
 
-    // ── 3. Send confirmation email (no attachment — docs sent separately) ──
+    // ── 3. Send confirmation email ─────────────────────────────────────────
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type':  'application/json',
         'Authorization': `Bearer ${resendKey}`,
       },
       body: JSON.stringify({
-        from: 'NDIS Ready <hello@ndis-ready.com.au>',
-        to: [cleanEmail],
+        from:    'NDIS Ready <hello@ndis-ready.com.au>',
+        to:      [cleanEmail],
         subject: `Your NDIS compliance profile: ${docCount} documents identified`,
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;">
           <h2 style="color:#016970;">Your compliance profile is ready</h2>
@@ -80,30 +116,29 @@ module.exports = async function handler(req, res) {
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type':  'application/json',
         'Authorization': `Bearer ${resendKey}`,
       },
       body: JSON.stringify({
-        from: 'NDIS Ready <hello@ndis-ready.com.au>',
-        to: ['hello@ndis-ready.com.au'],
-        subject: `New lead: ${cleanEmail} (${profileLabel})`,
-        html: `<p><strong>New quiz lead</strong></p><p>Email: ${cleanEmail}</p><p>Org: ${cleanOrgName}</p><p>Profile: ${profileLabel}</p><p>Docs needed: ${docCount}</p>`,
+        from:    'NDIS Ready <hello@ndis-ready.com.au>',
+        to:      ['hello@ndis-ready.com.au'],
+        subject: `${alreadyExists ? '[RETURNING] ' : ''}New lead: ${cleanEmail} (${profileLabel})`,
+        html: `<p><strong>${alreadyExists ? 'Returning' : 'New'} quiz lead</strong></p><p>Email: ${cleanEmail}</p><p>Org: ${cleanOrgName}</p><p>Profile: ${profileLabel}</p><p>Docs needed: ${docCount}</p>${alreadyExists ? '<p style="color:orange;">⚠️ This email already exists in leads — free docs NOT re-sent.</p>' : ''}`,
       }),
     });
 
-    // ── 5. Fire-and-forget: trigger document delivery ──────────────────────
-    // We call send-documents in the background. We do NOT await it so the
-    // response to the user is instant. If it fails, the error is logged and
-    // we can retry manually via the Vercel logs.
-    const host = req.headers['x-forwarded-host'] || req.headers['host'] || 'ndis-ready.com.au';
-    const protocol = host.includes('localhost') ? 'http' : 'https';
-    fetch(`${protocol}://${host}/api/send-documents`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: cleanEmail, org_name: cleanOrgName }),
-    }).catch(err => console.error('send-documents trigger failed:', err));
+    // ── 5. Fire-and-forget: trigger document delivery (new leads only) ─────
+    if (!alreadyExists) {
+      const host     = req.headers['x-forwarded-host'] || req.headers['host'] || 'ndis-ready.com.au';
+      const protocol = host.includes('localhost') ? 'http' : 'https';
+      fetch(`${protocol}://${host}/api/send-documents`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email: cleanEmail, org_name: cleanOrgName }),
+      }).catch(err => console.error('send-documents trigger failed:', err));
+    }
 
-    return res.status(200).json({ success: true, docCount, profileLabel });
+    return res.status(200).json({ success: true, docCount, profileLabel, returning: alreadyExists });
 
   } catch (err) {
     console.error('capture-email error:', err);
@@ -113,11 +148,11 @@ module.exports = async function handler(req, res) {
 
 function calcDocCount(answers, services) {
   let count = 18;
-  const hasCert = answers.audit_pathway === 1 || [2,3,4,6,7].some(i => services.includes(i));
+  const hasCert = answers.audit_pathway === 0 || [0, 2, 3, 7].some(i => (services || []).includes(i));
   if (hasCert) count += 14;
   if (answers.employees === 1) count += 7;
   if (answers.employees === 2) count += 11;
-  if (answers.home_visits === 1) count += 5;
+  if (answers.home_visits === 0) count += 5;
   if (answers.children === 1) count += 4;
   if (answers.children === 2) count += 6;
   if (answers.medication === 1) count += 4;
@@ -127,7 +162,7 @@ function calcDocCount(answers, services) {
 
 function buildProfileLabel(answers) {
   const orgLabels = ['Sole Trader', 'Small Team', 'Mid-size Org', 'Large Org'];
-  const org = orgLabels[answers.org_type != null ? answers.org_type : 0];
-  const audit = answers.audit_pathway === 1 ? 'Certification' : 'Verification';
-  return `${org} - ${audit} Audit`;
+  const org   = orgLabels[answers.org_type != null ? answers.org_type : 0];
+  const audit = answers.audit_pathway === 0 ? 'Certification' : 'Verification';
+  return `${org} — ${audit} Audit`;
 }
