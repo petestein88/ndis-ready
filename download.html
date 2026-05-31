@@ -127,7 +127,7 @@ footer a{color:var(--ink-soft);text-decoration:none;}
   <div class="state-card">
     <span class="state-icon">🔒</span>
     <h2>Invalid download link</h2>
-    <p>This download link doesn’t exist or has already been used. If you believe this is an error, please contact us and we’ll resend your documents immediately.</p>
+    <p>This download link doesn't exist or has already been used. If you believe this is an error, please contact us and we'll resend your documents immediately.</p>
     <a href="mailto:hello@ndis-ready.com.au?subject=Download link issue" class="btn btn-teal">Contact Support</a>
   </div>
 </div>
@@ -137,7 +137,7 @@ footer a{color:var(--ink-soft);text-decoration:none;}
   <div class="state-card">
     <span class="state-icon">⏰</span>
     <h2>This link has expired</h2>
-    <p>Download links are valid for 7 days for security reasons. Email us and we’ll generate a fresh link for you right away — no charge.</p>
+    <p>Download links are valid for 7 days for security reasons. Email us and we'll generate a fresh link for you right away — no charge.</p>
     <a href="mailto:hello@ndis-ready.com.au?subject=Expired download link — please resend" class="btn btn-teal">Request New Link</a>
   </div>
 </div>
@@ -174,7 +174,7 @@ footer a{color:var(--ink-soft);text-decoration:none;}
   </div>
 
   <div class="dl-all-bar">
-    <p>Want everything at once? <strong>Download all documents</strong> individually using the links below, or contact us if you’d like them zipped.</p>
+    <p>Want everything at once? <strong>Download all documents</strong> individually using the links below, or contact us if you'd like them zipped.</p>
     <a href="mailto:hello@ndis-ready.com.au?subject=Please zip my documents" class="btn-dl-all">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Request Zip File
@@ -201,18 +201,18 @@ footer a{color:var(--ink-soft);text-decoration:none;}
 </footer>
 
 <script>
-const SUPABASE_URL = 'https://wqnuoxbfpvgknlsmyqdt.supabase.co';
+const SUPABASE_URL      = 'https://wqnuoxbfpvgknlsmyqdt.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxbnVveGJmcHZna25sc215cWR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1MjkxMDEsImV4cCI6MjA2NDEwNTEwMX0.sVXPmqBvNlvD0HmHBQB6FOk3lLXd4Ev8v6q5BpUzJgY';
 
 const CATEGORY_META = {
-  governance:    { label: 'Governance & Management',    color: '#b8acdf', dot: '#7c6bb5' },
-  hr:            { label: 'Human Resources & Workforce', color: '#9ec4b0', dot: '#437a22' },
-  rights:        { label: 'Participant Rights',           color: '#efcba8', dot: '#c47a00' },
-  support:       { label: 'Support Delivery',             color: '#f4c5c5', dot: '#c05050' },
-  safety:        { label: 'Work Health & Safety',         color: '#b8acdf', dot: '#5a5370' },
-  incidents:     { label: 'Incidents, Complaints & CQI',  color: '#9ec4b0', dot: '#01696f' },
-  safeguarding:  { label: 'Safeguarding & Abuse Prevention', color: '#f4c5c5', dot: '#a12c7b' },
-  sil:           { label: 'SIL-Specific Documents',       color: '#efcba8', dot: '#964219' },
+  governance:    { label: 'Governance & Management',        color: '#b8acdf', dot: '#7c6bb5' },
+  hr:            { label: 'Human Resources & Workforce',    color: '#9ec4b0', dot: '#437a22' },
+  rights:        { label: 'Participant Rights',             color: '#efcba8', dot: '#c47a00' },
+  support:       { label: 'Support Delivery',               color: '#f4c5c5', dot: '#c05050' },
+  safety:        { label: 'Work Health & Safety',           color: '#b8acdf', dot: '#5a5370' },
+  incidents:     { label: 'Incidents, Complaints & CQI',    color: '#9ec4b0', dot: '#01696f' },
+  safeguarding:  { label: 'Safeguarding & Abuse Prevention',color: '#f4c5c5', dot: '#a12c7b' },
+  sil:           { label: 'SIL-Specific Documents',         color: '#efcba8', dot: '#964219' },
 };
 
 function showState(id) {
@@ -272,17 +272,13 @@ function renderDocuments(manifest) {
   });
 }
 
+// ── FIX B2: call server-side endpoint instead of direct anon-key PATCH ──────
 async function markDownloaded(token) {
-  await fetch(`${SUPABASE_URL}/rest/v1/document_access?access_token=eq.${encodeURIComponent(token)}`, {
-    method: 'PATCH',
-    headers: {
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=minimal',
-    },
-    body: JSON.stringify({ downloaded_at: new Date().toISOString() }),
-  }).catch(() => {}); // non-fatal
+  await fetch('/api/mark-downloaded', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({ token }),
+  }).catch(() => {}); // non-fatal — fire and forget
 }
 
 async function init() {
@@ -295,11 +291,12 @@ async function init() {
   }
 
   try {
+    // READ uses anon key — RLS allows SELECT on document_access by token (public read is fine)
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/document_access?access_token=eq.${encodeURIComponent(token)}&select=*`,
       {
         headers: {
-          'apikey': SUPABASE_ANON_KEY,
+          'apikey':        SUPABASE_ANON_KEY,
           'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
         },
       }
@@ -323,19 +320,19 @@ async function init() {
     }
 
     // Populate UI
-    const vars    = record.variables || {};
-    const orgName = vars.org_name || record.email || 'your organisation';
+    const vars     = record.variables || {};
+    const orgName  = vars.org_name || record.email || 'your organisation';
     const manifest = record.manifest || [];
 
-    document.getElementById('org-name-display').textContent   = orgName;
-    document.getElementById('doc-count-display').textContent  = manifest.length;
+    document.getElementById('org-name-display').textContent    = orgName;
+    document.getElementById('doc-count-display').textContent   = manifest.length;
     document.getElementById('expiry-date-display').textContent = formatDate(record.expires_at);
     document.title = `NDIS Ready — ${orgName} Documents`;
 
     renderDocuments(manifest);
     showState('state-success');
 
-    // Mark first access timestamp (non-blocking)
+    // Mark first access timestamp via server endpoint (non-blocking)
     if (!record.downloaded_at) markDownloaded(token);
 
   } catch (err) {
