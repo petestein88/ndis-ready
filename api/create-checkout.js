@@ -21,7 +21,7 @@ module.exports = async function handler(req, res) {
 
     const origin = req.headers.origin || 'https://ndis-ready.com.au';
     const successUrl = `${origin}/thank-you.html?session_id={CHECKOUT_SESSION_ID}${quiz_params ? '&' + quiz_params : ''}`;
-    const cancelUrl = `${origin}/results.html${quiz_params ? '?' + quiz_params : ''}`;
+    const cancelUrl = `${origin}/pricing#pricing${quiz_params ? '&' + quiz_params : ''}`;
 
     const sessionParams = {
       mode: 'payment',
@@ -36,7 +36,12 @@ module.exports = async function handler(req, res) {
     const session = await stripe.checkout.sessions.create(sessionParams);
     return res.status(200).json({ url: session.url });
   } catch (err) {
-    console.error('Stripe checkout error:', err.message);
-    return res.status(500).json({ error: 'Failed to create checkout session' });
+    console.error('Stripe checkout error:', err.message, err.type, err.code);
+    return res.status(500).json({
+      error: 'Failed to create checkout session',
+      detail: err.message,
+      type: err.type,
+      code: err.code,
+    });
   }
 };
