@@ -8,7 +8,7 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Pacifico&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
@@ -16,7 +16,7 @@
       --rose: #f4c5c5; --rose-deep: #e8a0a0; --lavender: #d8d0f0; --lavender-deep: #b8acdf;
       --sage: #c5ddd0; --sage-deep: #9ec4b0; --peach: #f7dfc8; --peach-deep: #efcba8;
       --cream: #faf8f4; --white: #ffffff; --ink: #2a2535; --ink-mid: #5a5370; --ink-soft: #9990b0;
-      --red-alert: #d42b2b; --font-brand: 'Pacifico', cursive;
+      --red-alert: #d42b2b; --font-brand: 'Nunito', system-ui, sans-serif;
       --font-display: 'DM Serif Display', Georgia, serif;
       --font-body: 'DM Sans', system-ui, sans-serif;
       --radius: 16px; --radius-sm: 10px; --radius-pill: 999px;
@@ -25,7 +25,7 @@
     .deadline-banner { background: var(--rose); text-align: center; padding: 0.9rem 2rem; font-size: 0.92rem; font-weight: 500; color: var(--ink); line-height: 1.5; }
     .deadline-banner .countdown { color: var(--red-alert); font-weight: 800; font-size: 1rem; }
     nav { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 2rem; background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 100; }
-    .nav-logo { font-family: var(--font-brand); font-size: 1.5rem; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    .nav-logo { font-family: var(--font-brand); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
     .nav-logo .badge { background: var(--peach); color: var(--ink-mid); font-family: var(--font-body); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: var(--radius-pill); }
     nav a.nav-cta { background: var(--ink); color: var(--white); font-size: 0.875rem; font-weight: 600; padding: 0.6rem 1.4rem; border-radius: var(--radius-pill); text-decoration: none; transition: background 0.2s; }
     nav a.nav-cta:hover { background: #3d3650; }
@@ -99,7 +99,7 @@
     .cta-section p { color: var(--ink-mid); font-size: 1.05rem; margin-bottom: 2rem; max-width: 480px; margin-left: auto; margin-right: auto; }
     footer { background: var(--ink); color: rgba(255,255,255,0.5); padding: 2.5rem 2rem; text-align: center; font-size: 0.85rem; }
     footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
-    .footer-logo { font-family: var(--font-brand); color: var(--lavender); font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .footer-logo { font-family: var(--font-brand); font-weight: 800; color: var(--lavender); font-size: 1.3rem; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
     @media (max-width: 640px) { nav { padding: 1rem 1.25rem; } .hero { padding: 3.5rem 1.25rem 3rem; } .section { padding: 3.5rem 1.25rem; } }
   </style>
 </head>
@@ -410,7 +410,7 @@
 
   async function startCheckout(tier, btn) {
     var original = btn.textContent;
-    btn.textContent = 'Loading…';
+    btn.textContent = 'Loading\u2026';
     btn.disabled = true;
     try {
       var resp = await fetch('/api/create-checkout', {
@@ -419,13 +419,14 @@
         body: JSON.stringify({ tier: tier })
       });
       var data = await resp.json();
+      console.log('Checkout response:', data);
       if (data.url) {
         window.location.href = data.url;
       } else {
-        throw new Error(data.error || 'No URL returned');
+        throw new Error((data.detail || data.error || 'No URL returned') + (data.code ? ' [' + data.code + ']' : ''));
       }
     } catch (e) {
-      console.error('Checkout error:', e);
+      console.error('Checkout error:', e.message);
       alert('Something went wrong. Please try again or email hello@ndis-ready.com.au');
       btn.textContent = original;
       btn.disabled = false;
