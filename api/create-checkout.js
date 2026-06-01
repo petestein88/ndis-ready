@@ -15,19 +15,29 @@ module.exports = async function handler(req, res) {
   try {
     const stripeKey = process.env.STRIPE_SECRET_KEY;
     if (!stripeKey) {
-      console.error('STRIPE_SECRET_KEY is not set');
-      return res.status(500).json({ error: 'Stripe key not configured' });
+      console.error('MISSING: STRIPE_SECRET_KEY env var is not set');
+      return res.status(500).json({ error: 'Stripe key not configured on server' });
     }
 
-    const stripe = new Stripe(stripeKey);
+    // Log key prefix so we can see live vs test in Vercel logs without exposing the key
+    console.log('Stripe key prefix:', stripeKey.substring(0, 12));
+
+    const stripe = new Stripe(stripeKey, { apiVersion: '2024-04-10' });
     const { tier, email, quiz_params } = req.body;
 
+    console.log('Checkout requested for tier:', tier);
+
     const priceId = PRICE_IDS[tier];
-    if (!priceId) return res.status(400).json({ error: 'Invalid tier: ' + tier });
+    if (!priceId) {
+      console.error('Invalid tier requested:', tier);
+      return res.status(400).json({ error: 'Invalid tier: ' + tier });
+    }
+
+    console.log('Using price ID:', priceId);
 
     const origin = req.headers.origin || 'https://ndis-ready.com.au';
     const successUrl = `${origin}/thank-you.html?session_id={CHECKOUT_SESSION_ID}${quiz_params ? '&' + quiz_params : ''}`;
-    const cancelUrl = `${origin}/results.html${quiz_params ? '?' + quiz_params : ''}`;
+    const cancelUrl = `${origin}/pricing`;
 
     const sessionParams = {
       mode: 'payment',
@@ -40,14 +50,17 @@ module.exports = async function handler(req, res) {
     if (email) sessionParams.customer_email = email;
 
     const session = await stripe.checkout.sessions.create(sessionParams);
+    console.log('Checkout session created:', session.id);
     return res.status(200).json({ url: session.url });
   } catch (err) {
-    console.error('Stripe checkout error:', err.message, err.type, err.code);
+    console.error('Stripe error type:', err.type);
+    console.error('Stripe error code:', err.code);
+    console.error('Stripe error message:', err.message);
     return res.status(500).json({
       error: 'Failed to create checkout session',
       detail: err.message,
-      type: err.type,
-      code: err.code,
+      type: err.type || null,
+      code: err.code || null,
     });
   }
 };
