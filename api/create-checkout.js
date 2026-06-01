@@ -13,15 +13,21 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    const stripeKey = process.env.STRIPE_SECRET_KEY;
+    if (!stripeKey) {
+      console.error('STRIPE_SECRET_KEY is not set');
+      return res.status(500).json({ error: 'Stripe key not configured' });
+    }
+
+    const stripe = new Stripe(stripeKey);
     const { tier, email, quiz_params } = req.body;
 
     const priceId = PRICE_IDS[tier];
-    if (!priceId) return res.status(400).json({ error: 'Invalid tier' });
+    if (!priceId) return res.status(400).json({ error: 'Invalid tier: ' + tier });
 
     const origin = req.headers.origin || 'https://ndis-ready.com.au';
     const successUrl = `${origin}/thank-you.html?session_id={CHECKOUT_SESSION_ID}${quiz_params ? '&' + quiz_params : ''}`;
-    const cancelUrl = `${origin}/pricing#pricing${quiz_params ? '&' + quiz_params : ''}`;
+    const cancelUrl = `${origin}/results.html${quiz_params ? '?' + quiz_params : ''}`;
 
     const sessionParams = {
       mode: 'payment',
