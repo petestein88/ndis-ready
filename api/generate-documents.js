@@ -234,10 +234,14 @@ module.exports = async function handler(req, res) {
     }));
 
     if (downloadRows.length > 0) {
-      await supabase
-        .from('document_downloads')
-        .insert(downloadRows)
-        .catch(err => console.warn('document_downloads bulk insert failed (non-fatal):', err.message));
+      try {
+        const { error: ddError } = await supabase
+          .from('document_downloads')
+          .insert(downloadRows);
+        if (ddError) console.warn('document_downloads bulk insert failed (non-fatal):', ddError.message);
+      } catch (ddErr) {
+        console.warn('document_downloads bulk insert threw (non-fatal):', ddErr.message);
+      }
     }
 
     const downloadUrl = `https://ndis-ready.com.au/download.html?token=${accessToken}`;
