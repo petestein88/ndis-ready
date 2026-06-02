@@ -1,15 +1,15 @@
 -- ================================================================
--- NDIS Ready — Supabase Architecture Diagnostic
+-- NDIS Ready — Supabase Architecture Diagnostic v2
 -- Run this entire script in: Supabase Dashboard → SQL Editor
 -- Copy the full output and paste back to your dev session
 -- ================================================================
 
 -- ----------------------------------------------------------------
--- 1. ALL TABLES in public schema (name, row count, size)
+-- 1. ALL TABLES in public schema (name, approx row count, size)
 -- ----------------------------------------------------------------
 SELECT
   t.table_name,
-  c.reltuples::BIGINT                          AS approx_row_count,
+  c.reltuples::BIGINT                           AS approx_row_count,
   pg_size_pretty(pg_total_relation_size(c.oid)) AS total_size
 FROM information_schema.tables t
 JOIN pg_class c ON c.relname = t.table_name
@@ -46,8 +46,8 @@ ORDER BY tablename, indexname;
 -- 4. ROW LEVEL SECURITY — which tables have RLS enabled
 -- ----------------------------------------------------------------
 SELECT
-  relname        AS table_name,
-  relrowsecurity AS rls_enabled,
+  relname             AS table_name,
+  relrowsecurity      AS rls_enabled,
   relforcerowsecurity AS rls_forced
 FROM pg_class
 WHERE relnamespace = 'public'::regnamespace
@@ -55,7 +55,7 @@ WHERE relnamespace = 'public'::regnamespace
 ORDER BY relname;
 
 -- ----------------------------------------------------------------
--- 5. ALL RLS POLICIES (table, policy name, command, roles, definition)
+-- 5. ALL RLS POLICIES
 -- ----------------------------------------------------------------
 SELECT
   tablename,
@@ -82,14 +82,13 @@ FROM storage.buckets
 ORDER BY created_at;
 
 -- ----------------------------------------------------------------
--- 7. STORAGE OBJECTS — file listing (path, size, bucket)
---    Shows everything uploaded so we know what templates exist
+-- 7. STORAGE OBJECTS — every file uploaded (path, size, bucket)
 -- ----------------------------------------------------------------
 SELECT
   bucket_id,
-  name        AS file_path,
-  metadata->>'size'        AS size_bytes,
-  metadata->>'mimetype'    AS mime_type,
+  name                      AS file_path,
+  metadata->>'size'         AS size_bytes,
+  metadata->>'mimetype'     AS mime_type,
   created_at
 FROM storage.objects
 ORDER BY bucket_id, name
@@ -109,79 +108,73 @@ WHERE schemaname = 'storage'
 ORDER BY tablename, policyname;
 
 -- ----------------------------------------------------------------
--- 9. LIVE DATA COUNTS per table
+-- 9. LIVE ROW COUNTS — safe version using dynamic SQL
+--    Won't crash if a table doesn't exist yet
 -- ----------------------------------------------------------------
-SELECT 'leads'              AS table_name, COUNT(*) AS rows FROM leads
-UNION ALL
-SELECT 'document_downloads', COUNT(*) FROM document_downloads
-UNION ALL
-SELECT 'orders',             COUNT(*) FROM orders
-UNION ALL
-SELECT 'document_access',   COUNT(*) FROM document_access
-UNION ALL
-SELECT 'webhook_log',       COUNT(*) FROM webhook_log
+SELECT table_name, 
+       (xpath('/row/c/text()', 
+         query_to_xml(format('SELECT COUNT(*) AS c FROM %I', table_name), 
+         false, true, '')))[1]::text::int AS row_count
+FROM information_schema.tables
+WHERE table_schema = 'public'
+  AND table_type = 'BASE TABLE'
 ORDER BY table_name;
 
 -- ----------------------------------------------------------------
--- 10. LEADS TABLE — sample of 5 most recent rows (no PII shown)
---     Shows which columns are actually being populated
+-- 10. LEADS TABLE — actual columns (auto-detected, no assumptions)
+-- ----------------------------------------------------------------
+SELECT column_name, data_type
+FROM information_schema.columns
+WHERE table_schema = 'public' AND table_name = 'leads'
+ORDER BY ordinal_position;
+
+-- ----------------------------------------------------------------
+-- 10b. LEADS — 5 most recent rows using only safe columns
 -- ----------------------------------------------------------------
 SELECT
   id,
   created_at,
-  -- mask email: show domain only
-  REGEXP_REPLACE(email, '^[^@]+', '***')  AS email_domain,
+  REGEXP_REPLACE(email, '^[^@]+', '***') AS email_domain,
   org_name,
-  score,
-  state,
-  service_type,
-  -- show all column names that are non-null
-  CASE WHEN quiz_answers IS NOT NULL THEN 'yes' ELSE 'no' END AS has_quiz_answers,
-  CASE WHEN org_details  IS NOT NULL THEN 'yes' ELSE 'no' END AS has_org_details
+  source,
+  CASE WHEN quiz_answers IS NOT NULL THEN 'yes' ELSE 'no' END AS has_quiz_answers
 FROM leads
 ORDER BY created_at DESC
 LIMIT 5;
 
 -- ----------------------------------------------------------------
--- 11. ORDERS TABLE — most recent 5 (amounts + tiers, no PII)
+-- 11. ORDERS TABLE — columns + 5 most recent (if table exists)
 -- ----------------------------------------------------------------
-SELECT
-  id,
-  created_at,
-  REGEXP_REPLACE(email, '^[^@]+', '***') AS email_domain,
-  product_tier,
-  amount_cents,
-  status,
-  paid_at
-FROM orders
-ORDER BY created_at DESC
-LIMIT 5;
+SELECT column_name, data_type
+FROM information_schema.columns
+WHERE table_schema = 'public' AND table_name = 'orders'
+ORDER BY ordinal_position;
 
 -- ----------------------------------------------------------------
--- 12. DOCUMENT_ACCESS — most recent 5
+-- 12. DOCUMENT_ACCESS — columns (if table exists)
 -- ----------------------------------------------------------------
-SELECT
-  id,
-  created_at,
-  REGEXP_REPLACE(email, '^[^@]+', '***') AS email_domain,
-  product_tier,
-  doc_count,
-  download_count,
-  expires_at,
-  CASE WHEN variables IS NOT NULL THEN 'yes' ELSE 'no' END AS has_variables
-FROM document_access
-ORDER BY created_at DESC
-LIMIT 5;
+SELECT column_name, data_type
+FROM information_schema.columns
+WHERE table_schema = 'public' AND table_name = 'document_access'
+ORDER BY ordinal_position;
 
 -- ----------------------------------------------------------------
--- 13. EXTENSIONS enabled
+-- 13. WEBHOOK_LOG — columns (if table exists)
+-- ----------------------------------------------------------------
+SELECT column_name, data_type
+FROM information_schema.columns
+WHERE table_schema = 'public' AND table_name = 'webhook_log'
+ORDER BY ordinal_position;
+
+-- ----------------------------------------------------------------
+-- 14. EXTENSIONS enabled
 -- ----------------------------------------------------------------
 SELECT extname, extversion
 FROM pg_extension
 ORDER BY extname;
 
 -- ----------------------------------------------------------------
--- 14. FUNCTIONS defined in public schema
+-- 15. CUSTOM FUNCTIONS in public schema
 -- ----------------------------------------------------------------
 SELECT
   routine_name,
