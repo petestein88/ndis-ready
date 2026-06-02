@@ -110,6 +110,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.25re
 .blurred-docs{display:flex;flex-direction:column;gap:0.35rem;margin-bottom:1rem;filter:blur(3px);pointer-events:none;opacity:0.7;}
 .blurred-doc{height:38px;background:var(--white);border-radius:6px;border:1px solid rgba(0,0,0,0.08);}
 .loading{text-align:center;padding:4rem 2rem;color:var(--ink-soft);}
+.ai-magic-banner{display:flex;align-items:center;gap:0.85rem;margin-top:1.5rem;padding:0.95rem 1.25rem;border-radius:var(--radius);background:linear-gradient(120deg,var(--lavender),var(--sage));border:1px solid var(--lavender-deep);text-decoration:none;color:var(--ink);transition:transform 0.15s,box-shadow 0.15s;}
+.ai-magic-banner:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(42,37,53,0.12);}
+.ai-magic-spark{font-size:1.4rem;flex-shrink:0;}
+.ai-magic-text{flex:1;font-size:0.875rem;line-height:1.45;color:var(--ink-mid);}
+.ai-magic-text strong{color:var(--ink);}
+.ai-magic-go{flex-shrink:0;font-size:0.85rem;font-weight:700;color:var(--ink);white-space:nowrap;}
+.ai-magic-card{background:var(--ink)!important;border-color:transparent!important;text-decoration:none;transition:transform 0.15s,box-shadow 0.15s;display:block;}
+.ai-magic-card:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(42,37,53,0.2);}
+.ai-magic-badge{display:inline-block;background:rgba(255,255,255,0.18);color:var(--white);font-size:0.7rem;font-weight:700;letter-spacing:0.04em;padding:3px 10px;border-radius:var(--radius-pill);margin-bottom:0.75rem;}
+@media(max-width:768px){.ai-magic-banner{flex-wrap:wrap;}.ai-magic-go{width:100%;}}
 @media(max-width:768px){.grid{grid-template-columns:1fr;}.side-col{position:static;}.score-row{gap:1.5rem;}.page{padding:2rem 1rem 4rem;}nav{padding:1rem 1.25rem;}}
 </style>
 </head>
@@ -279,6 +289,15 @@ function render(){
   const breakdown=sections.map(s=>({label:s.label,count:s.docs.length,color:s.color}));
   const circumference=314;
   const pct=totalDocs/65;
+  // Forward quiz answers to the AI autofill page (profile.html param names).
+  const aiParams=new URLSearchParams({
+    doccount:String(totalDocs),
+    state:'',
+    status:String(profile.status),
+    orgtype:String(profile.org_type),
+    auditpathway:String(profile.audit_pathway),
+  }).toString();
+  const aiHref='profile.html?'+aiParams;
 
   document.getElementById('pageContent').innerHTML=`
     <div class="grid">
@@ -287,6 +306,11 @@ function render(){
           <div class="profile-tag">✓ Profile complete</div>
           <h1>You need <em>${totalDocs} of 65</em> compliance documents</h1>
           <div class="sub">${orgLabel} · ${auditLabel} — based on your quiz answers. Your first 3 documents are ready to download free below.</div>
+          <a href="${aiHref}" class="ai-magic-banner">
+            <span class="ai-magic-spark">✨</span>
+            <span class="ai-magic-text"><strong>See the magic — free.</strong> Upload any existing policy and watch our AI fill in your org profile in seconds. No card required.</span>
+            <span class="ai-magic-go">Try it →</span>
+          </a>
           <div class="score-row">
             <div class="score-ring-wrap">
               <svg viewBox="0 0 120 120">
@@ -344,6 +368,12 @@ function render(){
         </div>
       </div>
       <div class="side-col">
+        <a href="${aiHref}" class="side-card ai-magic-card">
+          <div class="ai-magic-badge">✨ Free · No card</div>
+          <h3 style="color:var(--white);margin-bottom:0.4rem;">Watch the AI work</h3>
+          <p style="color:rgba(255,255,255,0.9);margin-bottom:1rem;">Drop in one of your existing policy docs and our AI instantly reads it and fills out your whole org profile — before you pay a cent.</p>
+          <span class="btn" style="background:var(--white);color:var(--ink);width:100%;text-align:center;display:block;font-weight:700;">Try the AI autofill →</span>
+        </a>
         <div class="side-card peach">
           <h3>Your 3 free documents</h3>
           <p>Enter your email and we'll send personalised versions of your first 3 compliance documents.</p>
@@ -372,7 +402,7 @@ function render(){
           <div class="checklist">
             <div class="check-item">All ${totalDocs} documents pre-filled with your details</div>
             <div class="check-item">Downloadable Word format — fully editable</div>
-            <div class="check-item">Audit readiness dashboard included</div>
+            <div class="check-item">AI document assistant to autofill from your existing docs</div>
             <div class="check-item">Email support throughout your audit</div>
           </div>
           <a href="/#pricing" class="btn btn-primary" style="width:100%;text-align:center;display:block">View pricing →</a>

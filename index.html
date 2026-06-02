@@ -57,7 +57,9 @@
     .features-bg { background: var(--white); }
     .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
     .feature-card { border-radius: var(--radius); padding: 1.75rem; border: 1px solid rgba(0,0,0,0.06); }
-    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; }
+    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .soon-tag { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: rgba(0,0,0,0.12); color: var(--ink-mid); padding: 0.15rem 0.5rem; border-radius: var(--radius-pill); }
+    .live-tag { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: var(--sage-deep); color: var(--white); padding: 0.15rem 0.5rem; border-radius: var(--radius-pill); }
     .feature-card p { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.6; }
     .scenarios { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
     .scenario-card { border-radius: var(--radius); padding: 2rem; }
@@ -139,7 +141,7 @@
     Built for SIL providers — new and existing
   </div>
   <h1>Get <em>audit-ready</em> without the $10k consultant bill</h1>
-  <p>NDIS Ready gives you everything you need to register, pass your certification audit, and <span class="stay-word">stay</span> compliant — in one simple platform.</p>
+  <p>NDIS Ready builds every policy document you need to register and pass your certification audit — personalised to your organisation, in minutes.</p>
   <p class="sub">No consultants. No confusing spreadsheets. Just a clear path through registration.</p>
   <div class="hero-actions">
     <a href="#quiz" class="btn-primary">Take the free quiz →</a>
@@ -160,7 +162,7 @@
   <div class="section-inner">
     <p class="section-label">How it works</p>
     <h2>From overwhelmed to audit-ready in three steps</h2>
-    <p class="lead">No consultants. No confusing spreadsheets. Just a clear path through registration.</p>
+    <p class="lead">Answer a few questions, let our AI do the heavy lifting, and download a complete, personalised compliance pack.</p>
     <div class="steps">
       <div class="step-card">
         <div class="step-icon" style="background:var(--peach);">
@@ -175,16 +177,16 @@
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         </div>
         <div class="step-num">Step 02</div>
-        <h3>We build your compliance kit</h3>
-        <p>NDIS Ready selects every document you need and pre-fills them with your details automatically.</p>
+        <h3>Our AI builds your kit</h3>
+        <p>Upload an existing policy and our AI reads it to pre-fill your profile — then selects and personalises every document you need.</p>
       </div>
       <div class="step-card">
         <div class="step-icon" style="background:var(--sage);">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
         </div>
         <div class="step-num">Step 03</div>
-        <h3>Track, update, <span class="stay-word">stay</span> compliant</h3>
-        <p>Your dashboard shows exactly what's done, what needs updating, and what's missing — in real time.</p>
+        <h3>Download &amp; get audit-ready</h3>
+        <p>Get your full pack as editable Word documents, ready to use the moment your auditor arrives.</p>
       </div>
     </div>
   </div>
@@ -197,28 +199,28 @@
     <p class="lead">Built directly from the Practice Standards — so nothing is missing.</p>
     <div class="features-grid" style="margin-top:2.5rem;">
       <div class="feature-card" style="background:var(--rose);border-color:var(--rose-deep);">
-        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="var(--rose-deep)"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>65 policy templates</h3>
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="var(--rose-deep)"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>65 policy templates <span class="live-tag">Available now</span></h3>
         <p>Every document required for certification, personalised to your organisation and services.</p>
       </div>
       <div class="feature-card" style="background:var(--lavender);border-color:var(--lavender-deep);">
-        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="7 13 10 16 17 9"/></svg>Audit readiness dashboard</h3>
-        <p>A live compliance score showing exactly what's ready, what's missing, and what expires soon.</p>
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="7 13 10 16 17 9"/></svg>Audit readiness dashboard <span class="soon-tag">Coming soon</span></h3>
+        <p>A live compliance score showing exactly what's ready, what's missing, and what expires soon. In active development.</p>
       </div>
       <div class="feature-card" style="background:var(--sage);border-color:var(--sage-deep);">
-        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg>AI document assistant</h3>
-        <p>Upload your existing docs and our AI maps them, flags gaps, and rewrites incident notes to be Commission-compliant.</p>
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg>AI document assistant <span class="live-tag">Available now</span></h3>
+        <p>Upload an existing policy and our AI instantly reads it and pre-fills your whole organisation profile — try it free after the quiz.</p>
       </div>
       <div class="feature-card" style="background:var(--peach);border-color:var(--peach-deep);">
-        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>Incident &amp; complaints management</h3>
-        <p>Structured workflows for capturing, reporting, and closing incidents with a full audit trail.</p>
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>Incident &amp; complaints management <span class="soon-tag">Coming soon</span></h3>
+        <p>Structured workflows for capturing, reporting, and closing incidents with a full audit trail. In active development.</p>
       </div>
       <div class="feature-card" style="background:var(--cream);border-color:rgba(0,0,0,0.08);">
-        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Worker screening register</h3>
-        <p>Track NDIS clearances, First Aid, and all qualifications — with automatic expiry alerts.</p>
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Worker screening register <span class="soon-tag">Coming soon</span></h3>
+        <p>Track NDIS clearances, First Aid, and all qualifications — with automatic expiry alerts. In active development.</p>
       </div>
       <div class="feature-card" style="background:var(--cream);border-color:rgba(0,0,0,0.08);">
-        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>One-click audit evidence pack</h3>
-        <p>Export a complete, auditor-ready PDF bundle of all your evidence in one click.</p>
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>One-click audit evidence pack <span class="soon-tag">Coming soon</span></h3>
+        <p>Export a complete, auditor-ready PDF bundle of all your evidence in one click. In active development.</p>
       </div>
     </div>
   </div>
@@ -248,31 +250,28 @@
 <section class="section testimonials-bg" id="testimonials">
   <div class="section-inner">
     <p class="section-label">What providers say</p>
-    <h2>Trusted by NDIS providers across Australia</h2>
-    <p class="lead">Real feedback from SIL providers who used NDIS Ready to get audit-ready.</p>
+    <h2>Built directly from the NDIS Practice Standards</h2>
+    <p class="lead">Every document maps to a specific Core or Certification module — so nothing the Commission expects is missing. Illustrative scenarios below show how providers plan to use NDIS Ready.</p>
     <div class="testimonials-grid">
       <div class="testimonial-card">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-quote">"I was completely overwhelmed by the NDIS registration process. NDIS Ready gave me a clear checklist and built out all 65 policies in a fraction of the time it would have taken me. I passed my audit first go."</p>
+        <p class="testimonial-quote">"As a sole trader, the registration paperwork felt impossible. NDIS Ready gives you a clear checklist and builds out all 65 policies in a fraction of the time — so you can walk into your audit prepared."</p>
         <div class="testimonial-author">
-          <span class="testimonial-name">Michelle T.</span>
-          <span class="testimonial-role">Sole trader SIL provider, QLD</span>
+          <span class="testimonial-name">First-time registrant</span>
+          <span class="testimonial-role">Illustrative scenario · Sole trader SIL provider</span>
         </div>
       </div>
       <div class="testimonial-card">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-quote">"We were paying a consultant $800 a month just to keep our policies updated. NDIS Ready replaced that entirely. The dashboard makes it obvious what needs attention and when — it's like having a compliance manager built in."</p>
+        <p class="testimonial-quote">"Consultants charge thousands to assemble the same policy set. NDIS Ready personalises every document to your organisation for one upfront payment — no retainer, no lock-in."</p>
         <div class="testimonial-author">
-          <span class="testimonial-name">David K.</span>
-          <span class="testimonial-role">Director, 8-staff SIL provider, VIC</span>
+          <span class="testimonial-name">Small SIL provider</span>
+          <span class="testimonial-role">Illustrative scenario · 2–15 staff</span>
         </div>
       </div>
       <div class="testimonial-card">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-quote">"The quiz at the start was eye-opening. I thought I was mostly across everything, but it flagged three areas I had completely missed. Worth it just for that."</p>
+        <p class="testimonial-quote">"The quiz is the eye-opener. In five minutes it shows exactly which documents your situation requires — including the ones most providers miss — before you spend a cent."</p>
         <div class="testimonial-author">
-          <span class="testimonial-name">Priya S.</span>
-          <span class="testimonial-role">Registered SIL provider, NSW</span>
+          <span class="testimonial-name">Provider approaching re-registration</span>
+          <span class="testimonial-role">Illustrative scenario · Registered SIL provider</span>
         </div>
       </div>
     </div>
@@ -293,9 +292,9 @@
         <ul>
           <li>Registration readiness quiz</li>
           <li>Your personalised document checklist</li>
-          <li>AI notes rewriter (5 uses)</li>
-          <li>Compliance dashboard preview</li>
-          <li class="minus">Policy documents not included</li>
+          <li>AI profile autofill — upload a doc, watch it fill</li>
+          <li>3 free sample documents, personalised</li>
+          <li class="minus">Full document library not included</li>
           <li class="minus">No ongoing access</li>
         </ul>
         <a href="#quiz" class="btn-price btn-price-light">Take the free quiz</a>
@@ -307,13 +306,11 @@
         <div class="price-note">Everything to get registered</div>
         <ul>
           <li>All 65 policy templates, personalised to your organisation</li>
-          <li>AI document assistant — upload existing docs, fill gaps</li>
-          <li>Audit readiness dashboard (3 months access)</li>
-          <li>One-click audit evidence pack export</li>
-          <li>Worker screening register</li>
-          <li>Incident &amp; complaints management</li>
-          <li>Email expiry alerts during access period</li>
+          <li>AI document assistant — upload existing docs to autofill</li>
+          <li>Editable Word format — yours to keep</li>
+          <li>7-day secure download access to your full pack</li>
           <li>Email support</li>
+          <li style="opacity:0.8;">Audit dashboard, registers &amp; incident tools <span style="font-size:0.7rem;font-weight:700;text-transform:uppercase;background:rgba(255,255,255,0.18);padding:1px 7px;border-radius:999px;margin-left:4px;">coming soon</span></li>
         </ul>
         <button class="btn-price btn-price-dark" onclick="startCheckout('registration_kit', this)">Get the Registration Kit →</button>
       </div>
@@ -324,13 +321,10 @@
         <div class="price-note" style="color:var(--ink);background:rgba(255,255,255,0.45);padding:0.4rem 0.75rem;border-radius:8px;display:inline-block;margin-bottom:1.5rem;">Registration Kit + 12 months Stay Ready</div>
         <ul style="margin-bottom:2rem;flex:1;">
           <li style="color:var(--ink-mid);">Everything in Registration Kit</li>
-          <li style="color:var(--ink-mid);">Full 12 months compliance dashboard</li>
-          <li style="color:var(--ink-mid);">Continuous improvement register</li>
-          <li style="color:var(--ink-mid);">Ongoing incident &amp; complaints tracking</li>
-          <li style="color:var(--ink-mid);">Worker credential expiry alerts</li>
-          <li style="color:var(--ink-mid);">Policy review reminders (annual cycle)</li>
-          <li style="color:var(--ink-mid);">AI notes rewriter (unlimited)</li>
+          <li style="color:var(--ink-mid);">12 months access to your document library</li>
+          <li style="color:var(--ink-mid);">Free updates as templates are revised</li>
           <li style="color:var(--ink-mid);">Priority email support</li>
+          <li style="color:var(--ink-mid);opacity:0.85;">Compliance dashboard, registers, incident tracking &amp; expiry alerts as they launch <span style="font-size:0.68rem;font-weight:700;text-transform:uppercase;background:rgba(0,0,0,0.1);padding:1px 7px;border-radius:999px;">coming soon</span></li>
         </ul>
         <button class="btn-price" style="background:var(--ink);color:var(--white);" onclick="startCheckout('value_bundle', this)">Get the Value Bundle →</button>
         <p style="text-align:center;font-size:0.75rem;color:var(--ink-mid);margin-top:0.75rem;">Worth $837 if bought separately</p>
@@ -375,7 +369,7 @@
     <svg width="48" height="48" viewBox="0 0 24 24" fill="var(--rose-deep)" style="display:inline-block;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
   </div>
   <h2>The 1 July deadline is close.<br/>Let's get you NDIS Ready.</h2>
-  <p>Join hundreds of NDIS providers already preparing with NDIS Ready.</p>
+  <p>Get your personalised compliance pack and walk into your audit prepared.</p>
   <a href="#quiz" class="btn-primary">Take the free quiz today</a>
 </section>
 

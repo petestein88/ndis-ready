@@ -1032,9 +1032,11 @@ const state = {
     if (sel) sel.value = stateVal.toUpperCase();
   }
 
-  // Pre-populate audit pathway
+  // Pre-populate audit pathway.
+  // Canonical quiz encoding: 0=Certification, 1=Verification, 2=Not sure.
+  // "Not sure" defaults to Certification (the higher-assurance pathway).
   if (audit) {
-    const auditMap = { '0': 'Verification', '1': 'Certification', '2': 'Certification' };
+    const auditMap = { '0': 'Certification', '1': 'Verification', '2': 'Certification' };
     const sel = document.getElementById('i_audit_pathway');
     if (sel && auditMap[audit]) sel.value = auditMap[audit];
   }
