@@ -3,6 +3,10 @@
 // POST /api/generate-documents
 // Builds signed-URL download manifest, saves to Supabase,
 // triggers delivery email via send-email.js
+//
+// Storage structure:
+//   templates/free-samples/   ← 3 free sample docs
+//   templates/65 Files/       ← all 65 paid template docs
 // =============================================================
 
 const OpenAI = require('openai');
@@ -14,85 +18,102 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY
 );
 
-// All 65 documents — IDs match filenames in Supabase Storage bucket 'templates'
+// All 65 documents — filenames match exactly what's in Supabase Storage
+// bucket: templates, subfolder: 65 Files/
 const DOCUMENT_LIBRARY = [
-  { id: '01', name: 'Governance and Operational Management Policy',             category: 'governance' },
-  { id: '02', name: 'Board and Leadership Accountability Framework',            category: 'governance' },
-  { id: '03', name: 'Risk Management Framework',                                category: 'governance',  free: true },
-  { id: '04', name: 'Risk Register',                                            category: 'governance' },
-  { id: '05', name: 'Business Continuity and Disaster Recovery Plan',           category: 'governance' },
-  { id: '06', name: 'Conflict of Interest Policy and Register',                 category: 'governance' },
-  { id: '07', name: 'Document Control and Records Management Policy',           category: 'governance' },
-  { id: '08', name: 'Financial Management Policy',                              category: 'governance' },
-  { id: '09', name: 'Workforce Planning and HR Policy',                         category: 'hr' },
-  { id: '10', name: 'Position Descriptions - Support Worker',                   category: 'hr' },
-  { id: '11', name: 'Position Descriptions - Team Leader',                      category: 'hr' },
-  { id: '12', name: 'Position Descriptions - Service Manager',                  category: 'hr' },
-  { id: '13', name: 'Recruitment and Selection Policy and Procedure',           category: 'hr' },
-  { id: '14', name: 'NDIS Worker Screening and Clearance Policy',               category: 'hr' },
-  { id: '15', name: 'Worker Screening Register',                                category: 'hr' },
-  { id: '16', name: 'Induction and Onboarding Policy and Procedure',            category: 'hr' },
-  { id: '17', name: 'Staff Code of Conduct',                                    category: 'hr' },
-  { id: '18', name: 'Performance Management Policy and Procedure',              category: 'hr' },
-  { id: '19', name: 'Training and Professional Development Policy',             category: 'hr' },
-  { id: '20', name: 'Training Needs Analysis and Register',                     category: 'hr' },
-  { id: '21', name: 'Supervision Policy and Procedure',                         category: 'hr' },
-  { id: '22', name: 'Workforce Wellbeing and Fatigue Management Policy',        category: 'hr' },
-  { id: '23', name: 'Participant Rights and Responsibilities Policy',           category: 'rights' },
-  { id: '24', name: 'Privacy and Confidentiality Policy',                       category: 'rights' },
-  { id: '25', name: 'Informed Consent Policy and Procedure',                    category: 'rights' },
-  { id: '26', name: 'Advocacy and Independent Support Policy',                  category: 'rights' },
-  { id: '27', name: 'Dignity of Risk Policy',                                   category: 'rights' },
-  { id: '28', name: 'Cultural Safety and Diversity Policy',                     category: 'rights' },
-  { id: '29', name: 'Individual Support Planning Policy and Procedure',         category: 'support' },
-  { id: '30', name: 'Support Plan Template',                                    category: 'support' },
-  { id: '31', name: 'Person-Centred Active Support Policy',                     category: 'support' },
-  { id: '32', name: 'Assessment and Intake Procedure',                          category: 'support' },
-  { id: '33', name: 'Transition Planning Policy and Procedure',                 category: 'support' },
-  { id: '34', name: 'Daily Living and Household Support Procedure',             category: 'support' },
-  { id: '35', name: 'Community Participation and Social Inclusion Policy',      category: 'support' },
-  { id: '36', name: 'Transport Policy and Procedure',                           category: 'support' },
-  { id: '37', name: 'Medication Management Policy and Procedure',               category: 'support' },
-  { id: '38', name: 'Mealtime Management Policy and Procedure',                 category: 'support' },
-  { id: '39', name: 'Work Health and Safety Policy',                            category: 'safety' },
-  { id: '40', name: 'WHS Risk Assessment Template',                             category: 'safety' },
-  { id: '41', name: 'Emergency Evacuation and Management Procedure',            category: 'safety' },
-  { id: '42', name: 'Hazard Reporting and Incident Register',                   category: 'safety' },
-  { id: '43', name: 'Manual Handling Policy and Procedure',                     category: 'safety' },
-  { id: '44', name: 'First Aid Policy and Procedure',                           category: 'safety' },
-  { id: '45', name: 'Infection Control and Hygiene Policy',                     category: 'safety' },
-  { id: '46', name: 'Restrictive Practices Policy and Procedure',               category: 'safety' },
-  { id: '47', name: 'Restrictive Practices Register and Authorisation Record',  category: 'safety' },
-  { id: '48', name: 'Missing Person Procedure',                                 category: 'safety' },
-  { id: '49', name: 'Incident Management Policy and Procedure',                 category: 'incidents', free: true },
-  { id: '50', name: 'Incident Report Form',                                     category: 'incidents' },
-  { id: '51', name: 'Serious Incident Reportable to NDIS Commission Procedure', category: 'incidents' },
-  { id: '52', name: 'Complaints Management Policy and Procedure',               category: 'incidents', free: true },
-  { id: '53', name: 'Complaints Register',                                      category: 'incidents' },
-  { id: '54', name: 'Feedback and Continuous Improvement Policy',               category: 'incidents' },
-  { id: '55', name: 'Continuous Improvement Register',                          category: 'incidents' },
-  { id: '56', name: 'Safeguarding and Abuse Prevention Policy',                 category: 'safeguarding' },
-  { id: '57', name: 'Reportable Conduct Policy and Procedure',                  category: 'safeguarding' },
-  { id: '58', name: 'Mandatory Reporting Obligations Policy',                   category: 'safeguarding' },
-  { id: '59', name: 'Safe Environment Policy',                                  category: 'safeguarding' },
-  { id: '60', name: 'Participant Wellbeing Check Procedure',                    category: 'safeguarding' },
-  { id: '61', name: 'SIL Service Agreement Template',                           category: 'sil' },
-  { id: '62', name: 'SIL House Rules and Tenant Rights Policy',                 category: 'sil' },
-  { id: '63', name: 'SIL Rostering and Staffing Ratio Policy',                  category: 'sil' },
-  { id: '64', name: 'SIL Property and Maintenance Management Procedure',        category: 'sil' },
-  { id: '65', name: 'NDIS Participant Exit and Transition Procedure',           category: 'sil' },
+  // ── Section 1: Participant Rights & Safety ──────────────────────────────
+  { id: '1.1', name: '1.1 - Participant Rights Policy',               category: 'rights',      free: false },
+  { id: '1.2', name: '1.2 - Complaints and Feedback Policy',          category: 'incidents',   free: true  },
+  { id: '1.3', name: '1.3 - Incident Management Policy',              category: 'incidents',   free: true  },
+  { id: '1.4', name: '1.4 - Reportable Incidents Procedure',          category: 'incidents',   free: false },
+  { id: '1.5', name: '1.5 - Abuse and Neglect Prevention Policy',     category: 'safeguarding',free: false },
+
+  // ── Section 2: Governance ───────────────────────────────────────────────
+  { id: '2.1',  name: '2.1 - Governance Framework',                   category: 'governance',  free: false },
+  { id: '2.2',  name: '2.2 - Risk Management Policy',                 category: 'governance',  free: true  },
+  { id: '2.3',  name: '2.3 - Financial Management Policy',            category: 'governance',  free: false },
+  { id: '2.4',  name: '2.4 - Human Resources Policy',                 category: 'hr',          free: false },
+  { id: '2.5',  name: '2.5 - Staff Recruitment and Screening Procedure', category: 'hr',       free: false },
+  { id: '2.6',  name: '2.6 - Staff Training and Development Policy',  category: 'hr',          free: false },
+  { id: '2.7',  name: '2.7 - Performance Management Procedure',       category: 'hr',          free: false },
+  { id: '2.8',  name: '2.8 - Whistleblower Policy',                   category: 'governance',  free: false },
+  { id: '2.9',  name: '2.9 - Conflict of Interest Policy',            category: 'governance',  free: false },
+  { id: '2.10', name: '2.10 - Record Keeping and Privacy Policy',     category: 'governance',  free: false },
+  { id: '2.11', name: '2.11 - Information Management Policy',         category: 'governance',  free: false },
+  { id: '2.12', name: '2.12 - Business Continuity Plan',              category: 'governance',  free: false },
+
+  // ── Section 3: Service Delivery ─────────────────────────────────────────
+  { id: '3.1',  name: '3.1 - Service Delivery Policy',                category: 'support',     free: false },
+  { id: '3.2',  name: '3.2 - Intake and Eligibility Procedure',       category: 'support',     free: false },
+  { id: '3.3',  name: '3.3 - Support Planning Policy',                category: 'support',     free: false },
+  { id: '3.4',  name: '3.4 - Individual Support Plan Template',       category: 'support',     free: false },
+  { id: '3.5',  name: '3.5 - Person-Centred Practice Framework',      category: 'support',     free: false },
+  { id: '3.6',  name: '3.6 - Consent Policy',                         category: 'rights',      free: false },
+  { id: '3.7',  name: '3.7 - Supported Decision Making Policy',       category: 'rights',      free: false },
+  { id: '3.8',  name: '3.8 - Transition and Exit Planning Procedure', category: 'support',     free: false },
+  { id: '3.9',  name: '3.9 - Cultural Diversity and Inclusion Policy',category: 'rights',      free: false },
+  { id: '3.10', name: '3.10 - Restrictive Practices Policy',          category: 'safety',      free: false },
+  { id: '3.11', name: '3.11 - Behaviour Support Policy',              category: 'safety',      free: false },
+  { id: '3.12', name: '3.12 - Medication Management Policy',          category: 'safety',      free: false },
+  { id: '3.13', name: '3.13 - Health and Medical Support Procedure',  category: 'safety',      free: false },
+  { id: '3.14', name: '3.14 - Manual Handling Policy',                category: 'safety',      free: false },
+  { id: '3.15', name: '3.15 - Emergency and Disaster Management Plan',category: 'safety',      free: false },
+  { id: '3.16', name: '3.16 - Mealtime Management Procedure',         category: 'safety',      free: false },
+
+  // ── Section 4: SIL (Supported Independent Living) ───────────────────────
+  { id: '4.1', name: '4.1 - SIL Service Agreement Template',          category: 'sil',         free: false },
+  { id: '4.2', name: '4.2 - SIL Roster of Care Template',             category: 'sil',         free: false },
+  { id: '4.3', name: '4.3 - SIL House Rules Template',                category: 'sil',         free: false },
+  { id: '4.4', name: '4.4 - SIL Tenancy Support Policy',              category: 'sil',         free: false },
+  { id: '4.5', name: '4.5 - SIL Daily Living Support Procedure',      category: 'sil',         free: false },
+  { id: '4.6', name: '4.6 - Overnight and Sleepover Policy',          category: 'sil',         free: false },
+  { id: '4.7', name: '4.7 - Household Budget Management Procedure',   category: 'sil',         free: false },
+  { id: '4.8', name: '4.8 - Transition to SIL Procedure',             category: 'sil',         free: false },
+  { id: '4.9', name: '4.9 - SDA and SIL Coordination Policy',         category: 'sil',         free: false },
+
+  // ── Section 5: Staff & HR ────────────────────────────────────────────────
+  { id: '5.1', name: '5.1 - Code of Conduct',                         category: 'hr',          free: false },
+  { id: '5.2', name: '5.2 - Staff Handbook',                          category: 'hr',          free: false },
+  { id: '5.3', name: '5.3 - Position Description - Support Worker',   category: 'hr',          free: false },
+  { id: '5.4', name: '5.4 - Position Description - Team Leader',      category: 'hr',          free: false },
+  { id: '5.5', name: '5.5 - Position Description - Service Manager',  category: 'hr',          free: false },
+  { id: '5.6', name: '5.6 - Onboarding Checklist',                    category: 'hr',          free: false },
+  { id: '5.7', name: '5.7 - Staff NDIS Worker Screening Checklist',   category: 'hr',          free: false },
+  { id: '5.8', name: '5.8 - Volunteer Policy',                        category: 'hr',          free: false },
+  { id: '5.9', name: '5.9 - Contractor Management Policy',            category: 'hr',          free: false },
+
+  // ── Section 6: Quality & Audit ───────────────────────────────────────────
+  { id: '6.1', name: '6.1 - Quality Management Framework',            category: 'quality',     free: false },
+  { id: '6.2', name: '6.2 - Internal Audit Schedule',                 category: 'quality',     free: false },
+  { id: '6.3', name: '6.3 - Internal Audit Template',                 category: 'quality',     free: false },
+  { id: '6.4', name: '6.4 - Continuous Improvement Register',         category: 'quality',     free: false },
+  { id: '6.5', name: '6.5 - Corrective Action Procedure',             category: 'quality',     free: false },
+  { id: '6.6', name: '6.6 - NDIS Practice Standards Self-Assessment', category: 'quality',     free: false },
+  { id: '6.7', name: '6.7 - Audit Preparation Checklist',             category: 'quality',     free: false },
+
+  // ── Section 7: Forms & Registers ────────────────────────────────────────
+  { id: '7.1', name: '7.1 - Incident Report Form',                    category: 'incidents',   free: false },
+  { id: '7.2', name: '7.2 - Complaints Register',                     category: 'incidents',   free: false },
+  { id: '7.3', name: '7.3 - Risk Register',                           category: 'governance',  free: false },
+  { id: '7.4', name: '7.4 - Asset Register',                          category: 'governance',  free: false },
+  { id: '7.5', name: '7.5 - Training Register',                       category: 'hr',          free: false },
+  { id: '7.6', name: '7.6 - Participant Feedback Form',               category: 'incidents',   free: false },
+  { id: '7.7', name: '7.7 - Worker Incident Statement Form',          category: 'incidents',   free: false },
 ];
+
+// Free samples live in a separate subfolder
+const FREE_SAMPLE_MAP = {
+  '1.2': 'free-samples/complaints-management-policy.docx',
+  '1.3': 'free-samples/incident-management-policy.docx',
+  '2.2': 'free-samples/risk-management-framework.docx',
+};
 
 function getStoragePath(doc, productTier) {
   if (productTier === 'free_sample') {
-    const freeMap = {
-      '49': 'free-samples/incident-management-policy.docx',
-      '52': 'free-samples/complaints-management-policy.docx',
-      '03': 'free-samples/risk-management-framework.docx',
-    };
-    return freeMap[doc.id];
+    return FREE_SAMPLE_MAP[doc.id] || null;
   }
-  return `${doc.id.padStart(2, '0')} - ${doc.name}.docx`;
+  // Paid docs live in "65 Files/" subfolder
+  return `65 Files/${doc.name}.docx`;
 }
 
 module.exports = async function handler(req, res) {
@@ -165,9 +186,9 @@ module.exports = async function handler(req, res) {
     // Log each doc to document_downloads (aligned to live schema)
     const downloadRows = downloadManifest.map(doc => ({
       access_id:      accessRecord.id,
-      customer_email: email,          // live col: customer_email
-      doc_id:         doc.id,         // live col: doc_id (not document_id)
-      doc_title:      doc.name,       // live col: doc_title (not document_name)
+      customer_email: email,
+      doc_id:         doc.id,
+      doc_title:      doc.name,
       tier:           productTier,
       created_at:     new Date().toISOString(),
     }));
