@@ -243,13 +243,16 @@ function getProfile(){
 function buildDocList(profile){
   const p=profile;
   const services=p.services||[];
-  const hasCert=p.audit_pathway===1||services.some(i=>[2,3,4,6,7].includes(i));
+  // audit_pathway: 0=Certification, 1=Verification, 2=Not sure.
+  // Higher-risk services that force Certification: SIL(0), Personal care(2),
+  // Medication(3), Children(4), Behaviour support(7).
+  const hasCert=p.audit_pathway===0||services.some(i=>[0,2,3,4,7].includes(i));
   let sections=[];
   sections.push({key:'core',label:'Core — Required by All Providers',color:'#b8acdf',docs:RULES.core});
   if(hasCert)sections.push({key:'certification',label:'Certification Audit Pathway',color:'#e8a0a0',docs:RULES.certification});
   if(p.employees===2)sections.push({key:'hr',label:'HR & Employment (6+ staff)',color:'#efcba8',docs:RULES.hr_large});
   else if(p.employees===1)sections.push({key:'hr',label:'HR & Employment (1–5 staff)',color:'#efcba8',docs:RULES.hr_small});
-  if(p.home_visits===1)sections.push({key:'home_visits',label:'In-Home Support Safeguards',color:'#9ec4b0',docs:RULES.home_visits});
+  if(p.home_visits===0)sections.push({key:'home_visits',label:'In-Home Support Safeguards',color:'#9ec4b0',docs:RULES.home_visits});
   if(p.children===2)sections.push({key:'children',label:'Child Safe Requirements (Primary)',color:'#f4c5c5',docs:RULES.children_primary});
   else if(p.children===1)sections.push({key:'children',label:'Child Safe Requirements',color:'#f4c5c5',docs:RULES.children_some});
   if(p.medication===2)sections.push({key:'medication',label:'Medication & Complex Health',color:'#c5ddd0',docs:RULES.medication_complex});
@@ -337,7 +340,7 @@ function render(){
           <h3>+ ${Math.max(0,65-totalDocs)} more documents available in the full library</h3>
           <p>Subscribe to unlock the complete library of 65 documents, all pre-filled with your organisation's details.</p>
           <div class="blurred-docs"><div class="blurred-doc"></div><div class="blurred-doc"></div><div class="blurred-doc"></div></div>
-          <a href="/" class="btn btn-primary btn-lg">Unlock all ${totalDocs} documents →</a>
+          <a href="/#pricing" class="btn btn-primary btn-lg">Unlock all ${totalDocs} documents →</a>
         </div>
       </div>
       <div class="side-col">
@@ -372,7 +375,7 @@ function render(){
             <div class="check-item">Audit readiness dashboard included</div>
             <div class="check-item">Email support throughout your audit</div>
           </div>
-          <a href="/" class="btn btn-primary" style="width:100%;text-align:center;display:block">View pricing →</a>
+          <a href="/#pricing" class="btn btn-primary" style="width:100%;text-align:center;display:block">View pricing →</a>
         </div>
       </div>
     </div>

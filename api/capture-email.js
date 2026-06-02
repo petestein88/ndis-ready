@@ -146,17 +146,25 @@ module.exports = async function handler(req, res) {
   }
 };
 
+// IMPORTANT: This MUST stay in lockstep with buildDocList()/calcTotal() in
+// results.html so the count the user sees on the results page equals the
+// count in this email. Encodings: audit_pathway 0=Certification,1=Verification,
+// 2=Not sure. home_visits 0=Yes,1=No. Services: SIL(0), Community(1),
+// Personal care(2), Medication(3), Children(4), Coordination(5), Plan mgmt(6),
+// Behaviour(7). Set sizes mirror the RULES doc sets (no cross-category id
+// overlap, so a flat sum equals the deduped total).
 function calcDocCount(answers, services) {
-  let count = 18;
-  const hasCert = answers.audit_pathway === 0 || [0, 2, 3, 7].some(i => (services || []).includes(i));
-  if (hasCert) count += 14;
-  if (answers.employees === 1) count += 7;
-  if (answers.employees === 2) count += 11;
-  if (answers.home_visits === 0) count += 5;
-  if (answers.children === 1) count += 4;
-  if (answers.children === 2) count += 6;
-  if (answers.medication === 1) count += 4;
-  if (answers.medication === 2) count += 7;
+  let count = 18; // core
+  const svc = services || [];
+  const hasCert = answers.audit_pathway === 0 || [0, 2, 3, 4, 7].some(i => svc.includes(i));
+  if (hasCert) count += 14;                       // certification
+  if (answers.employees === 1) count += 7;         // hr_small
+  else if (answers.employees === 2) count += 11;   // hr_large
+  if (answers.home_visits === 0) count += 5;       // home_visits (Yes)
+  if (answers.children === 1) count += 4;          // children_some
+  else if (answers.children === 2) count += 6;     // children_primary
+  if (answers.medication === 1) count += 4;        // medication
+  else if (answers.medication === 2) count += 7;   // medication_complex
   return Math.min(count, 65);
 }
 
