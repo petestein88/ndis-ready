@@ -83,10 +83,8 @@ const DOCUMENT_LIBRARY = [
   { id: '65', name: 'NDIS Participant Exit and Transition Procedure',           category: 'sil' },
 ];
 
-// Supabase Storage paths per tier
 function getStoragePath(doc, productTier) {
   if (productTier === 'free_sample') {
-    // Free docs stored in free-samples/ subfolder with simplified names
     const freeMap = {
       '49': 'free-samples/incident-management-policy.docx',
       '52': 'free-samples/complaints-management-policy.docx',
@@ -94,7 +92,6 @@ function getStoragePath(doc, productTier) {
     };
     return freeMap[doc.id];
   }
-  // Paid docs stored flat in templates/ bucket root
   return `${doc.id.padStart(2, '0')} - ${doc.name}.docx`;
 }
 
@@ -112,15 +109,12 @@ module.exports = async function handler(req, res) {
   console.log(`Generating documents for: ${email} — ${productTier}`);
 
   try {
-    // 1. Determine which docs to deliver based on product tier
     const docsToDeliver = productTier === 'free_sample'
       ? DOCUMENT_LIBRARY.filter(d => d.free)
       : DOCUMENT_LIBRARY;
 
-    // 2. Use OpenAI to generate personalised variable values from quiz answers
     const variables = await generateVariables({ orgName, name, email, quizAnswers });
 
-    // 3. Build signed-URL download manifest from Supabase Storage
     const downloadManifest = [];
 
     for (const doc of docsToDeliver) {
@@ -129,7 +123,7 @@ module.exports = async function handler(req, res) {
 
       const { data: signedData, error: urlError } = await supabase.storage
         .from('templates')
-        .createSignedUrl(storagePath, 60 * 60 * 24 * 7); // 7-day expiry
+        .createSignedUrl(storagePath, 60 * 60 * 24 * 7);
 
       if (urlError) {
         console.warn(`Could not sign URL for ${storagePath}:`, urlError.message);
@@ -144,11 +138,10 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // 4. Save document_access record to Supabase
     const accessToken = generateAccessToken();
     const expiresAt   = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toISOString();
 
-    const { error: accessError } = await supabase
+    const { data: accessRecord, error: accessError } = await supabase
       .from('document_access')
       .insert({
         order_id:     orderId || null,
@@ -160,15 +153,33 @@ module.exports = async function handler(req, res) {
         manifest:     downloadManifest,
         expires_at:   expiresAt,
         created_at:   new Date().toISOString(),
-      });
+      })
+      .select()
+      .single();
 
     if (accessError) {
       console.error('Failed to save document_access:', accessError);
       throw accessError;
     }
 
-    // 5. Trigger delivery email
-    const downloadUrl = `https://ndis-ready.com.au/download?token=${accessToken}`;
+    // Log each doc to document_downloads (aligned to live schema)
+    const downloadRows = downloadManifest.map(doc => ({
+      access_id:      accessRecord.id,
+      customer_email: email,          // live col: customer_email
+      doc_id:         doc.id,         // live col: doc_id (not document_id)
+      doc_title:      doc.name,       // live col: doc_title (not document_name)
+      tier:           productTier,
+      created_at:     new Date().toISOString(),
+    }));
+
+    if (downloadRows.length > 0) {
+      await supabase
+        .from('document_downloads')
+        .insert(downloadRows)
+        .catch(err => console.warn('document_downloads bulk insert failed (non-fatal):', err.message));
+    }
+
+    const downloadUrl = `https://ndis-ready.com.au/download.html?token=${accessToken}`;
     const baseUrl = process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
       : 'https://ndis-ready.com.au';
@@ -206,9 +217,6 @@ module.exports = async function handler(req, res) {
   }
 };
 
-// =============================================================
-// OpenAI — personalise variable values from quiz answers
-// =============================================================
 async function generateVariables({ orgName, name, email, quizAnswers }) {
   const today      = new Date();
   const reviewDate = today.toLocaleDateString('en-AU', { day: '2-digit', month: 'long', year: 'numeric' });

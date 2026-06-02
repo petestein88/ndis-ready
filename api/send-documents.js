@@ -54,7 +54,6 @@ module.exports = async function handler(req, res) {
     const attachments = [];
 
     for (const doc of DOCS) {
-      // Generate a short-lived signed URL (60 seconds — just long enough to fetch)
       const { data: signedData, error: signError } = await supabase.storage
         .from('templates')
         .createSignedUrl(doc.storage_path, 60);
@@ -64,7 +63,6 @@ module.exports = async function handler(req, res) {
         throw new Error(`Storage sign failed for ${doc.filename}`);
       }
 
-      // Fetch the actual file bytes via the signed URL
       const fileRes = await fetch(signedData.signedUrl);
 
       if (!fileRes.ok) {
@@ -128,14 +126,13 @@ module.exports = async function handler(req, res) {
       return res.status(500).json({ error: 'Failed to send document email', detail: errText });
     }
 
-    // ── 3. Log delivery to document_downloads table (non-fatal) ───────────
+    // ── 3. Log delivery to document_downloads (aligned to live schema) ─────
     await supabase.from('document_downloads').insert({
-      email,
-      org_name:     cleanOrgName,
-      documents:    DOCS.map(d => d.filename),
-      tier:         'free_sample',
-      delivered_at: new Date().toISOString(),
-    }).catch(err => console.warn('document_downloads log failed (non-fatal):', err));
+      customer_email: email,          // live col: customer_email (not email)
+      documents:      DOCS.map(d => d.filename),
+      tier:           'free_sample',
+      created_at:     new Date().toISOString(),
+    }).catch(err => console.warn('document_downloads log failed (non-fatal):', err.message));
 
     return res.status(200).json({ success: true, sent: DOCS.length });
 
