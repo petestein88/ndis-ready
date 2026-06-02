@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Your Profile — NDIS Ready</title>
+  <meta name="description" content="Tell us about your organisation and we'll build your personalised compliance document pack.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300..700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== DESIGN TOKENS ===== */
+    :root {
+      --teal:       #01696f;
+      --teal-dark:  #0c4e54;
+      --teal-light: #e0f0f0;
+      --cream:      #faf8f3;
+      --cream-2:    #f4f0e8;
+      --lavender:   #c5b8e8;
+      --lavender-lt:#f0ecfc;
+      --sage:       #8aab8c;
+      --sage-lt:    #eaf3eb;
+      --peach:      #f5c5a3;
+      --peach-lt:   #fdf0e8;
+      --text:       #1a1a2e;
+      --text-muted: #6b7280;
+      --text-faint: #a0a8b0;
+      --border:     rgba(26,26,46,0.1);
+      --shadow-sm:  0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md:  0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg:  0 12px 40px rgba(0,0,0,0.12);
+      --radius-sm:  6px;
+      --radius-md:  12px;
+      --radius-lg:  20px;
+      --radius-full:9999px;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+      --green-check:  #22c55e;
+    }
+
+    /* ===== BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--text);
+      background: var(--cream);
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+    }
+    img, svg { display: block; max-width: 100%; }
+    button { cursor: pointer; border: none; background: none; font: inherit; }
+    input, select, textarea { font: inherit; color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    ::selection { background: rgba(1,105,111,0.15); }
+    :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
+
+    /* ===== NAV ===== */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250,248,243,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--teal);
+    }
+    .nav-back {
+      display: flex; align-items: center; gap: 0.375rem;
+      font-size: 0.875rem; color: var(--text-muted);
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--teal); }
+
+    /* ===== PROGRESS BAR ===== */
+    .progress-wrap {
+      background: var(--cream-2);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+    }
+    .progress-inner {
+      max-width: 720px; margin: 0 auto;
+      display: flex; align-items: center; gap: 0;
+    }
+    .step-dot {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      position: relative; flex: 1;
+    }
+    .step-dot:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 14px; left: 50%;
+      width: 100%; height: 2px;
+      background: var(--border);
+      z-index: 0;
+      transition: background 0.4s;
+    }
+    .step-dot.done:not(:last-child)::after { background: var(--teal); }
+    .dot-circle {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 600;
+      background: var(--cream-2);
+      border: 2px solid var(--border);
+      color: var(--text-faint);
+      z-index: 1; position: relative;
+      transition: all 0.3s;
+    }
+    .step-dot.active .dot-circle {
+      background: var(--teal); border-color: var(--teal);
+      color: #fff; box-shadow: 0 0 0 4px rgba(1,105,111,0.15);
+    }
+    .step-dot.done .dot-circle {
+      background: var(--teal); border-color: var(--teal); color: #fff;
+    }
+    .dot-label {
+      font-size: 0.7rem; color: var(--text-faint); white-space: nowrap;
+      transition: color 0.3s;
+    }
+    .step-dot.active .dot-label, .step-dot.done .dot-label { color: var(--teal); font-weight: 500; }
+
+    /* ===== MAIN LAYOUT ===== */
+    main {
+      max-width: 760px; margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ===== STEP PANELS ===== */
+    .step-panel {
+      display: none;
+      animation: fadeUp 0.35s ease;
+    }
+    .step-panel.active { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== STEP HEADER ===== */
+    .step-header { margin-bottom: 2rem; }
+    .step-label {
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--teal);
+      margin-bottom: 0.5rem;
+    }
+    .step-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      line-height: 1.2; color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    .step-subtitle {
+      font-size: 1.0625rem; color: var(--text-muted); line-height: 1.6;
+      max-width: 55ch;
+    }
+
+    /* ===== CARDS ===== */
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ===== FORM FIELDS ===== */
+    .field-group { display: flex; flex-direction: column; gap: 1.25rem; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 540px) { .field-row { grid-template-columns: 1fr; } }
+
+    .field {
+      display: flex; flex-direction: column; gap: 0.375rem;
+      position: relative;
+    }
+    .field label {
+      font-size: 0.875rem; font-weight: 500; color: var(--text);
+      display: flex; align-items: center; gap: 0.375rem;
+    }
+    .field label .required { color: var(--teal); font-size: 0.75rem; }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 0.625rem 0.875rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.9375rem;
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(1,105,111,0.1);
+      outline: none;
+    }
+    .field textarea { resize: vertical; min-height: 80px; }
+    .field select { cursor: pointer; }
+
+    /* AI autofill badge */
+    .ai-badge {
+      position: absolute; right: 0.625rem; top: 50%;
+      transform: translateY(-50%);
+      display: none; align-items: center; gap: 0.25rem;
+      background: #dcfce7; border: 1px solid #86efac;
+      border-radius: var(--radius-full);
+      padding: 0.125rem 0.5rem;
+      font-size: 0.7rem; font-weight: 600;
+      color: #166534; white-space: nowrap;
+      pointer-events: none;
+    }
+    .ai-badge.visible { display: flex; }
+    .field.ai-filled input, .field.ai-filled select {
+      border-color: #86efac;
+      background: #f0fdf4;
+      padding-right: 5.5rem;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      border-radius: var(--radius-full);
+      font-size: 0.9375rem; font-weight: 600;
+      transition: all 0.2s;
+      cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: var(--teal); color: #fff;
+    }
+    .btn-primary:hover { background: var(--teal-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(1,105,111,0.3); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-secondary {
+      background: transparent; color: var(--teal);
+      border: 2px solid var(--teal);
+    }
+    .btn-secondary:hover { background: var(--teal-light); }
+    .btn-ghost {
+      background: transparent; color: var(--text-muted);
+      font-weight: 400;
+    }
+    .btn-ghost:hover { color: var(--text); }
+    .btn-lg { padding: 1rem 2.25rem; font-size: 1.0625rem; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; margin-top: 2rem;
+    }
+    .btn-row .right { display: flex; gap: 0.75rem; align-items: center; }
+
+    /* ===== STEP 1 — Email & Org Name ===== */
+    .welcome-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--teal-light);
+      color: var(--teal-dark);
+      border-radius: var(--radius-full);
+      padding: 0.375rem 1rem;
+      font-size: 0.8125rem; font-weight: 500;
+      margin-bottom: 1.25rem;
+    }
+    .score-pill {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--peach-lt);
+      border: 1px solid var(--peach);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      margin-top: 1.25rem;
+    }
+    .score-pill .score-num {
+      font-family: var(--font-display);
+      font-size: 2rem; color: var(--teal);
+    }
+    .score-pill .score-label { font-size: 0.875rem; color: var(--text-muted); }
+
+    /* ===== STEP 2 — Upload ===== */
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-lg);
+      padding: 3rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--cream);
+      position: relative;
+    }
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--teal);
+      background: var(--teal-light);
+    }
+    .upload-zone input[type=file] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer;
+      width: 100%; height: 100%;
+    }
+    .upload-icon {
+      width: 52px; height: 52px; margin: 0 auto 1rem;
+      background: var(--teal-light);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--teal);
+    }
+    .upload-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.375rem; }
+    .upload-sub { font-size: 0.875rem; color: var(--text-muted); }
+    .upload-types { font-size: 0.75rem; color: var(--text-faint); margin-top: 0.5rem; }
+
+    /* Upload states */
+    .upload-progress { display: none; padding: 1.5rem; }
+    .progress-bar-wrap {
+      height: 6px; background: var(--cream-2);
+      border-radius: var(--radius-full); overflow: hidden;
+      margin: 1rem 0 0.5rem;
+    }
+    .progress-bar-fill {
+      height: 100%; background: var(--teal);
+      border-radius: var(--radius-full);
+      width: 0%; transition: width 0.3s ease;
+    }
+    .progress-label { font-size: 0.8125rem; color: var(--text-muted); text-align: center; }
+
+    .upload-result { display: none; }
+    .extraction-summary {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .extraction-icon {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: #dcfce7;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: #166534;
+    }
+    .extraction-info h4 { font-size: 0.9375rem; font-weight: 600; color: #166534; margin-bottom: 0.25rem; }
+    .extraction-info p { font-size: 0.8125rem; color: #166534; opacity: 0.8; }
+    .confidence-bar-wrap {
+      height: 4px; background: #bbf7d0;
+      border-radius: var(--radius-full); overflow: hidden;
+      margin-top: 0.625rem;
+    }
+    .confidence-bar-fill {
+      height: 100%; background: #16a34a;
+      border-radius: var(--radius-full);
+      transition: width 0.8s ease;
+    }
+
+    .upload-error {
+      background: #fef2f2; border: 1px solid #fca5a5;
+      border-radius: var(--radius-md); padding: 1rem 1.25rem;
+      font-size: 0.875rem; color: #991b1b; display: none;
+    }
+
+    /* ===== STEP 3 — Org Details ===== */
+    .tab-bar {
+      display: flex; gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: 1.75rem;
+      background: var(--cream-2);
+    }
+    .tab-btn {
+      flex: 1; padding: 0.625rem 0.5rem;
+      font-size: 0.8125rem; font-weight: 500;
+      color: var(--text-muted);
+      background: transparent;
+      border: none; cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .tab-btn.active {
+      background: #fff; color: var(--teal);
+      font-weight: 600;
+      box-shadow: var(--shadow-sm);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeUp 0.25s ease; }
+
+    .section-note {
+      font-size: 0.8125rem; color: var(--text-muted);
+      background: var(--lavender-lt);
+      border-radius: var(--radius-sm);
+      padding: 0.625rem 0.875rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ===== STEP 4 — Preview & Upsell ===== */
+    .building-screen {
+      text-align: center; padding: 3rem 1rem;
+    }
+    .building-spinner {
+      width: 64px; height: 64px;
+      border: 4px solid var(--teal-light);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .building-steps {
+      display: flex; flex-direction: column; gap: 0.5rem;
+      text-align: left; max-width: 280px; margin: 1.5rem auto 0;
+    }
+    .building-step {
+      display: flex; align-items: center; gap: 0.625rem;
+      font-size: 0.875rem; color: var(--text-muted);
+      opacity: 0;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .building-step.done { color: var(--text); }
+    .building-step .check { color: var(--green-check); }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    .preview-results { display: none; }
+    .preview-header { margin-bottom: 2rem; }
+    .preview-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+      margin-bottom: 0.5rem;
+    }
+    .preview-header p { font-size: 0.9375rem; color: var(--text-muted); }
+
+    .preview-docs { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+    .preview-doc {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      display: flex; align-items: flex-start; gap: 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s;
+    }
+    .preview-doc:hover { box-shadow: var(--shadow-md); }
+    .doc-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-sm);
+      background: var(--teal-light);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--teal);
+    }
+    .doc-info { flex: 1; min-width: 0; }
+    .doc-name { font-weight: 600; font-size: 0.9375rem; margin-bottom: 0.25rem; }
+    .doc-personalised {
+      font-size: 0.8rem; color: var(--green-check);
+      display: flex; align-items: center; gap: 0.25rem;
+    }
+    .doc-preview-text {
+      font-size: 0.8125rem; color: var(--text-muted);
+      margin-top: 0.375rem; line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .doc-download-btn {
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-full);
+      background: var(--teal);
+      color: #fff; font-size: 0.8125rem; font-weight: 600;
+      white-space: nowrap; flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .doc-download-btn:hover { background: var(--teal-dark); }
+
+    /* Locked docs */
+    .locked-pack {
+      background: var(--lavender-lt);
+      border: 1px solid var(--lavender);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .locked-pack h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem; margin-bottom: 0.5rem;
+    }
+    .locked-pack p { font-size: 0.9375rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+    .locked-doc-list {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      justify-content: center; margin-bottom: 1.5rem;
+    }
+    .locked-doc-chip {
+      background: rgba(197,184,232,0.3);
+      border: 1px solid var(--lavender);
+      border-radius: var(--radius-full);
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem; color: var(--text-muted);
+      display: flex; align-items: center; gap: 0.25rem;
+    }
+    .lock-icon { font-size: 0.7rem; }
+    .price-row {
+      display: flex; align-items: baseline; gap: 0.375rem;
+      justify-content: center; margin-bottom: 1.25rem;
+    }
+    .price-row .price {
+      font-family: var(--font-display);
+      font-size: 2.5rem; color: var(--teal);
+    }
+    .price-row .period { font-size: 0.875rem; color: var(--text-muted); }
+    .guarantee {
+      font-size: 0.8125rem; color: var(--text-muted); margin-top: 0.75rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.375rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .card { padding: 1.25rem; }
+      .btn-row { flex-direction: column-reverse; align-items: stretch; }
+      .btn-row .right { flex-direction: column; }
+      .tab-btn { font-size: 0.7rem; padding: 0.5rem 0.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <path d="M16 2L4 8v8c0 7 5.3 13.5 12 15 6.7-1.5 12-8 12-15V8L16 2z" fill="#01696f" opacity="0.15"/>
+      <path d="M16 2L4 8v8c0 7 5.3 13.5 12 15 6.7-1.5 12-8 12-15V8L16 2z" stroke="#01696f" stroke-width="1.5" fill="none"/>
+      <path d="M11 16l3.5 3.5L21 12" stroke="#01696f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    NDIS Ready
+  </a>
+  <a href="/results.html" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to my gap map
+  </a>
+</nav>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="step-dot active" id="dot-1">
+      <div class="dot-circle">1</div>
+      <span class="dot-label">Account</span>
+    </div>
+    <div class="step-dot" id="dot-2">
+      <div class="dot-circle">2</div>
+      <span class="dot-label">Upload</span>
+    </div>
+    <div class="step-dot" id="dot-3">
+      <div class="dot-circle">3</div>
+      <span class="dot-label">Details</span>
+    </div>
+    <div class="step-dot" id="dot-4">
+      <div class="dot-circle">4</div>
+      <span class="dot-label">Preview</span>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- ===== STEP 1: ACCOUNT ===== -->
+  <div class="step-panel active" id="step-1">
+    <div class="step-header">
+      <div class="welcome-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Free profile — no payment needed
+      </div>
+      <h1 class="step-title">Let's build your compliance profile</h1>
+      <p class="step-subtitle">We'll use this to personalise all your NDIS compliance documents with your organisation's details.</p>
+    </div>
+
+    <div id="score-display" style="display:none" class="score-pill">
+      <div>
+        <div class="score-num" id="score-num">—</div>
+      </div>
+      <div class="score-label">
+        documents identified<br>for your provider profile
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 1.5rem;">
+      <div class="field-group">
+        <div class="field">
+          <label for="email">Email address <span class="required">*</span></label>
+          <input type="email" id="email" name="email" placeholder="hello@yourorg.com.au" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="org_name">Organisation name <span class="required">*</span></label>
+          <input type="text" id="org_name" name="org_name" placeholder="e.g. Sunrise Support Services" autocomplete="organization" required>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <span></span>
+        <div class="right">
+          <button class="btn btn-primary btn-lg" onclick="goStep(2)">
+            Continue
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <p style="text-align:center; margin-top:1.25rem; font-size:0.8125rem; color:var(--text-faint);">
+      By continuing you agree to our <a href="/privacy.html" style="color:var(--teal); text-decoration:underline;" target="_blank">Privacy Policy</a>
+    </p>
+  </div>
+
+  <!-- ===== STEP 2: UPLOAD ===== -->
+  <div class="step-panel" id="step-2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 4</div>
+      <h2 class="step-title">Got existing documents?</h2>
+      <p class="step-subtitle">Drop in any existing policy, registration form, or annual report and our AI will extract your organisation details automatically — saving you from typing 40 fields.</p>
+    </div>
+
+    <div class="card">
+      <!-- Upload zone -->
+      <div id="upload-zone" class="upload-zone">
+        <input type="file" id="file-input" accept=".pdf,.docx,.doc,.txt" aria-label="Upload existing document">
+        <div class="upload-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <div class="upload-title">Drop your document here</div>
+        <div class="upload-sub">or click to browse files</div>
+        <div class="upload-types">PDF, DOCX or TXT — max 10MB</div>
+      </div>
+
+      <!-- Progress state -->
+      <div id="upload-progress" class="upload-progress">
+        <p style="font-weight:600; text-align:center; margin-bottom:0.5rem;">Reading your document…</p>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+        <p class="progress-label" id="progress-label">Uploading file...</p>
+      </div>
+
+      <!-- Result state -->
+      <div id="upload-result" class="upload-result">
+        <div class="extraction-summary">
+          <div class="extraction-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div class="extraction-info">
+            <h4 id="extraction-title">AI extraction complete</h4>
+            <p id="extraction-subtitle">14 fields pre-filled with confidence</p>
+            <div class="confidence-bar-wrap">
+              <div class="confidence-bar-fill" id="confidence-fill" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error state -->
+      <div id="upload-error" class="upload-error"></div>
+
+      <div class="btn-row" style="margin-top:1.5rem;">
+        <button class="btn btn-ghost" onclick="goStep(3)">Skip — I'll fill it in myself</button>
+        <div class="right">
+          <button class="btn btn-primary" id="upload-next-btn" onclick="goStep(3)" disabled>
+            Continue with extracted data
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 3: ORG DETAILS ===== -->
+  <div class="step-panel" id="step-3">
+    <div class="step-header">
+      <div class="step-label">Step 3 of 4</div>
+      <h2 class="step-title">Your organisation details</h2>
+      <p class="step-subtitle">These details will be injected into every one of your compliance documents. Fields marked with ✓ were pre-filled by AI — please verify them.</p>
+    </div>
+
+    <div class="card">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('identity')">🏢 Identity</button>
+        <button class="tab-btn" onclick="switchTab('people')">👥 Key People</button>
+        <button class="tab-btn" onclick="switchTab('registration')">📋 Registration</button>
+        <button class="tab-btn" onclick="switchTab('operations')">⚙️ Operations</button>
+      </div>
+
+      <!-- TAB: Identity -->
+      <div class="tab-panel active" id="tab-identity">
+        <div class="section-note">Legal and contact details for your organisation. These appear on the cover page of every document.</div>
+        <div class="field-group">
+          <div class="field" id="f-org_name_2">
+            <label>Organisation name <span class="required">*</span></label>
+            <input type="text" id="i_org_name" placeholder="Full legal name">
+            <span class="ai-badge">✓ Auto-filled</span>
+          </div>
+          <div class="field-row">
+            <div class="field" id="f-trading_name">
+              <label>Trading name</label>
+              <input type="text" id="i_trading_name" placeholder="If different from legal name">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+            <div class="field" id="f-org_type">
+              <label>Organisation type</label>
+              <select id="i_org_type">
+                <option value="">Select type…</option>
+                <option>Sole Trader</option>
+                <option>Partnership</option>
+                <option>Pty Ltd</option>
+                <option>Not-for-profit</option>
+                <option>Incorporated Association</option>
+                <option>Other</option>
+              </select>
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field" id="f-abn">
+              <label>ABN</label>
+              <input type="text" id="i_abn" placeholder="XX XXX XXX XXX">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+            <div class="field" id="f-acn">
+              <label>ACN <span style="color:var(--text-faint); font-weight:400">(if applicable)</span></label>
+              <input type="text" id="i_acn" placeholder="XXX XXX XXX">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field" id="f-phone">
+              <label>Phone</label>
+              <input type="tel" id="i_phone" placeholder="02 9XXX XXXX">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+            <div class="field" id="f-website">
+              <label>Website</label>
+              <input type="url" id="i_website" placeholder="https://">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+          </div>
+          <div class="field" id="f-street_address">
+            <label>Street address</label>
+            <input type="text" id="i_street_address" placeholder="Street address">
+            <span class="ai-badge">✓ Auto-filled</span>
+          </div>
+          <div class="field-row">
+            <div class="field" id="f-suburb">
+              <label>Suburb</label>
+              <input type="text" id="i_suburb" placeholder="Suburb">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+            <div class="field" id="f-state">
+              <label>State/Territory</label>
+              <select id="i_state">
+                <option value="">Select…</option>
+                <option>ACT</option><option>NSW</option><option>NT</option>
+                <option>QLD</option><option>SA</option><option>TAS</option>
+                <option>VIC</option><option>WA</option>
+              </select>
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+            <div class="field" id="f-postcode">
+              <label>Postcode</label>
+              <input type="text" id="i_postcode" placeholder="2000" maxlength="4">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Key People -->
+      <div class="tab-panel" id="tab-people">
+        <div class="section-note">These names appear in the accountability and responsibility sections of your documents.</div>
+        <div class="field-group">
+          <div class="field-row">
+            <div class="field" id="f-director_name">
+              <label>Director / Owner name</label>
+              <input type="text" id="i_director_name" placeholder="Full name">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+            <div class="field" id="f-director_title">
+              <label>Title</label>
+              <select id="i_director_title">
+                <option value="">Select…</option>
+                <option>Director</option><option>Owner</option>
+                <option>CEO</option><option>Managing Director</option>
+                <option>Sole Trader</option>
+              </select>
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+          </div>
+          <div class="field" id="f-service_manager_name">
+            <label>Service Manager name</label>
+            <input type="text" id="i_service_manager_name" placeholder="Full name (can be same as director)">
+            <span class="ai-badge">✓ Auto-filled</span>
+          </div>
+          <div class="field" id="f-compliance_officer_name">
+            <label>Compliance Officer name</label>
+            <input type="text" id="i_compliance_officer_name" placeholder="Full name (can be same as director)">
+            <span class="ai-badge">✓ Auto-filled</span>
+          </div>
+          <div class="field-row">
+            <div class="field" id="f-safeguarding_officer_name">
+              <label>Safeguarding Officer</label>
+              <input type="text" id="i_safeguarding_officer_name" placeholder="Full name">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+            <div class="field" id="f-whs_officer_name">
+              <label>WHS Officer</label>
+              <input type="text" id="i_whs_officer_name" placeholder="Full name">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Registration -->
+      <div class="tab-panel" id="tab-registration">
+        <div class="section-note">Your NDIS registration details determine which documents you need and how they're worded.</div>
+        <div class="field-group">
+          <div class="field" id="f-audit_pathway">
+            <label>Audit pathway</label>
+            <select id="i_audit_pathway">
+              <option value="">Select…</option>
+              <option>Verification</option>
+              <option>Certification</option>
+            </select>
+            <span class="ai-badge">✓ Auto-filled</span>
+          </div>
+          <div class="field" id="f-registration_status">
+            <label>Registration status</label>
+            <select id="i_registration_status">
+              <option value="">Select…</option>
+              <option>New Applicant</option>
+              <option>Registered — Renewing</option>
+              <option>Registered — Already Compliant</option>
+            </select>
+            <span class="ai-badge">✓ Auto-filled</span>
+          </div>
+          <div class="field" id="f-ndis_provider_number">
+            <label>NDIS Provider Number</label>
+            <input type="text" id="i_ndis_provider_number" placeholder="4-XXXXXXXXXX">
+            <span class="ai-badge">✓ Auto-filled</span>
+          </div>
+          <div class="field" id="f-registration_groups">
+            <label>Registration groups</label>
+            <input type="text" id="i_registration_groups" placeholder="e.g. 0107, 0110, 0115">
+            <span class="ai-badge">✓ Auto-filled</span>
+          </div>
+          <div class="field" id="f-support_types">
+            <label>Support types delivered</label>
+            <textarea id="i_support_types" placeholder="e.g. SIL (Supported Independent Living), Community Participation, Personal Care"></textarea>
+            <span class="ai-badge">✓ Auto-filled</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Operations -->
+      <div class="tab-panel" id="tab-operations">
+        <div class="section-note">Operational details that appear in your WHS, incident management, and service delivery documents.</div>
+        <div class="field-group">
+          <div class="field-row">
+            <div class="field" id="f-staff_count">
+              <label>Approximate staff count</label>
+              <select id="i_staff_count">
+                <option value="">Select…</option>
+                <option>Just me (sole trader)</option>
+                <option>2–5 staff</option>
+                <option>6–15 staff</option>
+                <option>16–50 staff</option>
+                <option>50+ staff</option>
+              </select>
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+            <div class="field" id="f-established_year">
+              <label>Year established</label>
+              <input type="text" id="i_established_year" placeholder="e.g. 2022">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+          </div>
+          <div class="field" id="f-service_areas">
+            <label>Geographic service areas</label>
+            <input type="text" id="i_service_areas" placeholder="e.g. Greater Sydney, Central Coast">
+            <span class="ai-badge">✓ Auto-filled</span>
+          </div>
+          <div class="field-row">
+            <div class="field" id="f-operating_hours">
+              <label>Operating hours</label>
+              <input type="text" id="i_operating_hours" placeholder="e.g. Mon–Fri 8am–6pm">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+            <div class="field" id="f-after_hours_contact">
+              <label>After-hours contact</label>
+              <input type="tel" id="i_after_hours_contact" placeholder="e.g. 0400 XXX XXX">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field" id="f-emergency_contact_name">
+              <label>Emergency contact name</label>
+              <input type="text" id="i_emergency_contact_name" placeholder="Full name">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+            <div class="field" id="f-emergency_contact_phone">
+              <label>Emergency contact phone</label>
+              <input type="tel" id="i_emergency_contact_phone" placeholder="0400 XXX XXX">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field" id="f-insurance_provider">
+              <label>Insurance provider</label>
+              <input type="text" id="i_insurance_provider" placeholder="e.g. QBE, Allianz">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+            <div class="field" id="f-insurance_policy_number">
+              <label>Policy number</label>
+              <input type="text" id="i_insurance_policy_number" placeholder="Policy #">
+              <span class="ai-badge">✓ Auto-filled</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(2)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Back
+        </button>
+        <div class="right">
+          <button class="btn btn-primary btn-lg" onclick="goStep(4)">
+            Build my documents
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 4: PREVIEW ===== -->
+  <div class="step-panel" id="step-4">
+
+    <!-- Building screen -->
+    <div class="building-screen" id="building-screen">
+      <div class="building-spinner"></div>
+      <h2 style="font-family:var(--font-display); font-size:1.75rem; margin-bottom:0.5rem;">Building your documents…</h2>
+      <p style="color:var(--text-muted); font-size:0.9375rem;">We're generating personalised compliance documents for <strong id="building-org-name">your organisation</strong>.</p>
+      <div class="building-steps">
+        <div class="building-step" id="bs-1" style="animation-delay:0.5s">
+          <span class="check">✓</span> Analysing your provider profile
+        </div>
+        <div class="building-step" id="bs-2" style="animation-delay:1.2s">
+          <span class="check">✓</span> Matching NDIS Practice Standards
+        </div>
+        <div class="building-step" id="bs-3" style="animation-delay:2.0s">
+          <span class="check">✓</span> Personalising document templates
+        </div>
+        <div class="building-step" id="bs-4" style="animation-delay:2.8s">
+          <span class="check">✓</span> Injecting your organisation details
+        </div>
+        <div class="building-step" id="bs-5" style="animation-delay:3.6s">
+          <span class="check">✓</span> Preparing your 3 free samples
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview results -->
+    <div class="preview-results" id="preview-results">
+      <div class="preview-header">
+        <h2>Your 3 free compliance documents are ready</h2>
+        <p>Personalised for <strong id="preview-org-name">your organisation</strong>. Download them now — they're ready to submit to your auditor.</p>
+      </div>
+
+      <div class="preview-docs" id="preview-docs">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Locked pack upsell -->
+      <div class="locked-pack">
+        <h3>Unlock all <span id="locked-count">62</span> remaining documents</h3>
+        <p>Your complete compliance pack — every policy, procedure, and form your auditor will ask for, pre-filled with your details.</p>
+
+        <div class="locked-doc-list" id="locked-doc-list">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="price-row">
+          <span class="price">$49</span>
+          <span class="period">/month — cancel anytime</span>
+        </div>
+
+        <button class="btn btn-primary btn-lg" onclick="goToStripe()" style="width:100%; justify-content:center;">
+          Get my full compliance pack
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+
+        <div class="guarantee">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          30-day money-back guarantee · Cancel anytime · NDIS-specific, Australian-made
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+// =============================================================
+// STATE
+// =============================================================
+const state = {
+  currentStep: 1,
+  email: '',
+  orgName: '',
+  extractedData: {},
+  quizParams: {},
+  generatedDocs: [],
+};
+
+// Read query params from results.html
+(function readParams() {
+  const p = new URLSearchParams(window.location.search);
+  const score   = p.get('score')   || p.get('doccount');
+  const stateVal= p.get('state');
+  const service = p.get('service');
+  const status  = p.get('status');
+  const orgtype = p.get('orgtype');
+  const audit   = p.get('auditpathway');
+
+  state.quizParams = { score, state: stateVal, service, status, orgtype, audit };
+
+  // Show score pill if we have a count
+  if (score) {
+    document.getElementById('score-display').style.display = 'flex';
+    document.getElementById('score-num').textContent = score;
+  }
+
+  // Pre-populate state field if passed
+  if (stateVal) {
+    const sel = document.getElementById('i_state');
+    if (sel) sel.value = stateVal.toUpperCase();
+  }
+
+  // Pre-populate audit pathway
+  if (audit) {
+    const auditMap = { '0': 'Verification', '1': 'Certification', '2': 'Certification' };
+    const sel = document.getElementById('i_audit_pathway');
+    if (sel && auditMap[audit]) sel.value = auditMap[audit];
+  }
+})();
+
+// Hash-based routing
+window.addEventListener('hashchange', () => {
+  const h = window.location.hash;
+  const n = parseInt(h.replace('#step-', ''));
+  if (n >= 1 && n <= 4) showStep(n, false);
+});
+
+// =============================================================
+// STEP NAVIGATION
+// =============================================================
+function goStep(n) {
+  // Validate step 1
+  if (n > 1 && state.currentStep === 1) {
+    const email   = document.getElementById('email').value.trim();
+    const orgName = document.getElementById('org_name').value.trim();
+    if (!email || !email.includes('@')) {
+      document.getElementById('email').focus();
+      document.getElementById('email').style.borderColor = '#f87171';
+      return;
+    }
+    if (!orgName) {
+      document.getElementById('org_name').focus();
+      document.getElementById('org_name').style.borderColor = '#f87171';
+      return;
+    }
+    state.email   = email;
+    state.orgName = orgName;
+    // Mirror org name into Step 3 identity tab
+    document.getElementById('i_org_name').value = orgName;
+    // Mirror email into Step 3 (no dedicated field but store it)
+  }
+
+  // Step 4 triggers document generation
+  if (n === 4) {
+    buildProfile();
+  }
+
+  showStep(n);
+}
+
+function showStep(n, pushHash = true) {
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step-' + n).classList.add('active');
+
+  document.querySelectorAll('.step-dot').forEach((d, i) => {
+    d.classList.toggle('active', i + 1 === n);
+    d.classList.toggle('done',   i + 1 < n);
+    d.querySelector('.dot-circle').textContent = i + 1 < n ? '✓' : (i + 1);
+  });
+
+  state.currentStep = n;
+  if (pushHash) window.location.hash = 'step-' + n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// =============================================================
+// TAB SWITCHING (Step 3)
+// =============================================================
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    const tabs = ['identity','people','registration','operations'];
+    b.classList.toggle('active', tabs[i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// =============================================================
+// FILE UPLOAD + AI EXTRACTION
+// =============================================================
+const fileInput   = document.getElementById('file-input');
+const uploadZone  = document.getElementById('upload-zone');
+const uploadProg  = document.getElementById('upload-progress');
+const uploadResult= document.getElementById('upload-result');
+const uploadError = document.getElementById('upload-error');
+const progressFill= document.getElementById('progress-fill');
+const progressLbl = document.getElementById('progress-label');
+const nextBtn     = document.getElementById('upload-next-btn');
+
+fileInput.addEventListener('change', e => {
+  if (e.target.files[0]) handleFileUpload(e.target.files[0]);
+});
+
+uploadZone.addEventListener('dragover', e => {
+  e.preventDefault();
+  uploadZone.classList.add('drag-over');
+});
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadZone.classList.remove('drag-over');
+  if (e.dataTransfer.files[0]) handleFileUpload(e.dataTransfer.files[0]);
+});
+
+async function handleFileUpload(file) {
+  // Max 10MB
+  if (file.size > 10 * 1024 * 1024) {
+    showUploadError('File too large. Please upload a file under 10MB.');
+    return;
+  }
+
+  // Show progress
+  uploadZone.style.display   = 'none';
+  uploadError.style.display  = 'none';
+  uploadResult.style.display = 'none';
+  uploadProg.style.display   = 'block';
+
+  // Animate progress bar
+  setProgress(10, 'Uploading file…');
+
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    setProgress(30, 'Sending to AI…');
+
+    const apiBase = window.location.hostname === 'localhost'
+      ? 'http://localhost:3000'
+      : 'https://ndis-ready.vercel.app';
+
+    const resp = await fetch(`${apiBase}/api/extract-profile`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    setProgress(75, 'Extracting your details…');
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({ error: 'Unknown error' }));
+      throw new Error(err.error || `Server error: ${resp.status}`);
+    }
+
+    const result = await resp.json();
+    setProgress(100, 'Complete!');
+
+    setTimeout(() => {
+      uploadProg.style.display   = 'none';
+      uploadResult.style.display = 'block';
+
+      // Update extraction summary
+      document.getElementById('extraction-title').textContent =
+        `${result.fieldsExtracted} fields extracted from ${file.name}`;
+      document.getElementById('extraction-subtitle').textContent =
+        `${result.confidence}% confidence · ${result.data.document_type_detected || 'Document'}`;
+      document.getElementById('confidence-fill').style.width = result.confidence + '%';
+
+      // Pre-fill all form fields
+      if (result.data) {
+        state.extractedData = result.data;
+        prefillFields(result.data);
+      }
+
+      nextBtn.disabled = false;
+    }, 600);
+
+  } catch (err) {
+    uploadProg.style.display = 'none';
+    uploadZone.style.display = 'block';
+    showUploadError(`Extraction failed: ${err.message}. You can skip this step and fill in your details manually.`);
+    console.error('Upload error:', err);
+  }
+}
+
+function setProgress(pct, label) {
+  progressFill.style.width = pct + '%';
+  progressLbl.textContent  = label;
+}
+
+function showUploadError(msg) {
+  uploadError.style.display = 'block';
+  uploadError.textContent   = msg;
+}
+
+// Map API response keys → field IDs
+const FIELD_MAP = {
+  org_name:                 'i_org_name',
+  trading_name:             'i_trading_name',
+  org_type:                 'i_org_type',
+  abn:                      'i_abn',
+  acn:                      'i_acn',
+  phone:                    'i_phone',
+  website:                  'i_website',
+  street_address:           'i_street_address',
+  suburb:                   'i_suburb',
+  state:                    'i_state',
+  postcode:                 'i_postcode',
+  director_name:            'i_director_name',
+  director_title:           'i_director_title',
+  service_manager_name:     'i_service_manager_name',
+  compliance_officer_name:  'i_compliance_officer_name',
+  safeguarding_officer_name:'i_safeguarding_officer_name',
+  whs_officer_name:         'i_whs_officer_name',
+  audit_pathway:            'i_audit_pathway',
+  registration_status:      'i_registration_status',
+  ndis_provider_number:     'i_ndis_provider_number',
+  registration_groups:      'i_registration_groups',
+  support_types:            'i_support_types',
+  staff_count:              'i_staff_count',
+  established_year:         'i_established_year',
+  service_areas:            'i_service_areas',
+  operating_hours:          'i_operating_hours',
+  after_hours_contact:      'i_after_hours_contact',
+  emergency_contact_name:   'i_emergency_contact_name',
+  emergency_contact_phone:  'i_emergency_contact_phone',
+  insurance_provider:       'i_insurance_provider',
+  insurance_policy_number:  'i_insurance_policy_number',
+};
+
+function prefillFields(data) {
+  for (const [key, fieldId] of Object.entries(FIELD_MAP)) {
+    const value = data[key];
+    if (!value) continue;
+
+    const el = document.getElementById(fieldId);
+    if (!el) continue;
+
+    // For selects, try to match option
+    if (el.tagName === 'SELECT') {
+      const opts = Array.from(el.options).map(o => o.value.toLowerCase());
+      const match = opts.find(o => o === String(value).toLowerCase());
+      if (match) el.value = match;
+      else {
+        // Try partial match
+        const partial = opts.find(o => o.includes(String(value).toLowerCase().split(' ')[0]));
+        if (partial) el.value = partial;
+        else continue; // Don't mark as AI-filled if no match
+      }
+    } else {
+      el.value = value;
+    }
+
+    // Mark field as AI-filled
+    const wrapper = el.closest('.field');
+    if (wrapper) {
+      wrapper.classList.add('ai-filled');
+      const badge = wrapper.querySelector('.ai-badge');
+      if (badge) badge.classList.add('visible');
+    }
+  }
+}
+
+// =============================================================
+// BUILD PROFILE → GENERATE DOCS (Step 4)
+// =============================================================
+const FREE_DOCS = [
+  {
+    id: '49',
+    name: 'Incident Management Policy and Procedure',
+    category: 'incidents',
+    preview: 'This policy establishes the framework for identifying, reporting, managing, and reviewing incidents in accordance with the NDIS Practice Standards and NDIS Commission reporting requirements.',
+  },
+  {
+    id: '52',
+    name: 'Complaints Management Policy and Procedure',
+    category: 'incidents',
+    preview: 'This policy ensures that all complaints are acknowledged, investigated, and resolved promptly, in a manner that is respectful, fair, and consistent with the rights of NDIS participants.',
+  },
+  {
+    id: '03',
+    name: 'Risk Management Framework',
+    category: 'governance',
+    preview: 'This framework establishes the risk management approach for the organisation, including risk identification, assessment, treatment, monitoring, and review in line with AS/NZS ISO 31000.',
+  },
+];
+
+const LOCKED_SAMPLE = [
+  'Governance Policy', 'HR Policy Suite', 'WHS Framework',
+  'Participant Rights Policy', 'Privacy Policy', 'Support Planning Procedure',
+  'Safeguarding Policy', 'Restrictive Practices Procedure', 'Code of Conduct',
+  'NDIS Worker Screening Policy', 'Business Continuity Plan', '+50 more…'
+];
+
+async function buildProfile() {
+  const orgName = state.orgName ||
+    document.getElementById('i_org_name').value.trim() ||
+    'Your Organisation';
+
+  document.getElementById('building-org-name').textContent = orgName;
+  document.getElementById('building-screen').style.display  = 'block';
+  document.getElementById('preview-results').style.display  = 'none';
+
+  // Collect all form fields
+  const profile = collectProfile();
+
+  // Call generate-documents API
+  try {
+    const apiBase = window.location.hostname === 'localhost'
+      ? 'http://localhost:3000'
+      : 'https://ndis-ready.vercel.app';
+
+    const resp = await fetch(`${apiBase}/api/generate-documents`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email:       state.email,
+        name:        profile.director_name || orgName,
+        orgName:     orgName,
+        productTier: 'free_sample',
+        quizAnswers: state.quizParams,
+        profile,
+      }),
+    });
+
+    const result = await resp.json();
+    state.generatedDocs = result;
+
+  } catch (err) {
+    console.warn('Generate docs API error (showing preview anyway):', err.message);
+  }
+
+  // Show preview after animation completes
+  setTimeout(() => showPreview(orgName), 4500);
+}
+
+function collectProfile() {
+  const get = id => (document.getElementById(id) || {}).value || '';
+  return {
+    org_name:                 get('i_org_name')                || state.orgName,
+    trading_name:             get('i_trading_name'),
+    org_type:                 get('i_org_type'),
+    abn:                      get('i_abn'),
+    acn:                      get('i_acn'),
+    phone:                    get('i_phone'),
+    website:                  get('i_website'),
+    street_address:           get('i_street_address'),
+    suburb:                   get('i_suburb'),
+    state:                    get('i_state'),
+    postcode:                 get('i_postcode'),
+    director_name:            get('i_director_name'),
+    director_title:           get('i_director_title'),
+    service_manager_name:     get('i_service_manager_name'),
+    compliance_officer_name:  get('i_compliance_officer_name'),
+    safeguarding_officer_name:get('i_safeguarding_officer_name'),
+    whs_officer_name:         get('i_whs_officer_name'),
+    audit_pathway:            get('i_audit_pathway'),
+    registration_status:      get('i_registration_status'),
+    ndis_provider_number:     get('i_ndis_provider_number'),
+    registration_groups:      get('i_registration_groups'),
+    support_types:            get('i_support_types'),
+    staff_count:              get('i_staff_count'),
+    established_year:         get('i_established_year'),
+    service_areas:            get('i_service_areas'),
+    operating_hours:          get('i_operating_hours'),
+    after_hours_contact:      get('i_after_hours_contact'),
+    emergency_contact_name:   get('i_emergency_contact_name'),
+    emergency_contact_phone:  get('i_emergency_contact_phone'),
+    insurance_provider:       get('i_insurance_provider'),
+    insurance_policy_number:  get('i_insurance_policy_number'),
+    email:                    state.email,
+  };
+}
+
+function showPreview(orgName) {
+  document.getElementById('building-screen').style.display  = 'none';
+  document.getElementById('preview-results').style.display  = 'block';
+  document.getElementById('preview-org-name').textContent   = orgName;
+
+  // Render 3 free docs
+  const container = document.getElementById('preview-docs');
+  container.innerHTML = FREE_DOCS.map(doc => `
+    <div class="preview-doc">
+      <div class="doc-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </div>
+      <div class="doc-info">
+        <div class="doc-name">${doc.name}</div>
+        <div class="doc-personalised">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          Personalised for ${orgName}
+        </div>
+        <div class="doc-preview-text">${doc.preview}</div>
+      </div>
+      <button class="doc-download-btn" onclick="downloadDoc('${doc.id}', '${doc.name}')">
+        Download
+      </button>
+    </div>
+  `).join('');
+
+  // Render locked chips
+  const lockedContainer = document.getElementById('locked-doc-list');
+  lockedContainer.innerHTML = LOCKED_SAMPLE.map(name => `
+    <div class="locked-doc-chip">
+      <span class="lock-icon">🔒</span> ${name}
+    </div>
+  `).join('');
+
+  const score = state.quizParams.score;
+  if (score) {
+    document.getElementById('locked-count').textContent = Math.max(parseInt(score) - 3, 0);
+  }
+}
+
+function downloadDoc(docId, docName) {
+  // If we got a download URL from the API, use it
+  if (state.generatedDocs && state.generatedDocs.downloadUrl) {
+    window.open(state.generatedDocs.downloadUrl, '_blank');
+    return;
+  }
+  // Fallback: trigger email delivery
+  alert(`Your document "${docName}" is being prepared and will be emailed to ${state.email} within a few minutes.`);
+}
+
+function goToStripe() {
+  const orgName = encodeURIComponent(state.orgName);
+  const email   = encodeURIComponent(state.email);
+  // Starter plan — update price ID once Stripe subscription is created
+  window.location.href = `https://buy.stripe.com/starter?prefilled_email=${email}&client_reference_id=${orgName}`;
+}
+</script>
+
+</body>
+</html>
