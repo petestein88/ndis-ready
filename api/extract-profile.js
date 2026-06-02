@@ -8,6 +8,8 @@
 // =============================================================
 
 const OpenAI = require('openai');
+const mammoth = require('mammoth');
+const pdfParse = require('pdf-parse');
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -59,10 +61,6 @@ export default async function handler(req, res) {
     }
 
     console.log(`Extracting profile from: ${filePart.filename} (${filePart.data.length} bytes)`);
-
-    // Convert file buffer to base64 for OpenAI
-    const base64File = filePart.data.toString('base64');
-    const mimeType = getMimeType(filename);
 
     // Build extraction prompt
     const extractionPrompt = `You are an expert at reading Australian NDIS (National Disability Insurance Scheme) provider documents and extracting organisational information.
@@ -131,68 +129,61 @@ Return ONLY a valid JSON object with these exact keys:
 
     let extractedData;
 
-    // Use OpenAI Files API for document processing
+    // -------------------------------------------------------------
+    // STEP 1 — Extract the ACTUAL text out of the uploaded file.
+    // PDF  -> pdf-parse, DOCX/DOC -> mammoth, TXT -> utf-8.
+    // (The old version uploaded the file to OpenAI but never sent
+    //  its content, so only the filename was ever "read".)
+    // -------------------------------------------------------------
+    let documentText = '';
     try {
-      const fileBuffer = filePart.data;
-      const blob = new Blob([fileBuffer], { type: mimeType });
-      const file = new File([blob], filePart.filename, { type: mimeType });
-
-      // Upload file to OpenAI for processing
-      const uploadedFile = await openai.files.create({
-        file: file,
-        purpose: 'assistants',
+      if (filename.endsWith('.pdf')) {
+        const parsed = await pdfParse(filePart.data);
+        documentText = parsed.text || '';
+      } else if (filename.endsWith('.docx') || filename.endsWith('.doc')) {
+        const result = await mammoth.extractRawText({ buffer: filePart.data });
+        documentText = result.value || '';
+      } else if (filename.endsWith('.txt')) {
+        documentText = filePart.data.toString('utf-8');
+      }
+    } catch (parseErr) {
+      console.error('Document text extraction failed:', parseErr.message);
+      return res.status(422).json({
+        error: 'We could not read the contents of that file. Please try a different file or fill in your details manually.',
       });
+    }
 
-      // Use chat completions with file content
+    documentText = (documentText || '').trim();
+    if (documentText.length < 20) {
+      return res.status(422).json({
+        error: 'That file appears to be empty or image-only. Please upload a text-based document or fill in your details manually.',
+      });
+    }
+
+    // Cap the text we send to the model (keep cost & latency sane)
+    const MAX_CHARS = 16000;
+    const truncatedText = documentText.slice(0, MAX_CHARS);
+
+    // -------------------------------------------------------------
+    // STEP 2 — Send the REAL text to GPT-4o for structured extraction
+    // -------------------------------------------------------------
+    try {
       const completion = await openai.chat.completions.create({
         model: 'gpt-4o',
         messages: [
           {
             role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: extractionPrompt,
-              },
-              {
-                type: 'text',
-                text: `Document filename: ${filePart.filename}\n\nDocument content (base64 encoded): The document has been uploaded as file ID: ${uploadedFile.id}. Please extract information based on the filename and any context available.`,
-              },
-            ],
+            content: `${extractionPrompt}\n\n--- DOCUMENT FILENAME: ${filePart.filename} ---\n\n--- DOCUMENT TEXT START ---\n${truncatedText}\n--- DOCUMENT TEXT END ---`,
           },
         ],
         response_format: { type: 'json_object' },
         temperature: 0.1,
       });
 
-      // Clean up uploaded file immediately (privacy)
-      await openai.files.del(uploadedFile.id).catch(err =>
-        console.warn('File cleanup warning:', err.message)
-      );
-
       extractedData = JSON.parse(completion.choices[0].message.content);
-
     } catch (openaiErr) {
       console.error('OpenAI extraction error:', openaiErr.message);
-
-      // Fallback: try text-based extraction if file upload fails
-      if (filename.endsWith('.txt')) {
-        const textContent = filePart.data.toString('utf-8').substring(0, 8000);
-        const completion = await openai.chat.completions.create({
-          model: 'gpt-4o',
-          messages: [
-            {
-              role: 'user',
-              content: `${extractionPrompt}\n\nDOCUMENT TEXT:\n${textContent}`,
-            },
-          ],
-          response_format: { type: 'json_object' },
-          temperature: 0.1,
-        });
-        extractedData = JSON.parse(completion.choices[0].message.content);
-      } else {
-        throw openaiErr;
-      }
+      throw openaiErr;
     }
 
     // Sanitise output — remove any null values for cleaner response

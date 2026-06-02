@@ -11,6 +11,8 @@
 
 const OpenAI = require('openai');
 const { createClient } = require('@supabase/supabase-js');
+const PizZip = require('pizzip');
+const Docxtemplater = require('docxtemplater');
 
 const openai   = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const supabase = createClient(
@@ -121,7 +123,7 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { orderId, email, name, productTier, quizAnswers, orgName } = req.body;
+  const { orderId, email, name, productTier, quizAnswers, orgName, profile } = req.body;
 
   if (!email || !productTier) {
     return res.status(400).json({ error: 'Missing required fields: email, productTier' });
@@ -134,20 +136,58 @@ module.exports = async function handler(req, res) {
       ? DOCUMENT_LIBRARY.filter(d => d.free)
       : DOCUMENT_LIBRARY;
 
-    const variables = await generateVariables({ orgName, name, email, quizAnswers });
+    const variables = await generateVariables({ orgName, name, email, quizAnswers, profile });
 
     const downloadManifest = [];
+    // Each customer's personalised docs are written under their token folder
+    const customerFolder = `${email.replace(/[^a-z0-9]/gi, '_')}/${Date.now()}`;
 
     for (const doc of docsToDeliver) {
       const storagePath = getStoragePath(doc, productTier);
       if (!storagePath) continue;
 
-      const { data: signedData, error: urlError } = await supabase.storage
+      // 1. Download the master template from storage
+      const { data: fileData, error: dlError } = await supabase.storage
         .from('templates')
-        .createSignedUrl(storagePath, 60 * 60 * 24 * 7);
+        .download(storagePath);
+
+      if (dlError || !fileData) {
+        console.warn(`Could not download template ${storagePath}:`, dlError && dlError.message);
+        continue;
+      }
+
+      const templateBuffer = Buffer.from(await fileData.arrayBuffer());
+
+      // 2. Merge {{placeholders}} with this customer's variables
+      let outputBuffer;
+      try {
+        outputBuffer = mergeDocx(templateBuffer, { ...variables, document_title: doc.name });
+      } catch (mergeErr) {
+        console.warn(`Merge failed for ${doc.name}, delivering raw template:`, mergeErr.message);
+        outputBuffer = templateBuffer; // graceful fallback — never break delivery
+      }
+
+      // 3. Upload the personalised copy to the private customer-docs bucket
+      const outPath = `${customerFolder}/${doc.name}.docx`;
+      const { error: upError } = await supabase.storage
+        .from('customer-docs')
+        .upload(outPath, outputBuffer, {
+          contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          upsert: true,
+        });
+
+      if (upError) {
+        console.warn(`Could not upload personalised ${outPath}:`, upError.message);
+        continue;
+      }
+
+      // 4. Sign the personalised copy (7-day link)
+      const { data: signedData, error: urlError } = await supabase.storage
+        .from('customer-docs')
+        .createSignedUrl(outPath, 60 * 60 * 24 * 7);
 
       if (urlError) {
-        console.warn(`Could not sign URL for ${storagePath}:`, urlError.message);
+        console.warn(`Could not sign URL for ${outPath}:`, urlError.message);
         continue;
       }
 
@@ -238,37 +278,104 @@ module.exports = async function handler(req, res) {
   }
 };
 
-async function generateVariables({ orgName, name, email, quizAnswers }) {
+// =============================================================
+// DOCX MERGE — inject {{placeholders}} with customer variables
+// Templates use double-brace delimiters: {{org_name}}, {{abn}} ...
+// Any placeholder with no matching value is rendered as empty
+// (nullGetter) so we never leave raw {{tags}} in the output.
+// =============================================================
+function mergeDocx(templateBuffer, data) {
+  const zip = new PizZip(templateBuffer);
+  const doc = new Docxtemplater(zip, {
+    paragraphLoop: true,
+    linebreaks: true,
+    delimiters: { start: '{{', end: '}}' },
+    nullGetter: () => '',
+  });
+  doc.render(data);
+  return doc.getZip().generate({ type: 'nodebuffer', compression: 'DEFLATE' });
+}
+
+async function generateVariables({ orgName, name, email, quizAnswers, profile }) {
   const today      = new Date();
   const reviewDate = today.toLocaleDateString('en-AU', { day: '2-digit', month: 'long', year: 'numeric' });
   const nextReview = new Date(new Date().setFullYear(today.getFullYear() + 1))
     .toLocaleDateString('en-AU', { day: '2-digit', month: 'long', year: 'numeric' });
 
+  const p = profile || {};
+  const resolvedOrg = p.org_name || orgName || name || 'Your Organisation';
+
+  // Map every profile field straight onto a template variable.
+  // These cover the placeholders injected into the 65 documents.
   const baseVars = {
-    org_name:               orgName || name || 'Your Organisation',
-    document_owner:         name   || 'Service Manager',
+    // Identity
+    org_name:               resolvedOrg,
+    trading_name:           p.trading_name || resolvedOrg,
+    org_type:               p.org_type || '',
+    abn:                    p.abn || '',
+    acn:                    p.acn || '',
+    phone:                  p.phone || '',
+    email:                  p.email || email || '',
+    website:                p.website || '',
+    street_address:         p.street_address || '',
+    suburb:                 p.suburb || '',
+    state:                  expandState(p.state) || 'New South Wales',
+    postcode:               p.postcode || '',
+    full_address:           [p.street_address, p.suburb, p.state, p.postcode].filter(Boolean).join(', '),
+    // Key people
+    director_name:          p.director_name || name || '',
+    director_title:         p.director_title || 'Director',
+    service_manager_name:   p.service_manager_name || p.director_name || '',
+    compliance_officer_name:p.compliance_officer_name || p.director_name || '',
+    safeguarding_officer_name: p.safeguarding_officer_name || '',
+    whs_officer_name:       p.whs_officer_name || '',
+    document_owner:         p.compliance_officer_name || p.service_manager_name || name || 'Service Manager',
+    // Registration
+    audit_pathway:          p.audit_pathway || '',
+    registration_status:    p.registration_status || '',
+    ndis_provider_number:   p.ndis_provider_number || '',
+    registration_groups:    p.registration_groups || '',
+    support_types:          p.support_types || '',
+    // Operations
+    staff_count:            p.staff_count || '',
+    established_year:        p.established_year || '',
+    service_areas:          p.service_areas || '',
+    operating_hours:        p.operating_hours || '',
+    after_hours_contact:    p.after_hours_contact || '',
+    emergency_contact_name: p.emergency_contact_name || '',
+    emergency_contact_phone:p.emergency_contact_phone || '',
+    insurance_provider:     p.insurance_provider || '',
+    insurance_policy_number:p.insurance_policy_number || '',
+    // Document control
     review_date:            reviewDate,
     next_review_date:       nextReview,
-    abn:                    '{{ABN — add your ABN}}',
+    version:                '1.0',
     practice_standard_ref:  'NDIS Practice Standards 2021',
-    state:                  'New South Wales',
-    purpose_statement:      'This policy establishes the framework and obligations required to meet NDIS Practice Standards.',
-    scope_statement:        `This policy applies to all staff, contractors, and volunteers of ${orgName || 'the organisation'}.`,
+    // Narrative blocks (AI-enriched below)
+    purpose_statement:      'This policy establishes the framework and obligations required to meet the NDIS Practice Standards.',
+    scope_statement:        `This policy applies to all staff, contractors, and volunteers of ${resolvedOrg}.`,
     policy_statement:       'The organisation is committed to delivering safe, high-quality, person-centred supports in accordance with the NDIS Practice Standards and Code of Conduct.',
-    procedures:             'Refer to the detailed procedures section. All staff must complete mandatory training before commencing support delivery.',
-    roles_and_responsibilities: 'Service Manager: overall accountability. Team Leaders: day-to-day implementation. Support Workers: adherence to procedures.',
+    procedures:             'All staff must complete mandatory training before commencing support delivery and follow the documented procedures at all times.',
+    roles_and_responsibilities: `${p.service_manager_name || 'The Service Manager'}: overall accountability. Team Leaders: day-to-day implementation. Support Workers: adherence to procedures.`,
     related_documents:      'Refer to the complete NDIS Ready Document Library for related policies and forms.',
   };
 
-  if (quizAnswers && Object.keys(quizAnswers).length > 0) {
+  // AI enrichment of the narrative blocks using the richest context we have
+  const hasContext = (quizAnswers && Object.keys(quizAnswers).length > 0) ||
+                     (profile && Object.keys(profile).length > 0);
+  if (hasContext) {
     try {
       const prompt = `You are helping an Australian NDIS provider personalise compliance policy documents.
 
-Organisation: ${orgName || name}
-Quiz answers: ${JSON.stringify(quizAnswers, null, 2)}
+Organisation: ${resolvedOrg}
+Organisation type: ${p.org_type || 'unknown'}
+Support types delivered: ${p.support_types || 'unknown'}
+Approximate staff: ${p.staff_count || 'unknown'}
+State: ${baseVars.state}
+Audit pathway: ${p.audit_pathway || 'unknown'}
+Quiz answers: ${JSON.stringify(quizAnswers || {}, null, 2)}
 
 Provide specific, professional values for these document variables:
-- state: (Australian state/territory they operate in)
 - purpose_statement: (1-2 sentences specific to their org type)
 - scope_statement: (who the policy applies to, specific to their workforce size)
 - policy_statement: (commitment statement tailored to their support types)
@@ -293,6 +400,15 @@ Respond ONLY with a valid JSON object with these exact keys. Be professional, sp
   }
 
   return baseVars;
+}
+
+function expandState(abbr) {
+  const map = {
+    ACT: 'Australian Capital Territory', NSW: 'New South Wales', NT: 'Northern Territory',
+    QLD: 'Queensland', SA: 'South Australia', TAS: 'Tasmania', VIC: 'Victoria', WA: 'Western Australia',
+  };
+  if (!abbr) return '';
+  return map[String(abbr).toUpperCase()] || abbr;
 }
 
 function generateAccessToken() {
