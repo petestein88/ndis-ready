@@ -173,6 +173,12 @@ footer a{color:var(--ink-soft);text-decoration:none;}
     <span>Download links expire on <strong id="expiry-date-display"></strong>. Save your documents before then.</span>
   </div>
 
+  <a id="ai-writer-unlock" href="tools.html" style="display:flex;align-items:center;gap:1rem;margin-top:1.25rem;padding:1.1rem 1.4rem;border-radius:var(--radius-sm);background:var(--ink);color:#fff;text-decoration:none;flex-wrap:wrap;">
+    <span style="font-size:1.5rem;flex-shrink:0;">✨</span>
+    <span style="flex:1;min-width:220px;font-size:0.9rem;line-height:1.5;"><strong>Your AI Note &amp; Incident Writer is unlocked.</strong> Turn rough shift notes into clean, audit-ready progress notes and incident reports — unlimited, included with your purchase.</span>
+    <span style="flex-shrink:0;background:#fff;color:var(--ink);font-weight:700;font-size:0.85rem;padding:0.6rem 1.2rem;border-radius:999px;">Open the AI writer →</span>
+  </a>
+
   <div class="dl-all-bar">
     <p>Want everything at once? <strong>Download all documents</strong> individually using the links below, or contact us if you'd like them zipped.</p>
     <a href="mailto:hello@ndis-ready.com.au?subject=Please zip my documents" class="btn-dl-all">
@@ -328,6 +334,10 @@ async function init() {
     document.getElementById('doc-count-display').textContent   = manifest.length;
     document.getElementById('expiry-date-display').textContent = formatDate(record.expires_at);
     document.title = `NDIS Ready — ${orgName} Documents`;
+
+    // Carry the buyer's token into the AI writer link so it auto-unlocks unlimited use
+    const aiLink = document.getElementById('ai-writer-unlock');
+    if (aiLink) aiLink.href = 'tools.html?token=' + encodeURIComponent(token);
 
     renderDocuments(manifest);
     showState('state-success');

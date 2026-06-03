@@ -374,9 +374,15 @@ function render(){
           <p style="color:rgba(255,255,255,0.9);margin-bottom:1rem;">Drop in one of your existing policy docs and our AI instantly reads it and fills out your whole org profile — before you pay a cent.</p>
           <span class="btn" style="background:var(--white);color:var(--ink);width:100%;text-align:center;display:block;font-weight:700;">Try the AI autofill →</span>
         </a>
+        <a href="tools.html" class="side-card ai-magic-card">
+          <div class="ai-magic-badge">✨ 5 free · No card</div>
+          <h3 style="color:var(--white);margin-bottom:0.4rem;">AI Note &amp; Incident Writer</h3>
+          <p style="color:rgba(255,255,255,0.9);margin-bottom:1rem;">Type your rough shift notes and our AI turns them into a clean, audit-ready progress note or incident report in seconds. Free to try.</p>
+          <span class="btn" style="background:var(--white);color:var(--ink);width:100%;text-align:center;display:block;font-weight:700;">Try the AI writer →</span>
+        </a>
         <div class="side-card peach">
           <h3>Your 3 free documents</h3>
-          <p>Enter your email and we'll send personalised versions of your first 3 compliance documents.</p>
+          <p>Enter your email and we'll send your first 3 compliance documents to download instantly.</p>
           <div style="display:flex;flex-direction:column;gap:0.35rem;margin-bottom:1rem;">
             ${RULES.core.filter(d=>d.tier==='free').map(d=>`<div style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;font-weight:500;"><span style="color:#437a22;font-weight:700;">✓</span> ${d.title}</div>`).join('')}
           </div>
