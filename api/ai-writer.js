@@ -108,7 +108,7 @@ export default async function handler(req, res) {
       output = (completion.choices[0].message.content || '').trim();
     } catch (openaiErr) {
       console.error('OpenAI ai-writer error:', openaiErr.message);
-      return res.status(502).json({ error: 'The AI writer is busy right now. Please try again in a moment.', _debug: openaiErr.message });
+      return res.status(502).json({ error: 'The AI writer is busy right now. Please try again in a moment.' });
     }
 
     // -----------------------------------------------------------
@@ -136,7 +136,7 @@ export default async function handler(req, res) {
 
   } catch (err) {
     console.error('ai-writer error:', err);
-    return res.status(500).json({ error: 'Something went wrong. Please try again.', _debug: err.message });
+    return res.status(500).json({ error: 'Something went wrong. Please try again.' });
   }
 }
 
