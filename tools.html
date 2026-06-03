@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Writer — NDIS Ready</title>
+  <meta name="description" content="Turn rough shift notes into clean, audit-ready NDIS progress notes and incident reports in seconds." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rose: #f4c5c5; --rose-deep: #e8a0a0; --lavender: #d8d0f0; --lavender-deep: #b8acdf;
+      --sage: #c5ddd0; --sage-deep: #9ec4b0; --peach: #f7dfc8; --peach-deep: #efcba8;
+      --cream: #faf8f4; --white: #ffffff; --ink: #2a2535; --ink-mid: #5a5370; --ink-soft: #9990b0;
+      --red-alert: #d42b2b; --font-brand: 'Nunito', system-ui, sans-serif;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --radius: 16px; --radius-sm: 10px; --radius-pill: 999px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background: var(--cream); color: var(--ink); line-height: 1.6; font-size: 1rem; }
+    a { color: inherit; }
+
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .nav-logo { font-family: var(--font-brand); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    nav a.nav-cta { background: var(--ink); color: var(--white); font-size: 0.875rem; font-weight: 600; padding: 0.6rem 1.4rem; border-radius: var(--radius-pill); text-decoration: none; transition: background 0.2s; }
+    nav a.nav-cta:hover { background: #3d3650; }
+
+    /* SHELL */
+    .wrap { max-width: 880px; margin: 0 auto; padding: 1.5rem 1.5rem 5rem; }
+    .page-head { text-align: center; margin-bottom: 1.75rem; }
+    .eyebrow { font-family: var(--font-body); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lavender-deep); margin-bottom: 0.6rem; }
+    .page-head h1 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.9rem); line-height: 1.15; margin-bottom: 0.75rem; }
+    .page-head p { color: var(--ink-mid); max-width: 560px; margin: 0 auto; font-size: 1.02rem; }
+
+    /* MODE TOGGLE */
+    .toggle { display: flex; gap: 0.4rem; background: var(--white); border: 1px solid #ece7df; border-radius: var(--radius-pill); padding: 0.35rem; max-width: 440px; margin: 0 auto 1.5rem; box-shadow: 0 4px 18px rgba(42,37,53,0.05); }
+    .toggle button { flex: 1; border: none; background: transparent; font-family: var(--font-body); font-size: 0.92rem; font-weight: 600; color: var(--ink-mid); padding: 0.7rem 1rem; border-radius: var(--radius-pill); cursor: pointer; transition: all 0.2s; }
+    .toggle button.active { background: var(--ink); color: var(--white); }
+
+    /* CARD */
+    .card { background: var(--white); border: 1px solid #ece7df; border-radius: var(--radius); padding: 1.75rem; box-shadow: 0 6px 24px rgba(42,37,53,0.05); }
+    label.field-label { display: block; font-weight: 600; font-size: 0.92rem; margin-bottom: 0.5rem; }
+    .hint { color: var(--ink-soft); font-size: 0.82rem; margin-bottom: 0.75rem; }
+    textarea, input[type="text"] { width: 100%; font-family: var(--font-body); font-size: 0.98rem; color: var(--ink); border: 1px solid #e2dcd2; border-radius: var(--radius-sm); padding: 0.85rem 1rem; background: var(--cream); resize: vertical; transition: border-color 0.2s; }
+    textarea:focus, input[type="text"]:focus { outline: none; border-color: var(--lavender-deep); }
+    textarea#rawText { min-height: 180px; }
+    .row-context { margin-top: 1rem; }
+
+    .actions { display: flex; align-items: center; gap: 1rem; margin-top: 1.25rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--ink); color: var(--white); font-family: var(--font-body); font-size: 0.95rem; font-weight: 600; padding: 0.85rem 1.8rem; border: none; border-radius: var(--radius-pill); cursor: pointer; transition: background 0.2s; }
+    .btn-primary:hover { background: #3d3650; }
+    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-ghost { background: transparent; border: 1px solid #d8d2c8; color: var(--ink-mid); font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; padding: 0.7rem 1.3rem; border-radius: var(--radius-pill); cursor: pointer; }
+    .trial-meta { font-size: 0.82rem; color: var(--ink-soft); margin-left: auto; }
+
+    /* OUTPUT */
+    .output-wrap { margin-top: 1.5rem; display: none; }
+    .output-wrap.show { display: block; }
+    .output-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem; }
+    .output-head h3 { font-family: var(--font-display); font-size: 1.25rem; }
+    .out-actions { display: flex; gap: 0.5rem; }
+    .out-actions button { background: var(--white); border: 1px solid #d8d2c8; color: var(--ink-mid); font-family: var(--font-body); font-size: 0.82rem; font-weight: 600; padding: 0.45rem 0.9rem; border-radius: var(--radius-pill); cursor: pointer; }
+    .out-actions button:hover { background: var(--cream); }
+    .output-box { background: var(--cream); border: 1px solid #e2dcd2; border-radius: var(--radius-sm); padding: 1.25rem 1.4rem; white-space: pre-wrap; font-size: 0.95rem; line-height: 1.7; color: var(--ink); }
+
+    /* BANNERS */
+    .banner { border-radius: var(--radius-sm); padding: 0.85rem 1.1rem; font-size: 0.88rem; margin-top: 1rem; display: none; }
+    .banner.show { display: block; }
+    .banner-info { background: #f3eefe; color: var(--ink-mid); border: 1px solid var(--lavender); }
+    .banner-error { background: #fbe9e9; color: #9a2b2b; border: 1px solid var(--rose-deep); }
+    .banner-success { background: #eef7f1; color: #2f6b4a; border: 1px solid var(--sage-deep); }
+
+    /* UNLOCK / GATE */
+    .gate { background: #f3eefe; border: 1px solid var(--lavender); border-radius: var(--radius); padding: 1.5rem; margin-top: 1.5rem; display: none; }
+    .gate.show { display: block; }
+    .gate h3 { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .gate p { color: var(--ink-mid); font-size: 0.92rem; margin-bottom: 1rem; }
+    .gate .gate-row { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
+    .gate input { flex: 1; min-width: 200px; }
+    .gate a.gate-buy { display: inline-block; margin-top: 0.9rem; font-weight: 600; color: var(--lavender-deep); text-decoration: none; font-size: 0.9rem; }
+
+    .privacy-note { text-align: center; color: var(--ink-soft); font-size: 0.8rem; margin-top: 1.75rem; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid #ece7df; padding: 2rem; text-align: center; color: var(--ink-soft); font-size: 0.85rem; }
+    footer a { color: var(--ink-mid); text-decoration: none; margin: 0 0.5rem; }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.25rem; }
+      .card { padding: 1.25rem; }
+      .trial-meta { margin-left: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="navSG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+          <stop offset="0%" stop-color="#c4b5f4"/>
+          <stop offset="100%" stop-color="#b8acdf"/>
+        </linearGradient>
+        <filter id="navTex">
+          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise"/>
+          <feColorMatrix type="saturate" values="0" in="noise" result="gn"/>
+          <feBlend in="SourceGraphic" in2="gn" mode="multiply" result="bl"/>
+          <feComposite in="bl" in2="SourceGraphic" operator="in"/>
+        </filter>
+      </defs>
+      <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="url(#navSG)" filter="url(#navTex)"/>
+      <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="none" stroke="#9a88cc" stroke-width="3"/>
+      <path d="M50 65 Q32 52 32 42 Q32 34 40 34 Q45 34 50 40 Q55 34 60 34 Q68 34 68 42 Q68 52 50 65 Z" fill="#e8a0a0" filter="url(#navTex)"/>
+    </svg>
+    NDIS Ready
+  </a>
+  <a href="/#pricing" class="nav-cta">View pricing →</a>
+</nav>
+
+<div class="wrap">
+  <div class="page-head">
+    <div class="eyebrow">AI Writer</div>
+    <h1 id="pageTitle">Rough notes in. Audit-ready docs out.</h1>
+    <p id="pageSub">Paste your rough shift notes and let our AI turn them into a clean, professional NDIS progress note in seconds — written in plain, objective language your auditor expects.</p>
+  </div>
+
+  <div class="toggle" role="tablist">
+    <button id="modeNote" class="active" role="tab" onclick="setMode('note')">📝 Progress note</button>
+    <button id="modeIncident" role="tab" onclick="setMode('incident')">⚠️ Incident report</button>
+  </div>
+
+  <div class="card">
+    <label class="field-label" for="rawText" id="inputLabel">Your rough notes</label>
+    <p class="hint" id="inputHint">Write it however you like — shorthand, bullet points, or a quick brain-dump. The AI will structure it for you.</p>
+    <textarea id="rawText" placeholder="e.g. took Jordan to the shops this arvo, was a bit anxious in the carpark but settled once inside, practiced using eftpos card himself, happy on the way home..."></textarea>
+
+    <div class="row-context">
+      <label class="field-label" for="context">Optional context <span style="font-weight:400;color:var(--ink-soft)">(provider or participant first name, date, shift — helps the AI)</span></label>
+      <input type="text" id="context" placeholder="e.g. Sunrise Supports · participant Jordan · 3 June 2026 · afternoon shift" />
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" id="generateBtn" onclick="generate()">Generate</button>
+      <button class="btn-ghost" onclick="clearAll()">Clear</button>
+      <span class="trial-meta" id="trialMeta"></span>
+    </div>
+
+    <div class="banner banner-error" id="errorBanner"></div>
+
+    <div class="output-wrap" id="outputWrap">
+      <div class="output-head">
+        <h3 id="outputTitle">Your progress note</h3>
+        <div class="out-actions">
+          <button onclick="copyOutput()">Copy</button>
+          <button onclick="downloadOutput()">Download .txt</button>
+        </div>
+      </div>
+      <div class="output-box" id="outputBox"></div>
+      <div class="banner banner-success show" style="margin-top:0.85rem;">Review carefully before use. The AI may have added <strong>[TO CONFIRM]</strong> placeholders where detail was missing — fill these in and check everything for accuracy.</div>
+    </div>
+  </div>
+
+  <!-- GATE shown when free trials are used up -->
+  <div class="gate" id="gate">
+    <h3>You've used your free generations</h3>
+    <p>Unlock unlimited progress notes and incident reports with any NDIS Ready purchase. Already bought? Paste the access code from your purchase email below.</p>
+    <div class="gate-row">
+      <input type="text" id="tokenInput" placeholder="Paste your access code" />
+      <button class="btn-primary" onclick="applyToken()">Unlock</button>
+    </div>
+    <a class="gate-buy" href="/#pricing">See plans & pricing →</a>
+    <div class="banner banner-error" id="gateError" style="margin-top:0.85rem;"></div>
+  </div>
+
+  <p class="privacy-note">🔒 Your notes are processed securely and are never stored. We keep only anonymous usage counts.</p>
+</div>
+
+<footer>
+  <div><a href="/">Home</a> · <a href="/#pricing">Pricing</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms-of-service.html">Terms</a></div>
+  <div style="margin-top:0.6rem;">© 2026 NDIS Ready · hello@ndis-ready.com.au</div>
+</footer>
+
+<script>
+  const FREE_TRIAL_LIMIT = 5;
+  let mode = 'note';
+
+  // ---- Access state ----
+  function getTrialCount() { return parseInt(localStorage.getItem('aiwriter_trials') || '0', 10); }
+  function setTrialCount(n) { localStorage.setItem('aiwriter_trials', String(n)); }
+  function getToken() {
+    // ?token in URL takes priority, then a saved/pasted token
+    const url = new URLSearchParams(window.location.search).get('token');
+    if (url) { localStorage.setItem('aiwriter_token', url); return url; }
+    return localStorage.getItem('aiwriter_token') || '';
+  }
+  function hasPaidAccess() { return !!getToken(); }
+
+  function refreshTrialMeta() {
+    const meta = document.getElementById('trialMeta');
+    if (hasPaidAccess()) { meta.textContent = '✓ Unlimited access unlocked'; meta.style.color = 'var(--sage-deep)'; return; }
+    const used = getTrialCount();
+    const left = Math.max(0, FREE_TRIAL_LIMIT - used);
+    meta.textContent = left + ' of ' + FREE_TRIAL_LIMIT + ' free generations left';
+    meta.style.color = left === 0 ? 'var(--rose-deep)' : 'var(--ink-soft)';
+  }
+
+  // ---- Mode toggle ----
+  function setMode(m) {
+    mode = m;
+    document.getElementById('modeNote').classList.toggle('active', m === 'note');
+    document.getElementById('modeIncident').classList.toggle('active', m === 'incident');
+    const t = document.getElementById('pageTitle');
+    const s = document.getElementById('pageSub');
+    const il = document.getElementById('inputLabel');
+    const ih = document.getElementById('inputHint');
+    const ra = document.getElementById('rawText');
+    const ot = document.getElementById('outputTitle');
+    if (m === 'incident') {
+      t.textContent = 'Rough notes in. A clear incident report out.';
+      s.textContent = 'Describe what happened in your own words. Our AI turns it into a structured, objective incident report aligned with NDIS reportable-incident requirements — and flags if it may need to be reported.';
+      il.textContent = 'What happened?';
+      ih.textContent = 'Describe the incident in plain words — who, what, when, where, and what you did. The AI will structure and flag it for you.';
+      ra.placeholder = 'e.g. around 2pm Jordan tripped on the back step and grazed his knee, cleaned it and put a bandaid on, he was fine after, called mum to let her know...';
+      ot.textContent = 'Your incident report';
+    } else {
+      t.textContent = 'Rough notes in. Audit-ready docs out.';
+      s.textContent = 'Paste your rough shift notes and let our AI turn them into a clean, professional NDIS progress note in seconds — written in plain, objective language your auditor expects.';
+      il.textContent = 'Your rough notes';
+      ih.textContent = 'Write it however you like — shorthand, bullet points, or a quick brain-dump. The AI will structure it for you.';
+      ra.placeholder = 'e.g. took Jordan to the shops this arvo, was a bit anxious in the carpark but settled once inside, practiced using eftpos card himself, happy on the way home...';
+      ot.textContent = 'Your progress note';
+    }
+    document.getElementById('outputWrap').classList.remove('show');
+  }
+
+  // ---- Banners ----
+  function showError(msg) { const b = document.getElementById('errorBanner'); b.textContent = msg; b.classList.add('show'); }
+  function hideError() { document.getElementById('errorBanner').classList.remove('show'); }
+
+  // ---- Generate ----
+  async function generate() {
+    hideError();
+    const rawText = document.getElementById('rawText').value.trim();
+    const context = document.getElementById('context').value.trim();
+    if (rawText.length < 10) { showError('Please enter at least a sentence or two of rough notes.'); return; }
+
+    // Client-side gate: block if trials used up and no token
+    if (!hasPaidAccess() && getTrialCount() >= FREE_TRIAL_LIMIT) {
+      document.getElementById('gate').classList.add('show');
+      document.getElementById('gate').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    const btn = document.getElementById('generateBtn');
+    btn.disabled = true; btn.textContent = 'Writing…';
+
+    try {
+      const res = await fetch('/api/ai-writer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode, rawText, context, token: getToken(), trialCount: getTrialCount() }),
+      });
+      const data = await res.json();
+
+      if (res.status === 402 || data.error === 'trial_exhausted') {
+        document.getElementById('gate').classList.add('show');
+        document.getElementById('gate').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+      if (!res.ok) { showError(data.message || data.error || 'Something went wrong. Please try again.'); return; }
+
+      document.getElementById('outputBox').textContent = data.output;
+      document.getElementById('outputWrap').classList.add('show');
+      document.getElementById('outputWrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      // Count a successful free use (paid users are not counted toward the limit)
+      if (!hasPaidAccess()) { setTrialCount(getTrialCount() + 1); }
+      refreshTrialMeta();
+    } catch (e) {
+      showError('Network error — please check your connection and try again.');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Generate';
+    }
+  }
+
+  // ---- Token unlock ----
+  async function applyToken() {
+    const input = document.getElementById('tokenInput').value.trim();
+    const err = document.getElementById('gateError');
+    err.classList.remove('show');
+    if (!input) { err.textContent = 'Please paste your access code.'; err.classList.add('show'); return; }
+    // Validate by attempting a tiny generation gate check via the API
+    try {
+      const res = await fetch('/api/ai-writer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'note', rawText: 'access validation check please ignore', token: input, trialCount: FREE_TRIAL_LIMIT }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem('aiwriter_token', input);
+        document.getElementById('gate').classList.remove('show');
+        // discard the validation output silently
+        document.getElementById('outputWrap').classList.remove('show');
+        refreshTrialMeta();
+      } else {
+        err.textContent = data.message || 'That access code was not recognised.';
+        err.classList.add('show');
+      }
+    } catch (e) {
+      err.textContent = 'Could not verify right now — please try again.';
+      err.classList.add('show');
+    }
+  }
+
+  // ---- Output actions ----
+  function copyOutput() {
+    const text = document.getElementById('outputBox').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = event.target; const old = btn.textContent; btn.textContent = 'Copied ✓';
+      setTimeout(() => { btn.textContent = old; }, 1500);
+    });
+  }
+  function downloadOutput() {
+    const text = document.getElementById('outputBox').textContent;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = (mode === 'incident' ? 'incident-report' : 'progress-note') + '.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+  function clearAll() {
+    document.getElementById('rawText').value = '';
+    document.getElementById('context').value = '';
+    document.getElementById('outputWrap').classList.remove('show');
+    hideError();
+  }
+
+  // ---- Init ----
+  refreshTrialMeta();
+</script>
+
+</body>
+</html>
