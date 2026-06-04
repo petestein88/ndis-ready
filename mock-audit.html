@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mock Audit Interview Simulator — NDIS Ready</title>
+  <meta name="description" content="A mock NDIS audit interview. Auditors don't read your binder — they interview your workers and participants. See where your practice diverges from your paperwork before the real auditor does." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rose: #f4c5c5; --rose-deep: #e8a0a0; --lavender: #d8d0f0; --lavender-deep: #b8acdf;
+      --sage: #c5ddd0; --sage-deep: #9ec4b0; --peach: #f7dfc8; --peach-deep: #efcba8;
+      --cream: #faf8f4; --white: #ffffff; --ink: #2a2535; --ink-mid: #5a5370; --ink-soft: #9990b0;
+      --green: #2f8a5a; --amber: #c9871f; --red: #cf3a3a;
+      --font-brand: 'Nunito', system-ui, sans-serif;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --radius: 16px; --radius-sm: 10px; --radius-pill: 999px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background: var(--cream); color: var(--ink); line-height: 1.6; }
+    a { color: inherit; }
+
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .nav-logo { font-family: var(--font-brand); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    nav .nav-right { display: flex; align-items: center; gap: 1.25rem; }
+    nav .nav-right a.plain { font-size: 0.875rem; font-weight: 600; color: var(--ink-mid); text-decoration: none; }
+    nav a.nav-cta { background: var(--ink); color: var(--white); font-size: 0.875rem; font-weight: 600; padding: 0.6rem 1.4rem; border-radius: var(--radius-pill); text-decoration: none; }
+    nav a.nav-cta:hover { background: #3d3650; }
+    @media (max-width: 680px) { nav .nav-right a.plain { display: none; } }
+
+    .wrap { max-width: 820px; margin: 0 auto; padding: 1.5rem 1.5rem 5rem; }
+    .page-head { text-align: center; margin-bottom: 1.75rem; }
+    .eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lavender-deep); margin-bottom: 0.6rem; }
+    .page-head h1 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.9rem); line-height: 1.15; margin-bottom: 0.75rem; }
+    .page-head p { color: var(--ink-mid); max-width: 640px; margin: 0 auto; font-size: 1.02rem; }
+
+    .card { background: var(--white); border: 1px solid #ece7df; border-radius: var(--radius); padding: 1.75rem; box-shadow: 0 6px 24px rgba(42,37,53,0.05); margin-bottom: 1.5rem; }
+
+    /* intro / premise callout */
+    .premise { background: #f3eefe; border: 1px solid var(--lavender); border-radius: var(--radius); padding: 1.4rem 1.6rem; margin-bottom: 1.75rem; }
+    .premise p { font-size: 0.95rem; color: var(--ink-mid); margin-bottom: 0.6rem; }
+    .premise p:last-child { margin-bottom: 0; }
+    .premise strong { color: var(--ink); }
+    .premise .quote { font-family: var(--font-display); font-style: italic; font-size: 1.05rem; color: var(--ink); line-height: 1.45; }
+
+    /* progress */
+    .progress-bar { position: sticky; top: 0; z-index: 20; background: var(--cream); padding: 0.75rem 0 0.5rem; }
+    .progress-track { height: 8px; background: #ece7df; border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--lavender-deep), var(--sage-deep)); transition: width 0.3s ease; }
+    .progress-meta { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.4rem; }
+
+    /* interview question */
+    .scene { margin-bottom: 1.5rem; }
+    .scene-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; }
+    .scene-area { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+    .scene-who { font-size: 0.72rem; font-weight: 700; padding: 0.18rem 0.6rem; border-radius: 999px; }
+    .who-worker { background: #eef7f1; color: #275f41; }
+    .who-participant { background: #fdf4e3; color: #7a5616; }
+    .who-you { background: #f3eefe; color: #5b4b86; }
+    .scene-q { font-family: var(--font-display); font-size: 1.28rem; line-height: 1.35; margin-bottom: 1.1rem; }
+    .scene-q .quo { color: var(--lavender-deep); }
+    .opts { display: flex; flex-direction: column; gap: 0.6rem; }
+    .opt { border: 1.5px solid #e2dcd2; background: var(--cream); border-radius: var(--radius-sm); padding: 0.85rem 1rem; font-size: 0.92rem; font-weight: 500; color: var(--ink-mid); cursor: pointer; transition: all 0.15s; user-select: none; line-height: 1.4; }
+    .opt:hover { border-color: var(--lavender-deep); background: #fff; }
+    .opt.sel { border-width: 2px; font-weight: 600; }
+    .opt.sel.v-pass { background: #eef7f1; border-color: var(--green); color: #275f41; }
+    .opt.sel.v-partial { background: #fdf4e3; border-color: var(--amber); color: #7a5616; }
+    .opt.sel.v-fail { background: #fbe9e9; border-color: var(--red); color: #8c2626; }
+
+    .actions-bar { display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center; margin-top: 0.5rem; }
+    .btn { font-family: var(--font-body); font-weight: 700; font-size: 0.95rem; border: none; border-radius: var(--radius-pill); padding: 0.85rem 1.8rem; cursor: pointer; }
+    .btn-primary { background: var(--ink); color: #fff; }
+    .btn-primary:hover { background: #3d3650; }
+    .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-ghost { background: transparent; color: var(--ink-mid); border: 1.5px solid #e2dcd2; }
+    .hint { font-size: 0.8rem; color: var(--ink-soft); }
+
+    /* RESULTS */
+    #results { display: none; }
+    .verdict { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; padding: 1.5rem; border-radius: var(--radius); margin-bottom: 1.5rem; }
+    .verdict.ok { background: #eef7f1; border: 1px solid var(--sage-deep); }
+    .verdict.mid { background: #fdf4e3; border: 1px solid var(--peach-deep); }
+    .verdict.bad { background: #fbe9e9; border: 1px solid var(--rose-deep); }
+    .verdict-num { font-family: var(--font-display); font-size: 3.4rem; line-height: 1; }
+    .verdict-num small { font-size: 1.2rem; color: var(--ink-soft); }
+    .verdict-meta .verdict-label { font-weight: 800; font-size: 1.3rem; }
+    .verdict-meta .verdict-desc { font-size: 0.9rem; color: var(--ink-mid); margin-top: 0.2rem; max-width: 480px; }
+
+    .tally { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .tally-pill { flex: 1; min-width: 130px; border-radius: var(--radius-sm); padding: 0.9rem 1rem; text-align: center; border: 1px solid; }
+    .tally-pill.t-pass { background: #eef7f1; border-color: var(--sage-deep); }
+    .tally-pill.t-partial { background: #fdf4e3; border-color: var(--peach-deep); }
+    .tally-pill.t-fail { background: #fbe9e9; border-color: var(--rose-deep); }
+    .tally-pill .tn { font-family: var(--font-display); font-size: 1.8rem; line-height: 1; }
+    .tally-pill .tl { font-size: 0.78rem; font-weight: 600; color: var(--ink-mid); margin-top: 0.25rem; }
+
+    .findings h3, .wins h3 { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.8rem; }
+    .findings li, .wins li { list-style: none; }
+    .finding { padding: 1rem 1.1rem; border-radius: var(--radius-sm); margin-bottom: 0.85rem; border: 1px solid; }
+    .finding.f-fail { background: #fbe9e9; border-color: var(--rose-deep); }
+    .finding.f-partial { background: #fdf4e3; border-color: var(--peach-deep); }
+    .finding-top { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
+    .finding-tag { font-size: 0.64rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; padding: 0.15rem 0.55rem; border-radius: 999px; }
+    .finding.f-fail .finding-tag { background: var(--red); color: #fff; }
+    .finding.f-partial .finding-tag { background: var(--amber); color: #fff; }
+    .finding-area { font-size: 0.72rem; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+    .finding-q { font-weight: 700; font-size: 0.92rem; margin-bottom: 0.3rem; }
+    .finding-why { font-size: 0.86rem; color: var(--ink-mid); margin-bottom: 0.45rem; }
+    .finding-fix { font-size: 0.86rem; color: var(--ink); }
+    .finding-fix strong { color: var(--ink); }
+    .finding-doc { font-size: 0.82rem; margin-top: 0.4rem; font-weight: 600; color: var(--lavender-deep); }
+    .finding-doc::before { content: '📄 '; }
+
+    .wins li { font-size: 0.88rem; color: var(--ink-mid); padding: 0.35rem 0 0.35rem 1.6rem; position: relative; }
+    .wins li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+
+    /* GATE */
+    .gate { background: #f3eefe; border: 1px solid var(--lavender); border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0; }
+    .gate h3 { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 0.4rem; }
+    .gate p { color: var(--ink-mid); font-size: 0.92rem; margin-bottom: 1rem; }
+    .gate-row { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
+    .gate input { flex: 1; min-width: 200px; font-family: var(--font-body); font-size: 0.95rem; border: 1px solid #e2dcd2; border-radius: var(--radius-sm); padding: 0.7rem 1rem; background: #fff; }
+    .gate input:focus { outline: none; border-color: var(--lavender-deep); }
+    .gate a.gate-buy { display: inline-block; margin-top: 0.9rem; font-weight: 600; color: var(--lavender-deep); text-decoration: none; font-size: 0.9rem; }
+    .locked-blur { filter: blur(5px); pointer-events: none; user-select: none; opacity: 0.6; }
+    .banner { border-radius: var(--radius-sm); padding: 0.7rem 1rem; font-size: 0.88rem; margin-top: 0.8rem; display: none; }
+    .banner.show { display: block; }
+    .banner-error { background: #fbe9e9; color: #8c2626; border: 1px solid var(--rose-deep); }
+    .banner-ok { background: #eef7f1; color: #275f41; border: 1px solid var(--sage-deep); }
+
+    .disclaimer { font-size: 0.74rem; color: var(--ink-soft); margin-top: 1.5rem; line-height: 1.5; }
+    .disclaimer a { color: var(--ink-mid); }
+
+    .cta-card { margin-top: 1.5rem; background: var(--ink); color: #fff; border-radius: var(--radius); padding: 1.75rem; text-align: center; }
+    .cta-card h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
+    .cta-card p { font-size: 0.92rem; opacity: 0.85; margin-bottom: 1.2rem; }
+    .cta-card a { display: inline-block; background: #fff; color: var(--ink); font-weight: 700; padding: 0.8rem 1.8rem; border-radius: var(--radius-pill); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="nav-logo">
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="navSG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stop-color="#c4b5f4"/>
+            <stop offset="100%" stop-color="#b8acdf"/>
+          </linearGradient>
+          <filter id="navTex">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise"/>
+            <feColorMatrix type="saturate" values="0" in="noise" result="gn"/>
+            <feBlend in="SourceGraphic" in2="gn" mode="multiply" result="bl"/>
+            <feComposite in="bl" in2="SourceGraphic" operator="in"/>
+          </filter>
+        </defs>
+        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="url(#navSG)" filter="url(#navTex)"/>
+        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="none" stroke="#9a88cc" stroke-width="3"/>
+        <path d="M50 65 Q32 52 32 42 Q32 34 40 34 Q45 34 50 40 Q55 34 60 34 Q68 34 68 42 Q68 52 50 65 Z" fill="#e8a0a0" filter="url(#navTex)"/>
+      </svg>
+      NDIS Ready
+    </a>
+    <div class="nav-right">
+      <a class="plain" href="/tools-suite.html">All tools</a>
+      <a class="plain" href="/health-check.html">Health check</a>
+      <a class="plain" href="/audit-readiness.html">Audit check</a>
+      <a class="nav-cta" href="/#pricing">View pricing &rarr;</a>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <div class="page-head">
+      <div class="eyebrow">Mock Audit Interview</div>
+      <h1>Would your practice survive the interview?</h1>
+      <p>Auditors don't sit and read your policy binder. They interview your workers and participants and ask "show me how this actually happens." This is that interview — answer the way your team honestly would.</p>
+    </div>
+
+    <!-- INTERVIEW -->
+    <div id="interview">
+      <div class="premise">
+        <p class="quote">"The auditor doesn't read the policies and tick boxes. They interview the worker. They ask the participant. When the documents say one thing and the practice says another, that's a non-conformity — even if the practice is genuinely good."</p>
+        <p>That gap — between <strong>what your documents say</strong> and <strong>what actually happens</strong> — is why capable providers fail audits. This simulator walks you through the questions a real auditor asks on the day, scores how each answer would land, and shows you exactly where your evidence falls short.</p>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-meta"><span id="progressText">0 of 0 answered</span><span id="progressPct">0%</span></div>
+      </div>
+
+      <div id="scenes"></div>
+
+      <div class="card">
+        <div class="actions-bar">
+          <button class="btn btn-primary" id="seeResults" disabled onclick="computeResults()">See my audit risk report →</button>
+          <span class="hint" id="answerHint">Answer every question to see how you'd do.</span>
+        </div>
+      </div>
+
+      <p class="disclaimer">
+        This is an indicative practice-readiness simulation, not a certification or a real audit. Your approved quality auditor makes the final determination against the
+        <a href="https://www.ndiscommission.gov.au/rules-and-standards/ndis-practice-standards" target="_blank" rel="noopener">NDIS Practice Standards</a>.
+        Nothing you enter is stored or sent anywhere — it all runs in your browser.
+      </p>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="results">
+      <div class="verdict" id="verdict">
+        <div class="verdict-num" id="verdictNum">0<small>/100</small></div>
+        <div class="verdict-meta">
+          <div class="verdict-label" id="verdictLabel"></div>
+          <div class="verdict-desc" id="verdictDesc"></div>
+        </div>
+      </div>
+
+      <div class="tally">
+        <div class="tally-pill t-pass"><div class="tn" id="tPass">0</div><div class="tl">Would hold up</div></div>
+        <div class="tally-pill t-partial"><div class="tn" id="tPartial">0</div><div class="tl">Auditor would probe</div></div>
+        <div class="tally-pill t-fail"><div class="tn" id="tFail">0</div><div class="tl">Likely non-conformity</div></div>
+      </div>
+
+      <!-- GATE (shown to non-buyers) -->
+      <div class="gate" id="gate">
+        <h3>🔓 Unlock your full risk report</h3>
+        <p>Your score and tally are free. The full breakdown below — every finding, why an auditor would flag it, how to close it, and the exact document that proves it — is included with any NDIS Ready pack. Already bought? Paste your access code.</p>
+        <div class="gate-row">
+          <input type="text" id="tokenInput" placeholder="Paste your access code" />
+          <button class="btn btn-primary" onclick="unlock()">Unlock</button>
+        </div>
+        <a class="gate-buy" href="/#pricing">See plans &amp; pricing →</a>
+        <div class="banner banner-error" id="gateError"></div>
+      </div>
+
+      <div id="fullReport">
+        <div class="card findings">
+          <h3>Findings an auditor would raise</h3>
+          <ul id="findingList"></ul>
+          <p class="hint" id="noFindings" style="display:none;">No likely non-conformities — your practice and paperwork line up well. Keep your evidence current and rehearse before the real audit.</p>
+        </div>
+        <div class="card wins">
+          <h3>Answers that would hold up</h3>
+          <ul id="winList"></ul>
+        </div>
+        <div class="actions-bar" style="margin-bottom:1.5rem;">
+          <button class="btn btn-primary" onclick="downloadReport()">⬇ Download report (.txt)</button>
+          <button class="btn btn-ghost" onclick="restart()">Run it again</button>
+        </div>
+      </div>
+
+      <div class="cta-card">
+        <h3>Close the practice gap, not just the paperwork</h3>
+        <p>Every finding above maps to a ready-to-edit document in the NDIS Ready library — built so what you write down matches what your team actually does on the day.</p>
+        <a href="/#pricing">See what's included →</a>
+      </div>
+
+      <p class="disclaimer">
+        Indicative simulation only — not a certification or audit. Final compliance is determined by your approved quality auditor against the current
+        <a href="https://www.ndiscommission.gov.au/rules-and-standards/ndis-practice-standards" target="_blank" rel="noopener">NDIS Practice Standards</a>
+        and <a href="https://www.legislation.gov.au/F2018L00631/latest/text" target="_blank" rel="noopener">Quality Indicators Guidelines</a>. Nothing you entered was stored.
+      </p>
+    </div>
+  </div>
+
+  <script>
+  // =============================================================
+  // Mock Audit Interview — scenario bank.
+  // Each scene = a question an auditor actually asks a worker /
+  // participant / the provider, probing PRACTICE not paperwork.
+  // Options carry a value: 'pass' (solid evidence), 'partial'
+  // (auditor would probe further), 'fail' (likely non-conformity).
+  // 'why' = what the auditor concludes. 'fix' = what closes it.
+  // 'doc' = the pack document that backs the practice up.
+  // Scoring: pass=2, partial=1, fail=0. Overall = sum/(2*count).
+  // =============================================================
+  const SCENES = [
+    {
+      id:'s1', area:'Rights & Consent', who:'participant',
+      q:'An auditor asks your participant: "Before they started helping you, did anyone explain what they’d do and ask if you agreed?"',
+      doc:{ id:'3.6', name:'Consent Policy & Service Agreement' },
+      opts:[
+        { v:'pass', t:'"Yes — we went through it together and I signed a service agreement I understood." (Signed, dated consent is on file.)' },
+        { v:'partial', t:'"I think so… they explained it but I’m not sure I signed anything." (Consent happened but isn’t evidenced.)' },
+        { v:'fail', t:'"They just started. Nobody really asked me." (No record of informed consent.)' },
+      ],
+    },
+    {
+      id:'s2', area:'Rights & Dignity', who:'participant',
+      q:'The auditor asks: "If you weren’t happy with something, would you know how to complain — and would anything happen?"',
+      doc:{ id:'1.2', name:'Complaints and Feedback Policy' },
+      opts:[
+        { v:'pass', t:'"Yes — I was told how, in a way I understood, and last time I raised something it got fixed." (Complaint logged + closed.)' },
+        { v:'partial', t:'"I’d probably just tell my worker." (Informal only — no accessible process or record.)' },
+        { v:'fail', t:'"I wouldn’t know who to tell." (Participant never informed of complaints process.)' },
+      ],
+    },
+    {
+      id:'s3', area:'Incident Management', who:'worker',
+      q:'The auditor asks your support worker: "Walk me through exactly what you do if something goes wrong on shift — say a participant has a fall."',
+      doc:{ id:'1.3', name:'Incident Management Policy & Form' },
+      opts:[
+        { v:'pass', t:'"I make them safe, report it on our incident form same day, and my coordinator reviews it." (Worker knows the process; records exist.)' },
+        { v:'partial', t:'"I’d tell my manager and we’d sort it out." (Reported verbally, but no consistent form or record.)' },
+        { v:'fail', t:'"Honestly I’m not 100% sure — it hasn’t come up." (Worker can’t describe the process.)' },
+      ],
+    },
+    {
+      id:'s4', area:'Reportable Incidents', who:'you',
+      q:'The auditor asks you: "When does an incident become reportable to the NDIS Commission, and how fast must you notify?"',
+      doc:{ id:'1.4', name:'Reportable Incidents Procedure' },
+      opts:[
+        { v:'pass', t:'I can name the reportable categories and the 24-hour / 5-day timeframes, and show where it’s documented.' },
+        { v:'partial', t:'I know some are reportable but I’d have to look up the timeframes.' },
+        { v:'fail', t:'I’m not confident which incidents are reportable or when.' },
+      ],
+    },
+    {
+      id:'s5', area:'Worker Screening', who:'you',
+      q:'The auditor says: "Show me proof every worker had a valid NDIS Worker Screening Check before their first shift."',
+      doc:{ id:'5.7', name:'Staff Screening Checklist & Register' },
+      opts:[
+        { v:'pass', t:'I have a register with clearance numbers and dates, all verified before start dates.' },
+        { v:'partial', t:'Everyone’s cleared, but it’s scattered across emails — no single register.' },
+        { v:'fail', t:'A worker started before their check came back / I can’t locate the evidence.' },
+      ],
+    },
+    {
+      id:'s6', area:'Training & Induction', who:'worker',
+      q:'The auditor asks a worker: "What induction and training did you get before working with this participant?"',
+      doc:{ id:'7.5', name:'Training Register & Induction Record' },
+      opts:[
+        { v:'pass', t:'"I did an induction and the training relevant to this person’s needs — it’s recorded." (Training register matches.)' },
+        { v:'partial', t:'"I had a chat and shadowed a shift." (Real but informal — not documented.)' },
+        { v:'fail', t:'"I just started, I picked it up as I went." (No induction evidence.)' },
+      ],
+    },
+    {
+      id:'s7', area:'Person-Centred Supports', who:'worker',
+      q:'The auditor asks: "How do you know what this participant’s goals are, and how does your support reflect them?"',
+      doc:{ id:'3.4', name:'Individual Support Plan Template' },
+      opts:[
+        { v:'pass', t:'"Their support plan sets their goals and I work to it — and update notes against it." (Plan + notes align.)' },
+        { v:'partial', t:'"I know them well, but it’s mostly in my head." (Person-centred in practice, not evidenced.)' },
+        { v:'fail', t:'"I just do the tasks I’m given." (No individual plan or goal link.)' },
+      ],
+    },
+    {
+      id:'s8', area:'Progress Notes', who:'worker',
+      q:'The auditor asks: "Show me your notes from last week — when do you write them, and what’s in them?"',
+      doc:{ id:'3.1', name:'Service Delivery Policy (record-keeping standards)' },
+      opts:[
+        { v:'pass', t:'"I write factual, dated notes during or right after each shift, linked to goals." (Notes are timely and consistent.)' },
+        { v:'partial', t:'"I write them up at the end of the week from memory." (Notes exist but are late / vague.)' },
+        { v:'fail', t:'"I only write something if there’s a problem." (Gaps in the record.)' },
+      ],
+    },
+    {
+      id:'s9', area:'Medication', who:'worker',
+      q:'The auditor asks (if you support medication): "Talk me through how you handle this participant’s medication safely."',
+      doc:{ id:'3.12', name:'Medication Management Policy' },
+      opts:[
+        { v:'pass', t:'"I follow the medication procedure, sign the chart each time, and know what to do if a dose is missed." (Charts back this up.)' },
+        { v:'partial', t:'"I help them take it but the recording is patchy." (Practice ok, evidence weak.)' },
+        { v:'fail', t:'"There’s no real system / we don’t support medication." (If you do support it: a serious gap.)' },
+      ],
+    },
+    {
+      id:'s10', area:'Safeguarding', who:'worker',
+      q:'The auditor asks: "If you suspected a participant was being abused or neglected, what would you do?"',
+      doc:{ id:'1.5', name:'Abuse and Neglect Prevention Policy' },
+      opts:[
+        { v:'pass', t:'"I’d report it immediately under our safeguarding process — I know who to escalate to." (Worker knows the path.)' },
+        { v:'partial', t:'"I’d tell my manager and hope it gets handled." (Vague — no clear process.)' },
+        { v:'fail', t:'"I’m not sure, it hasn’t happened." (No safeguarding awareness.)' },
+      ],
+    },
+    {
+      id:'s11', area:'Continuity & Risk', who:'you',
+      q:'The auditor asks: "A worker calls in sick for a high-needs participant. What happens so the participant isn’t left without support?"',
+      doc:{ id:'2.12', name:'Business Continuity Plan' },
+      opts:[
+        { v:'pass', t:'I have a documented continuity plan with backup staffing and participant risk ratings.' },
+        { v:'partial', t:'I’d scramble to cover it — it usually works but isn’t written down.' },
+        { v:'fail', t:'I haven’t really planned for that.' },
+      ],
+    },
+    {
+      id:'s12', area:'Continuous Improvement', who:'you',
+      q:'The auditor asks: "Show me something that went wrong and what you changed because of it."',
+      doc:{ id:'6.4', name:'Continuous Improvement Register' },
+      opts:[
+        { v:'pass', t:'I keep a continuous-improvement register linking incidents/complaints to actions taken and reviewed.' },
+        { v:'partial', t:'We do learn from things, but there’s no register showing it.' },
+        { v:'fail', t:'I don’t track this formally.' },
+      ],
+    },
+  ];
+
+  const SCORE = { pass: 2, partial: 1, fail: 0 };
+  const WHO_LABEL = { worker: 'They ask your worker', participant: 'They ask your participant', you: 'They ask you' };
+  const WHY = {
+    pass:    'This answer demonstrates the practice is real AND evidenced — exactly what an auditor needs.',
+    partial: 'The practice may be genuine, but the auditor can’t see proof. Undocumented good practice still reads as a risk — they’ll probe and may downgrade it.',
+    fail:    'This is the classic non-conformity: the policy may exist on paper, but the interview shows it isn’t lived in practice. Auditors weight what people actually say and do.',
+  };
+  const FIX = {
+    partial: 'Capture it: put the evidence (a dated record, register entry, or signed form) behind what you already do.',
+    fail:    'Close it before audit: put the process in place, train your team on it, and keep the record that proves it happened.',
+  };
+
+  const answers = {};       // id -> 'pass'|'partial'|'fail'
+  let totalScenes = 0;
+  let isUnlocked = false;
+
+  function getToken() {
+    const url = new URLSearchParams(window.location.search).get('token');
+    if (url) { localStorage.setItem('aiwriter_token', url); return url; }
+    return localStorage.getItem('aiwriter_token') || '';
+  }
+
+  function render() {
+    const root = document.getElementById('scenes');
+    let html = '';
+    SCENES.forEach((s, i) => {
+      totalScenes++;
+      const whoCls = 'who-' + s.who;
+      html += `<div class="card scene" id="scene-${s.id}">
+        <div class="scene-head">
+          <span class="scene-area">${i + 1}. ${s.area}</span>
+          <span class="scene-who ${whoCls}">${WHO_LABEL[s.who]}</span>
+        </div>
+        <div class="scene-q">${s.q.replace(/"([^"]*)"/g, '<span class="quo">\u201c$1\u201d</span>')}</div>
+        <div class="opts">`;
+      s.opts.forEach((o, oi) => {
+        html += `<div class="opt" data-q="${s.id}" data-v="${o.v}" onclick="pick('${s.id}','${o.v}')">${o.t}</div>`;
+      });
+      html += `</div></div>`;
+    });
+    root.innerHTML = html;
+    updateProgress();
+  }
+
+  function pick(id, val) {
+    answers[id] = val;
+    document.querySelectorAll(`.opt[data-q="${id}"]`).forEach(el => {
+      el.className = 'opt';
+      if (el.dataset.v === val) el.classList.add('sel', 'v-' + val);
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const done = Object.keys(answers).length;
+    const pct = Math.round((done / totalScenes) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${done} of ${totalScenes} answered`;
+    document.getElementById('progressPct').textContent = pct + '%';
+    const ready = done === totalScenes;
+    document.getElementById('seeResults').disabled = !ready;
+    document.getElementById('answerHint').textContent = ready
+      ? 'All set — see how the interview went.'
+      : `${totalScenes - done} question${totalScenes - done === 1 ? '' : 's'} left.`;
+  }
+
+  let lastReport = null;
+  function computeResults() {
+    let earned = 0, max = 0;
+    let nPass = 0, nPartial = 0, nFail = 0;
+    const findings = [];
+    const wins = [];
+
+    SCENES.forEach(s => {
+      const a = answers[s.id] || 'fail';
+      earned += SCORE[a]; max += 2;
+      if (a === 'pass') { nPass++; wins.push({ area: s.area, q: s.q }); }
+      else {
+        if (a === 'partial') nPartial++; else nFail++;
+        findings.push({
+          level: a, area: s.area, q: s.q, doc: s.doc,
+          why: WHY[a], fix: FIX[a],
+          weight: a === 'fail' ? 0 : 1,
+        });
+      }
+    });
+
+    const overall = Math.round((earned / max) * 100);
+    findings.sort((x, y) => x.weight - y.weight); // fails first, then partials
+
+    lastReport = { overall, nPass, nPartial, nFail, findings, wins };
+    showResults(lastReport);
+  }
+
+  function band(pct) {
+    if (pct >= 80) return { cls: 'ok', label: 'Would likely pass the interview', desc: 'Your practice and your paperwork line up. An auditor interviewing your team would find evidence behind your policies. Keep records current and rehearse.' };
+    if (pct >= 55) return { cls: 'mid', label: 'The auditor would find gaps', desc: 'A real base, but several answers rely on undocumented practice or unclear processes. An auditor would probe these and could record non-conformities.' };
+    return { cls: 'bad', label: 'High risk of non-conformities', desc: 'Too many answers show practice that isn’t evidenced — or processes your team can’t describe. This is exactly how capable providers fail audits. Close the findings below first.' };
+  }
+
+  function showResults(rep) {
+    document.getElementById('interview').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    const b = band(rep.overall);
+    document.getElementById('verdict').className = 'verdict ' + b.cls;
+    document.getElementById('verdictNum').innerHTML = rep.overall + '<small>/100</small>';
+    document.getElementById('verdictLabel').textContent = b.label;
+    document.getElementById('verdictDesc').textContent = b.desc;
+
+    document.getElementById('tPass').textContent = rep.nPass;
+    document.getElementById('tPartial').textContent = rep.nPartial;
+    document.getElementById('tFail').textContent = rep.nFail;
+
+    const fl = document.getElementById('findingList');
+    if (rep.findings.length === 0) {
+      fl.innerHTML = '';
+      document.getElementById('noFindings').style.display = 'block';
+    } else {
+      document.getElementById('noFindings').style.display = 'none';
+      fl.innerHTML = rep.findings.map(f => {
+        const fcls = f.level === 'fail' ? 'f-fail' : 'f-partial';
+        const tag = f.level === 'fail' ? 'Likely non-conformity' : 'Auditor would probe';
+        return `<li class="finding ${fcls}">
+          <div class="finding-top"><span class="finding-tag">${tag}</span><span class="finding-area">${f.area}</span></div>
+          <div class="finding-q">${f.q}</div>
+          <div class="finding-why">${f.why}</div>
+          <div class="finding-fix"><strong>Close it:</strong> ${f.fix}</div>
+          <div class="finding-doc">Use: ${f.doc.id} — ${f.doc.name}</div>
+        </li>`;
+      }).join('');
+    }
+    document.getElementById('winList').innerHTML = rep.wins.length
+      ? rep.wins.map(w => `<li><strong>${w.area}.</strong> ${w.q}</li>`).join('')
+      : '<li style="color:var(--ink-soft)">Work through the findings above to build answers that hold up.</li>';
+
+    applyGate();
+  }
+
+  function applyGate() {
+    isUnlocked = !!getToken();
+    const gate = document.getElementById('gate');
+    const full = document.getElementById('fullReport');
+    if (isUnlocked) {
+      gate.style.display = 'none';
+      full.classList.remove('locked-blur');
+    } else {
+      gate.style.display = 'block';
+      full.classList.add('locked-blur');
+    }
+  }
+
+  async function unlock() {
+    const input = document.getElementById('tokenInput').value.trim();
+    const err = document.getElementById('gateError');
+    err.className = 'banner banner-error';
+    if (!input) { err.textContent = 'Please paste your access code.'; err.classList.add('show'); return; }
+    err.textContent = 'Checking…'; err.className = 'banner banner-ok show';
+    try {
+      const res = await fetch('/api/validate-access', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: input }),
+      });
+      const data = await res.json();
+      if (data.valid) {
+        localStorage.setItem('aiwriter_token', input);
+        err.className = 'banner banner-ok show'; err.textContent = 'Unlocked — here’s your full report.';
+        setTimeout(applyGate, 400);
+      } else {
+        err.className = 'banner banner-error show';
+        err.textContent = 'That code didn\u2019t match a purchase. Check your delivery email, or see plans below.';
+      }
+    } catch (e) {
+      err.className = 'banner banner-error show';
+      err.textContent = 'Couldn\u2019t verify right now. Please try again in a moment.';
+    }
+  }
+
+  function downloadReport() {
+    if (!lastReport) return;
+    const r = lastReport;
+    const b = band(r.overall);
+    const date = new Date().toLocaleDateString('en-AU', { day:'2-digit', month:'long', year:'numeric' });
+    let t = '';
+    t += 'NDIS READY — MOCK AUDIT INTERVIEW: RISK REPORT\n';
+    t += '==============================================\n';
+    t += `Generated: ${date}\n\n`;
+    t += `OVERALL: ${r.overall}/100 — ${b.label}\n`;
+    t += `${b.desc}\n\n`;
+    t += `INTERVIEW TALLY\n---------------\n`;
+    t += `  Would hold up:           ${r.nPass}\n`;
+    t += `  Auditor would probe:     ${r.nPartial}\n`;
+    t += `  Likely non-conformity:   ${r.nFail}\n\n`;
+    t += 'FINDINGS AN AUDITOR WOULD RAISE\n-------------------------------\n';
+    if (r.findings.length === 0) {
+      t += '  None — practice and paperwork line up well. Keep evidence current.\n';
+    } else {
+      r.findings.forEach((f, i) => {
+        const tag = f.level === 'fail' ? 'LIKELY NON-CONFORMITY' : 'AUDITOR WOULD PROBE';
+        t += `  ${i+1}. [${tag}] ${f.area}\n`;
+        t += `      Q: ${f.q.replace(/\s+/g,' ')}\n`;
+        t += `      Why: ${f.why}\n`;
+        t += `      Close it: ${f.fix}\n`;
+        t += `      Document: ${f.doc.id} — ${f.doc.name}\n\n`;
+      });
+    }
+    t += 'ANSWERS THAT WOULD HOLD UP\n--------------------------\n';
+    if (r.wins.length) { r.wins.forEach(w => { t += `  + ${w.area}\n`; }); }
+    else { t += '  (Work through the findings above.)\n'; }
+    t += '\n----------------------------------------------\n';
+    t += 'Indicative simulation only — not a certification or audit. Final compliance\n';
+    t += 'is determined by your approved quality auditor against the current NDIS\n';
+    t += 'Practice Standards. Nothing you entered was stored. ndis-ready.com.au\n';
+
+    const blob = new Blob([t], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `NDIS-Mock-Audit-${new Date().toISOString().slice(0,10)}.txt`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  function restart() {
+    for (const k in answers) delete answers[k];
+    document.querySelectorAll('.opt').forEach(el => el.className = 'opt');
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('interview').style.display = 'block';
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  render();
+  </script>
+</body>
+</html>

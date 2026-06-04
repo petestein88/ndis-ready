@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The NDIS Ready Toolkit — every tool to get and stay audit-ready</title>
+  <meta name="description" content="The full NDIS Ready toolkit: 65+ personalised policy documents, an AI note & incident writer, a business health check, an audit readiness self-assessment, and a mock audit interview simulator." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rose: #f4c5c5; --rose-deep: #e8a0a0; --lavender: #d8d0f0; --lavender-deep: #b8acdf;
+      --sage: #c5ddd0; --sage-deep: #9ec4b0; --peach: #f7dfc8; --peach-deep: #efcba8;
+      --cream: #faf8f4; --white: #ffffff; --ink: #2a2535; --ink-mid: #5a5370; --ink-soft: #9990b0;
+      --green: #2f8a5a; --font-brand: 'Nunito', system-ui, sans-serif;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --radius: 18px; --radius-sm: 10px; --radius-pill: 999px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background: var(--cream); color: var(--ink); line-height: 1.6; }
+    a { color: inherit; }
+
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .nav-logo { font-family: var(--font-brand); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    nav .nav-right { display: flex; align-items: center; gap: 1.25rem; }
+    nav .nav-right a.plain { font-size: 0.875rem; font-weight: 600; color: var(--ink-mid); text-decoration: none; }
+    nav a.nav-cta { background: var(--ink); color: var(--white); font-size: 0.875rem; font-weight: 600; padding: 0.6rem 1.4rem; border-radius: var(--radius-pill); text-decoration: none; }
+    nav a.nav-cta:hover { background: #3d3650; }
+    @media (max-width: 720px) { nav .nav-right a.plain { display: none; } }
+
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+    .page-head { text-align: center; max-width: 680px; margin: 1rem auto 2.5rem; }
+    .eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lavender-deep); margin-bottom: 0.7rem; }
+    .page-head h1 { font-family: var(--font-display); font-size: clamp(2.1rem, 4.5vw, 3.2rem); line-height: 1.12; margin-bottom: 0.9rem; }
+    .page-head h1 em { font-style: italic; color: var(--lavender-deep); }
+    .page-head p { color: var(--ink-mid); font-size: 1.05rem; }
+
+    /* hero pack card */
+    .anchor { background: var(--ink); color: #fff; border-radius: var(--radius); padding: 2rem 2.2rem; display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .anchor .a-body { flex: 1; min-width: 280px; }
+    .anchor .tag { display: inline-block; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(255,255,255,0.16); padding: 0.3rem 0.75rem; border-radius: 999px; margin-bottom: 0.8rem; }
+    .anchor h2 { font-family: var(--font-display); font-size: 1.7rem; margin-bottom: 0.5rem; color: #fff; }
+    .anchor p { font-size: 0.96rem; opacity: 0.85; margin-bottom: 1rem; }
+    .anchor .a-cta { display: inline-flex; gap: 0.8rem; flex-wrap: wrap; }
+    .anchor a.btn-light { background: #fff; color: var(--ink); font-weight: 700; padding: 0.75rem 1.5rem; border-radius: var(--radius-pill); text-decoration: none; font-size: 0.92rem; }
+    .anchor a.btn-outline { border: 1.5px solid rgba(255,255,255,0.4); color: #fff; font-weight: 600; padding: 0.75rem 1.5rem; border-radius: var(--radius-pill); text-decoration: none; font-size: 0.92rem; }
+    .anchor .a-price { text-align: center; min-width: 150px; }
+    .anchor .a-price .num { font-family: var(--font-display); font-size: 2.8rem; line-height: 1; }
+    .anchor .a-price .lbl { font-size: 0.8rem; opacity: 0.7; margin-top: 0.3rem; }
+
+    .section-label { text-align: center; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); margin: 2.25rem 0 1.25rem; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.1rem; }
+    .tool { background: var(--white); border: 1px solid #ece7df; border-radius: var(--radius); padding: 1.6rem; box-shadow: 0 6px 24px rgba(42,37,53,0.05); display: flex; flex-direction: column; transition: transform 0.15s, box-shadow 0.15s; text-decoration: none; color: inherit; }
+    .tool:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(42,37,53,0.1); }
+    .tool .ico { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+    .tool h3 { font-family: var(--font-display); font-size: 1.32rem; line-height: 1.2; margin-bottom: 0.5rem; }
+    .tool p { font-size: 0.92rem; color: var(--ink-mid); flex: 1; margin-bottom: 1rem; }
+    .badges { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.85rem; }
+    .badge { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.22rem 0.6rem; border-radius: 999px; }
+    .badge-free { background: #eef7f1; color: #275f41; }
+    .badge-included { background: #f3eefe; color: #5b4b86; }
+    .badge-keep { background: #fdf4e3; color: #7a5616; }
+    .tool .go { font-weight: 700; font-size: 0.92rem; color: var(--ink); display: inline-flex; align-items: center; gap: 0.35rem; }
+    .tool:hover .go { gap: 0.6rem; }
+
+    .how { background: #f3eefe; border: 1px solid var(--lavender); border-radius: var(--radius); padding: 1.6rem 1.8rem; margin-top: 2.5rem; }
+    .how h3 { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 0.6rem; }
+    .how p { font-size: 0.94rem; color: var(--ink-mid); margin-bottom: 0.5rem; }
+    .how strong { color: var(--ink); }
+
+    .cta-section { text-align: center; margin-top: 2.5rem; }
+    .cta-section a { display: inline-block; background: var(--ink); color: #fff; font-weight: 700; padding: 0.9rem 2rem; border-radius: var(--radius-pill); text-decoration: none; }
+
+    footer { border-top: 1px solid #ece7df; padding: 2rem; text-align: center; color: var(--ink-soft); font-size: 0.85rem; margin-top: 3rem; }
+    footer a { color: var(--ink-mid); text-decoration: none; margin: 0 0.5rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="nav-logo">
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="navSG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stop-color="#c4b5f4"/><stop offset="100%" stop-color="#b8acdf"/>
+          </linearGradient>
+          <filter id="navTex">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise"/>
+            <feColorMatrix type="saturate" values="0" in="noise" result="gn"/>
+            <feBlend in="SourceGraphic" in2="gn" mode="multiply" result="bl"/>
+            <feComposite in="bl" in2="SourceGraphic" operator="in"/>
+          </filter>
+        </defs>
+        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="url(#navSG)" filter="url(#navTex)"/>
+        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="none" stroke="#9a88cc" stroke-width="3"/>
+        <path d="M50 65 Q32 52 32 42 Q32 34 40 34 Q45 34 50 40 Q55 34 60 34 Q68 34 68 42 Q68 52 50 65 Z" fill="#e8a0a0" filter="url(#navTex)"/>
+      </svg>
+      NDIS Ready
+    </a>
+    <div class="nav-right">
+      <a class="plain" href="/tools.html">AI writer</a>
+      <a class="plain" href="/health-check.html">Health check</a>
+      <a class="plain" href="/audit-readiness.html">Audit check</a>
+      <a class="nav-cta" href="/#pricing">View pricing &rarr;</a>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <div class="page-head">
+      <div class="eyebrow">The NDIS Ready Toolkit</div>
+      <h1>Everything you need to get — and <em>stay</em> — audit-ready</h1>
+      <p>Templates alone don't pass audits — evidence does. NDIS Ready pairs your personalised document pack with live tools that test your practice, find your gaps, and turn your work into the proof an auditor wants to see.</p>
+    </div>
+
+    <!-- ANCHOR: the document pack -->
+    <div class="anchor">
+      <div class="a-body">
+        <span class="tag">The foundation</span>
+        <h2>Your personalised compliance document pack</h2>
+        <p>65+ policies, procedures, registers and forms — every document the NDIS Commission expects, written to the Practice Standards and personalised to your organisation. Submission-ready Word files, yours to keep.</p>
+        <div class="a-cta">
+          <a class="btn-light" href="/quiz.html">Take the free quiz &rarr;</a>
+          <a class="btn-outline" href="/#pricing">See what's included</a>
+        </div>
+      </div>
+      <div class="a-price">
+        <div class="num">65+</div>
+        <div class="lbl">documents, personalised &amp; yours to keep</div>
+      </div>
+    </div>
+
+    <p class="section-label">Free tools &amp; AI — included with every pack</p>
+
+    <div class="grid">
+      <!-- AI Writer -->
+      <a class="tool" href="/tools.html">
+        <div class="ico" style="background:var(--sage);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg>
+        </div>
+        <div class="badges"><span class="badge badge-free">Free to try</span><span class="badge badge-included">Unlimited with pack</span></div>
+        <h3>AI Note &amp; Incident Writer</h3>
+        <p>Paste rough shift notes and get back a clean, objective NDIS progress note or incident report in seconds — in the plain, factual language your auditor expects. Real AI, transparent and assistive — you always review before use.</p>
+        <span class="go">Open the AI writer &rarr;</span>
+      </a>
+
+      <!-- Health Check -->
+      <a class="tool" href="/health-check.html">
+        <div class="ico" style="background:var(--peach);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
+        </div>
+        <div class="badges"><span class="badge badge-free">Free</span></div>
+        <h3>Business Health Check</h3>
+        <p>Wondering if the numbers stack up? See your true cost per support hour and your real margin against NDIS price limits — in under a minute, before you commit.</p>
+        <span class="go">Check my viability &rarr;</span>
+      </a>
+
+      <!-- Audit Readiness -->
+      <a class="tool" href="/audit-readiness.html">
+        <div class="ico" style="background:var(--lavender);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <div class="badges"><span class="badge badge-free">Free score</span><span class="badge badge-included">Full report with pack</span></div>
+        <h3>Audit Readiness Self-Assessment</h3>
+        <p>Score yourself against the NDIS Practice Standards across seven quality areas. See your biggest gaps ranked by priority — each mapped to the exact document that closes it.</p>
+        <span class="go">Check my readiness &rarr;</span>
+      </a>
+
+      <!-- Mock Audit -->
+      <a class="tool" href="/mock-audit.html">
+        <div class="ico" style="background:var(--rose);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 9h8M8 13h5"/></svg>
+        </div>
+        <div class="badges"><span class="badge badge-free">Free score</span><span class="badge badge-included">Full report with pack</span></div>
+        <h3>Mock Audit Interview Simulator</h3>
+        <p>Auditors interview your team, not your binder. Answer the questions a real auditor asks on the day and see where your <em>practice</em> diverges from your <em>paperwork</em> — before the real auditor does.</p>
+        <span class="go">Start the interview &rarr;</span>
+      </a>
+    </div>
+
+    <!-- how it fits -->
+    <div class="how">
+      <h3>How the toolkit works together</h3>
+      <p><strong>1. Check the numbers.</strong> Start with the free Health Check to confirm your service is financially viable.</p>
+      <p><strong>2. Find your gaps.</strong> Run the Audit Readiness Self-Assessment to see which documents you're missing, then the Mock Audit to see where your day-to-day practice wouldn't hold up in an interview.</p>
+      <p><strong>3. Close them.</strong> Your personalised document pack gives you every policy, register and form you need — and the AI Writer keeps your notes and incident reports audit-ready every day after.</p>
+    </div>
+
+    <div class="cta-section">
+      <a href="/quiz.html">Start with the free quiz &rarr;</a>
+    </div>
+  </div>
+
+  <footer>
+    <div><a href="/">Home</a> · <a href="/#pricing">Pricing</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms-of-service.html">Terms</a></div>
+    <div style="margin-top:0.6rem;">© 2026 NDIS Ready · hello@ndis-ready.com.au</div>
+  </footer>
+</body>
+</html>
