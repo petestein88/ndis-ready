@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/admin-upload-hr.js": {
+      "includeFiles": "hr-templates/**"
+    }
+  },
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
     { "source": "/((?!api/).*)", "destination": "/$1" }
