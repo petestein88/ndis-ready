@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Health Check — NDIS Ready</title>
+  <meta name="description" content="A free calculator for NDIS providers. Model your true cost per support hour, see your margin against NDIS price limits, and stress-test your business viability." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rose: #f4c5c5; --rose-deep: #e8a0a0; --lavender: #d8d0f0; --lavender-deep: #b8acdf;
+      --sage: #c5ddd0; --sage-deep: #9ec4b0; --peach: #f7dfc8; --peach-deep: #efcba8;
+      --cream: #faf8f4; --white: #ffffff; --ink: #2a2535; --ink-mid: #5a5370; --ink-soft: #9990b0;
+      --green: #2f8a5a; --amber: #c9871f; --red: #cf3a3a;
+      --font-brand: 'Nunito', system-ui, sans-serif;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --radius: 16px; --radius-sm: 10px; --radius-pill: 999px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background: var(--cream); color: var(--ink); line-height: 1.6; }
+    a { color: inherit; }
+
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .nav-logo { font-family: var(--font-brand); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    nav .nav-right { display: flex; align-items: center; gap: 1.25rem; }
+    nav .nav-right a.plain { font-size: 0.875rem; font-weight: 600; color: var(--ink-mid); text-decoration: none; }
+    nav a.nav-cta { background: var(--ink); color: var(--white); font-size: 0.875rem; font-weight: 600; padding: 0.6rem 1.4rem; border-radius: var(--radius-pill); text-decoration: none; }
+    nav a.nav-cta:hover { background: #3d3650; }
+
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 1.5rem 1.5rem 5rem; }
+    .page-head { text-align: center; margin-bottom: 2rem; }
+    .eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lavender-deep); margin-bottom: 0.6rem; }
+    .page-head h1 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.9rem); line-height: 1.15; margin-bottom: 0.75rem; }
+    .page-head p { color: var(--ink-mid); max-width: 600px; margin: 0 auto; font-size: 1.02rem; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+
+    .card { background: var(--white); border: 1px solid #ece7df; border-radius: var(--radius); padding: 1.75rem; box-shadow: 0 6px 24px rgba(42,37,53,0.05); }
+    .card h2 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.3rem; }
+    .card .sub { color: var(--ink-soft); font-size: 0.88rem; margin-bottom: 1.5rem; }
+
+    .field { margin-bottom: 1.15rem; }
+    .field label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem; }
+    .field .desc { color: var(--ink-soft); font-size: 0.78rem; margin-bottom: 0.45rem; }
+    .input-money, .input-num { position: relative; }
+    .input-money::before { content: '$'; position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); color: var(--ink-soft); font-weight: 600; }
+    .field input[type="number"] { width: 100%; font-family: var(--font-body); font-size: 1rem; color: var(--ink); border: 1px solid #e2dcd2; border-radius: var(--radius-sm); padding: 0.7rem 1rem; background: var(--cream); }
+    .input-money input { padding-left: 1.7rem !important; }
+    .field input:focus { outline: none; border-color: var(--lavender-deep); }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+
+    .seg { display: flex; gap: 0.4rem; background: var(--cream); border: 1px solid #e2dcd2; border-radius: var(--radius-pill); padding: 0.3rem; }
+    .seg button { flex: 1; border: none; background: transparent; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; color: var(--ink-mid); padding: 0.55rem; border-radius: var(--radius-pill); cursor: pointer; }
+    .seg button.active { background: var(--ink); color: var(--white); }
+
+    /* RESULTS */
+    .score-ring { display: flex; align-items: center; gap: 1.25rem; padding: 1.25rem; border-radius: var(--radius); margin-bottom: 1.5rem; }
+    .score-num { font-family: var(--font-display); font-size: 3rem; line-height: 1; }
+    .score-label { font-weight: 700; font-size: 1.1rem; }
+    .score-desc { font-size: 0.85rem; opacity: 0.85; }
+
+    .metric { display: flex; justify-content: space-between; align-items: baseline; padding: 0.85rem 0; border-bottom: 1px solid #f0ece4; }
+    .metric:last-child { border-bottom: none; }
+    .metric .m-label { font-size: 0.92rem; color: var(--ink-mid); }
+    .metric .m-label small { display: block; color: var(--ink-soft); font-size: 0.74rem; }
+    .metric .m-val { font-family: var(--font-display); font-size: 1.4rem; }
+    .metric .m-val.pos { color: var(--green); }
+    .metric .m-val.warn { color: var(--amber); }
+    .metric .m-val.neg { color: var(--red); }
+
+    .verdict { margin-top: 1.25rem; padding: 1.1rem 1.25rem; border-radius: var(--radius-sm); font-size: 0.9rem; line-height: 1.55; }
+    .verdict.ok { background: #eef7f1; border: 1px solid var(--sage-deep); color: #275f41; }
+    .verdict.mid { background: #fdf4e3; border: 1px solid var(--peach-deep); color: #7a5616; }
+    .verdict.bad { background: #fbe9e9; border: 1px solid var(--rose-deep); color: #8c2626; }
+
+    .insights { margin-top: 1.25rem; }
+    .insights h3 { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.6rem; }
+    .insights li { list-style: none; font-size: 0.88rem; color: var(--ink-mid); padding: 0.4rem 0 0.4rem 1.5rem; position: relative; }
+    .insights li::before { content: '→'; position: absolute; left: 0; color: var(--lavender-deep); font-weight: 700; }
+
+    .benchmark-note { font-size: 0.74rem; color: var(--ink-soft); margin-top: 1.5rem; line-height: 1.5; }
+    .benchmark-note a { color: var(--ink-mid); }
+
+    .cta-card { margin-top: 2rem; background: var(--ink); color: #fff; border-radius: var(--radius); padding: 1.75rem; text-align: center; }
+    .cta-card h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
+    .cta-card p { color: rgba(255,255,255,0.85); font-size: 0.95rem; margin-bottom: 1.25rem; max-width: 540px; margin-left: auto; margin-right: auto; }
+    .cta-card a { display: inline-block; background: #fff; color: var(--ink); font-weight: 700; font-size: 0.95rem; padding: 0.85rem 1.8rem; border-radius: var(--radius-pill); text-decoration: none; }
+
+    footer { border-top: 1px solid #ece7df; padding: 2rem; text-align: center; color: var(--ink-soft); font-size: 0.85rem; }
+    footer a { color: var(--ink-mid); text-decoration: none; margin: 0 0.5rem; }
+    .disclaimer { text-align: center; color: var(--ink-soft); font-size: 0.78rem; margin-top: 1.5rem; max-width: 720px; margin-left: auto; margin-right: auto; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="navSG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+          <stop offset="0%" stop-color="#c4b5f4"/><stop offset="100%" stop-color="#b8acdf"/>
+        </linearGradient>
+        <filter id="navTex"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise"/><feColorMatrix type="saturate" values="0" in="noise" result="gn"/><feBlend in="SourceGraphic" in2="gn" mode="multiply" result="bl"/><feComposite in="bl" in2="SourceGraphic" operator="in"/></filter>
+      </defs>
+      <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="url(#navSG)" filter="url(#navTex)"/>
+      <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="none" stroke="#9a88cc" stroke-width="3"/>
+      <path d="M50 65 Q32 52 32 42 Q32 34 40 34 Q45 34 50 40 Q55 34 60 34 Q68 34 68 42 Q68 52 50 65 Z" fill="#e8a0a0" filter="url(#navTex)"/>
+    </svg>
+    NDIS Ready
+  </a>
+  <div class="nav-right">
+    <a href="tools.html" class="plain">AI writer</a>
+    <a href="/#pricing" class="nav-cta">View pricing →</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="page-head">
+    <div class="eyebrow">Free tool · Business Health Check</div>
+    <h1>Is your NDIS business actually viable?</h1>
+    <p>NDIS margins are famously thin — the NDIA's own cost model targets just ~2% profit per support hour. Enter a few numbers to see your true cost per hour, your real margin against NDIS price limits, and whether your model stacks up.</p>
+  </div>
+
+  <div class="grid">
+    <!-- INPUTS -->
+    <div class="card">
+      <h2>Your numbers</h2>
+      <p class="sub">Defaults reflect 2025-26 NDIS price limits and the SCHADS award — adjust to match your business.</p>
+
+      <div class="field">
+        <label for="rate">NDIS price you bill per support hour</label>
+        <div class="desc">Standard weekday daily-living / personal-care limit is ~$71.38/hr (PAPL 2025-26).</div>
+        <div class="input-money"><input type="number" id="rate" value="71.38" step="0.01" min="0" /></div>
+      </div>
+
+      <div class="field">
+        <label for="wage">Support worker base wage per hour</label>
+        <div class="desc">SCHADS Level 2.3 base is ~$36.75/hr; a casual is ~$44.39/hr with the 25% loading.</div>
+        <div class="input-money"><input type="number" id="wage" value="36.75" step="0.01" min="0" /></div>
+      </div>
+
+      <div class="field">
+        <label>Employment type</label>
+        <div class="desc">Casual adds a 25% loading; permanent adds leave + on-costs we estimate for you.</div>
+        <div class="seg" id="empSeg">
+          <button data-emp="permanent" class="active">Permanent</button>
+          <button data-emp="casual">Casual (+25%)</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="oncosts">On-costs (super, leave, insurance, training) — % of wage</label>
+        <div class="desc">Super alone is 12% from July 2025. Total on-costs typically run 18-28%.</div>
+        <div class="input-num"><input type="number" id="oncosts" value="22" step="0.5" min="0" /></div>
+      </div>
+
+      <div class="field">
+        <label for="overhead">Overhead per billable hour</label>
+        <div class="desc">Admin, rostering, compliance, rent, software. NDIA's cost model allows just ~$7.11/hr (10.5%).</div>
+        <div class="input-money"><input type="number" id="overhead" value="7.11" step="0.01" min="0" /></div>
+      </div>
+
+      <div class="field">
+        <label for="util">Billable utilisation</label>
+        <div class="desc">Share of paid worker time that is actually billable to NDIS (travel, no-shows, admin eat into this). 80-90% is good.</div>
+        <div class="input-num"><input type="number" id="util" value="85" step="1" min="1" max="100" /></div>
+      </div>
+
+      <div class="field">
+        <label for="hours">Billable support hours per week (whole business)</label>
+        <div class="desc">Used to project your weekly and annual profit.</div>
+        <div class="input-num"><input type="number" id="hours" value="200" step="10" min="0" /></div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="card" id="resultsCard">
+      <h2>Your health check</h2>
+      <p class="sub">Updates live as you type.</p>
+
+      <div class="score-ring" id="scoreRing">
+        <div class="score-num" id="scoreNum">–</div>
+        <div>
+          <div class="score-label" id="scoreLabel">Enter your numbers</div>
+          <div class="score-desc" id="scoreDesc">Your viability score out of 100</div>
+        </div>
+      </div>
+
+      <div class="metric">
+        <div class="m-label">True cost per billable hour<small>Wage + on-costs + overhead, adjusted for utilisation</small></div>
+        <div class="m-val" id="costVal">–</div>
+      </div>
+      <div class="metric">
+        <div class="m-label">Profit per support hour<small>What's left after every cost</small></div>
+        <div class="m-val" id="profitVal">–</div>
+      </div>
+      <div class="metric">
+        <div class="m-label">Net margin<small>Profit as % of the NDIS price</small></div>
+        <div class="m-val" id="marginVal">–</div>
+      </div>
+      <div class="metric">
+        <div class="m-label">Projected annual profit<small>At your weekly hours, 52 weeks</small></div>
+        <div class="m-val" id="annualVal">–</div>
+      </div>
+      <div class="metric">
+        <div class="m-label">Break-even price you'd need<small>Minimum bill rate to not lose money</small></div>
+        <div class="m-val" id="breakevenVal">–</div>
+      </div>
+
+      <div class="verdict" id="verdict"></div>
+
+      <div class="insights" id="insights" style="display:none;">
+        <h3>What's driving your result</h3>
+        <ul id="insightsList"></ul>
+      </div>
+
+      <div class="benchmark-note">
+        Benchmarks: NDIA Disability Cost Model 2024-25 splits the $67.56 base support hour into wages, on-costs and ~10.5% overhead, leaving a ~2% target margin (<a href="https://www.linkedin.com/pulse/margins-under-pressure-why-ndias-2-profit-target-doesnt-parth-patel-ywd8c" target="_blank" rel="noopener">analysis</a>). Price limits from the <a href="https://affectivecare.com.au/ndis-price-guide-rates/" target="_blank" rel="noopener">NDIS PAPL 2025-26</a>; wages from the <a href="https://www.imploy.com.au/healthcare/resources/level-2-disability-support-worker-pay-2025" target="_blank" rel="noopener">SCHADS award (July 2025)</a>.
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-card">
+    <h3>Numbers look tight? Get registered the affordable way.</h3>
+    <p>The single biggest controllable cost for a new provider is registration. NDIS Ready builds your entire compliance pack for a one-off fee — no $10k consultant, no ongoing retainer eating your margin.</p>
+    <a href="/#pricing">See pricing →</a>
+  </div>
+
+  <p class="disclaimer">This calculator is a general planning guide using indicative 2025-26 benchmarks. It is not financial, accounting or business advice. Your actual costs, price limits and obligations vary — confirm figures against the current NDIS Pricing Arrangements and the SCHADS award, and speak to a qualified accountant before making decisions.</p>
+</div>
+
+<footer>
+  <div><a href="/">Home</a> · <a href="/#pricing">Pricing</a> · <a href="tools.html">AI writer</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms-of-service.html">Terms</a></div>
+  <div style="margin-top:0.6rem;">© 2026 NDIS Ready · hello@ndis-ready.com.au</div>
+</footer>
+
+<script>
+  let empType = 'permanent';
+
+  function $(id){ return document.getElementById(id); }
+  function num(id){ const v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
+  function money(n){ return '$' + n.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function money0(n){ return '$' + Math.round(n).toLocaleString('en-AU'); }
+
+  // employment toggle
+  $('empSeg').querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => {
+      $('empSeg').querySelectorAll('button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      empType = b.dataset.emp;
+      calc();
+    });
+  });
+
+  ['rate','wage','oncosts','overhead','util','hours'].forEach(id => {
+    $(id).addEventListener('input', calc);
+  });
+
+  function calc() {
+    const rate = num('rate');
+    let wage = num('wage');
+    const oncosts = num('oncosts') / 100;
+    const overhead = num('overhead');
+    const util = Math.min(Math.max(num('util'), 1), 100) / 100;
+    const hours = num('hours');
+
+    if (rate <= 0 || wage <= 0) { return; }
+
+    // Casual loading
+    const effectiveWage = empType === 'casual' ? wage * 1.25 : wage;
+
+    // Fully loaded labour cost per PAID hour
+    const labourPerPaidHr = effectiveWage * (1 + oncosts);
+
+    // Adjust labour to per BILLABLE hour using utilisation (you pay for non-billable time too)
+    const labourPerBillableHr = labourPerPaidHr / util;
+
+    // True cost per billable hour
+    const cost = labourPerBillableHr + overhead;
+
+    // Profit per support hour
+    const profit = rate - cost;
+    const margin = (profit / rate) * 100;
+    const annual = profit * hours * 52;
+    const breakeven = cost;
+
+    // ---- HEALTH SCORE (0-100) ----
+    // Anchored on net margin: NDIA target ~2%, healthy small provider ~8-12%.
+    // <0% = failing; 0-2% = NDIA breakeven target; >12% = strong.
+    let score;
+    if (margin <= -10) score = 5;
+    else if (margin < 0) score = 5 + (margin + 10) / 10 * 25;        // -10..0 -> 5..30
+    else if (margin < 2) score = 30 + (margin / 2) * 15;             // 0..2 -> 30..45
+    else if (margin < 8) score = 45 + ((margin - 2) / 6) * 30;       // 2..8 -> 45..75
+    else if (margin < 15) score = 75 + ((margin - 8) / 7) * 20;      // 8..15 -> 75..95
+    else score = Math.min(100, 95 + (margin - 15) / 10 * 5);
+    score = Math.round(Math.max(0, Math.min(100, score)));
+
+    // ---- RENDER ----
+    $('costVal').textContent = money(cost);
+    const pv = $('profitVal');
+    pv.textContent = (profit >= 0 ? '' : '−') + money(Math.abs(profit));
+    pv.className = 'm-val ' + (profit >= 1.5 ? 'pos' : profit >= 0 ? 'warn' : 'neg');
+    const mv = $('marginVal');
+    mv.textContent = margin.toFixed(1) + '%';
+    mv.className = 'm-val ' + (margin >= 5 ? 'pos' : margin >= 0 ? 'warn' : 'neg');
+    const av = $('annualVal');
+    av.textContent = (annual >= 0 ? '' : '−') + money0(Math.abs(annual));
+    av.className = 'm-val ' + (annual >= 0 ? 'pos' : 'neg');
+    $('breakevenVal').textContent = money(breakeven);
+
+    // score ring
+    $('scoreNum').textContent = score;
+    const ring = $('scoreRing');
+    let band, label, desc, ringBg, ringColor;
+    if (score >= 70) { band='ok'; label='Healthy'; desc='Your model has real breathing room'; ringBg='#eef7f1'; ringColor='var(--green)'; }
+    else if (score >= 45) { band='mid'; label='Tight but workable'; desc='Thin margin — little room for error'; ringBg='#fdf4e3'; ringColor='var(--amber)'; }
+    else { band='bad'; label='Under pressure'; desc='This model loses money or barely breaks even'; ringBg='#fbe9e9'; ringColor='var(--red)'; }
+    ring.style.background = ringBg;
+    $('scoreNum').style.color = ringColor;
+    $('scoreLabel').textContent = label;
+    $('scoreLabel').style.color = ringColor;
+    $('scoreDesc').textContent = desc;
+
+    // verdict
+    const verdict = $('verdict');
+    verdict.className = 'verdict ' + band;
+    if (band === 'ok') {
+      verdict.innerHTML = '<strong>You\u2019re in good shape.</strong> At ' + margin.toFixed(1) + '% margin you\u2019re clearing about ' + money(profit) + ' per support hour \u2014 well above the NDIA\u2019s ~2% target. Protect this by keeping utilisation high and overheads lean.';
+    } else if (band === 'mid') {
+      verdict.innerHTML = '<strong>It works, but only just.</strong> A ' + margin.toFixed(1) + '% margin means ' + money(Math.abs(profit)) + ' per hour \u2014 a few sick days, a roster gap or one weekend of penalty rates can wipe it out. Watch utilisation and non-billable time closely.';
+    } else {
+      verdict.innerHTML = '<strong>This doesn\u2019t add up yet.</strong> At these numbers you make ' + (profit>=0?money(profit):'a loss of ' + money(Math.abs(profit))) + ' per support hour. You\u2019d need to bill at least ' + money(breakeven) + '/hr just to break even. Look hard at wages mix, utilisation and overhead before scaling.';
+    }
+
+    // insights
+    const list = $('insightsList');
+    const tips = [];
+    if (util < 0.8) tips.push('Your utilisation of ' + (util*100).toFixed(0) + '% is low. Every billable point you recover drops your cost per hour by roughly ' + money(labourPerPaidHr * (1/util - 1/Math.min(util+0.01,1))) + ' \u2014 chase travel time, no-shows and admin drag.');
+    if (overhead > 12) tips.push('Overhead of ' + money(overhead) + '/hr is well above the NDIA\u2019s ~$7.11 allowance. Cheaper compliance and rostering tooling directly lifts your margin.');
+    if (empType === 'casual') tips.push('Casual staff carry a 25% loading. A permanent mix lowers your hourly wage cost (though you take on leave and on-costs instead).');
+    if (oncosts > 0.28) tips.push('On-costs of ' + (oncosts*100).toFixed(0) + '% are on the high side \u2014 double-check what\u2019s included so you\u2019re not double-counting.');
+    if (margin < 2 && margin >= 0) tips.push('You\u2019re sitting near the NDIA\u2019s break-even target. There is almost no buffer for weekend penalty rates or unbilled time.');
+    if (rate < 71) tips.push('Your bill rate is below the standard weekday limit (~$71.38). Make sure you\u2019re claiming the correct item and any applicable evening/weekend rates.');
+    if (tips.length === 0) tips.push('Your inputs are within healthy benchmark ranges. Re-run this whenever wages, price limits or your roster mix change.');
+    list.innerHTML = tips.map(t => '<li>' + t + '</li>').join('');
+    $('insights').style.display = 'block';
+  }
+
+  calc();
+</script>
+
+</body>
+</html>
