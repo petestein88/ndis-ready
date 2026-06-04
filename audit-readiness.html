@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audit Readiness Self-Assessment — NDIS Ready</title>
+  <meta name="description" content="A self-assessment for NDIS providers. Score your readiness against the NDIS Practice Standards, see your biggest gaps, and get a prioritised action list mapped to the exact documents that close them." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rose: #f4c5c5; --rose-deep: #e8a0a0; --lavender: #d8d0f0; --lavender-deep: #b8acdf;
+      --sage: #c5ddd0; --sage-deep: #9ec4b0; --peach: #f7dfc8; --peach-deep: #efcba8;
+      --cream: #faf8f4; --white: #ffffff; --ink: #2a2535; --ink-mid: #5a5370; --ink-soft: #9990b0;
+      --green: #2f8a5a; --amber: #c9871f; --red: #cf3a3a;
+      --font-brand: 'Nunito', system-ui, sans-serif;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --radius: 16px; --radius-sm: 10px; --radius-pill: 999px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background: var(--cream); color: var(--ink); line-height: 1.6; }
+    a { color: inherit; }
+
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .nav-logo { font-family: var(--font-brand); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    nav .nav-right { display: flex; align-items: center; gap: 1.25rem; }
+    nav .nav-right a.plain { font-size: 0.875rem; font-weight: 600; color: var(--ink-mid); text-decoration: none; }
+    nav a.nav-cta { background: var(--ink); color: var(--white); font-size: 0.875rem; font-weight: 600; padding: 0.6rem 1.4rem; border-radius: var(--radius-pill); text-decoration: none; }
+    nav a.nav-cta:hover { background: #3d3650; }
+    @media (max-width: 620px) { nav .nav-right a.plain { display: none; } }
+
+    .wrap { max-width: 880px; margin: 0 auto; padding: 1.5rem 1.5rem 5rem; }
+    .page-head { text-align: center; margin-bottom: 2rem; }
+    .eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lavender-deep); margin-bottom: 0.6rem; }
+    .page-head h1 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.9rem); line-height: 1.15; margin-bottom: 0.75rem; }
+    .page-head p { color: var(--ink-mid); max-width: 620px; margin: 0 auto; font-size: 1.02rem; }
+
+    .card { background: var(--white); border: 1px solid #ece7df; border-radius: var(--radius); padding: 1.75rem; box-shadow: 0 6px 24px rgba(42,37,53,0.05); margin-bottom: 1.5rem; }
+
+    /* progress */
+    .progress-bar { position: sticky; top: 0; z-index: 20; background: var(--cream); padding: 0.75rem 0 0.5rem; }
+    .progress-track { height: 8px; background: #ece7df; border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--lavender-deep), var(--sage-deep)); transition: width 0.3s ease; }
+    .progress-meta { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.4rem; }
+
+    /* module */
+    .module { margin-bottom: 1.5rem; }
+    .module-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+    .module-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .module-title { font-family: var(--font-display); font-size: 1.4rem; }
+    .module-sub { font-size: 0.82rem; color: var(--ink-soft); margin-top: -0.2rem; }
+
+    .q { padding: 1rem 0; border-bottom: 1px solid #f0ece4; }
+    .q:last-child { border-bottom: none; }
+    .q-text { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.7rem; }
+    .q-text .q-num { color: var(--ink-soft); font-weight: 700; margin-right: 0.4rem; }
+    .opts { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .opt { flex: 1; min-width: 90px; border: 1.5px solid #e2dcd2; background: var(--cream); border-radius: var(--radius-sm); padding: 0.6rem 0.4rem; text-align: center; font-size: 0.85rem; font-weight: 600; color: var(--ink-mid); cursor: pointer; transition: all 0.15s; user-select: none; }
+    .opt:hover { border-color: var(--lavender-deep); }
+    .opt.sel-yes { background: #eef7f1; border-color: var(--green); color: #275f41; }
+    .opt.sel-partial { background: #fdf4e3; border-color: var(--amber); color: #7a5616; }
+    .opt.sel-no { background: #fbe9e9; border-color: var(--red); color: #8c2626; }
+
+    .actions-bar { display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center; margin-top: 0.5rem; }
+    .btn { font-family: var(--font-body); font-weight: 700; font-size: 0.95rem; border: none; border-radius: var(--radius-pill); padding: 0.85rem 1.8rem; cursor: pointer; }
+    .btn-primary { background: var(--ink); color: #fff; }
+    .btn-primary:hover { background: #3d3650; }
+    .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-ghost { background: transparent; color: var(--ink-mid); border: 1.5px solid #e2dcd2; }
+    .hint { font-size: 0.8rem; color: var(--ink-soft); }
+
+    /* RESULTS */
+    #results { display: none; }
+    .score-hero { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; padding: 1.5rem; border-radius: var(--radius); margin-bottom: 1.5rem; }
+    .score-hero.ok { background: #eef7f1; border: 1px solid var(--sage-deep); }
+    .score-hero.mid { background: #fdf4e3; border: 1px solid var(--peach-deep); }
+    .score-hero.bad { background: #fbe9e9; border: 1px solid var(--rose-deep); }
+    .score-num { font-family: var(--font-display); font-size: 3.6rem; line-height: 1; }
+    .score-num small { font-size: 1.3rem; color: var(--ink-soft); }
+    .score-meta .score-label { font-weight: 800; font-size: 1.3rem; }
+    .score-meta .score-desc { font-size: 0.9rem; color: var(--ink-mid); margin-top: 0.2rem; max-width: 460px; }
+
+    .mod-scores { margin-bottom: 1.5rem; }
+    .mod-scores h3, .gaps h3, .strengths h3 { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.8rem; }
+    .mod-row { display: flex; align-items: center; gap: 0.85rem; padding: 0.5rem 0; }
+    .mod-row .mod-name { font-size: 0.9rem; flex: 0 0 auto; width: 230px; }
+    .mod-row .mod-track { flex: 1; height: 9px; background: #ece7df; border-radius: 999px; overflow: hidden; }
+    .mod-row .mod-bar { height: 100%; border-radius: 999px; }
+    .mod-row .mod-pct { font-family: var(--font-display); font-size: 1rem; width: 48px; text-align: right; }
+    @media (max-width: 620px) { .mod-row .mod-name { width: 140px; } }
+
+    .gaps li, .strengths li { list-style: none; }
+    .gap { padding: 1rem 1.1rem; border-radius: var(--radius-sm); margin-bottom: 0.75rem; border: 1px solid; }
+    .gap.p-high { background: #fbe9e9; border-color: var(--rose-deep); }
+    .gap.p-med { background: #fdf4e3; border-color: var(--peach-deep); }
+    .gap-top { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.3rem; }
+    .gap-prio { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.15rem 0.55rem; border-radius: 999px; }
+    .gap.p-high .gap-prio { background: var(--red); color: #fff; }
+    .gap.p-med .gap-prio { background: var(--amber); color: #fff; }
+    .gap-title { font-weight: 700; font-size: 0.95rem; }
+    .gap-fix { font-size: 0.85rem; color: var(--ink-mid); }
+    .gap-doc { font-size: 0.82rem; margin-top: 0.35rem; font-weight: 600; color: var(--lavender-deep); }
+    .gap-doc::before { content: '📄 '; }
+
+    .strengths li { font-size: 0.88rem; color: var(--ink-mid); padding: 0.35rem 0 0.35rem 1.6rem; position: relative; }
+    .strengths li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+
+    /* GATE */
+    .gate { background: #f3eefe; border: 1px solid var(--lavender); border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0; }
+    .gate h3 { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 0.4rem; }
+    .gate p { color: var(--ink-mid); font-size: 0.92rem; margin-bottom: 1rem; }
+    .gate-row { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
+    .gate input { flex: 1; min-width: 200px; font-family: var(--font-body); font-size: 0.95rem; border: 1px solid #e2dcd2; border-radius: var(--radius-sm); padding: 0.7rem 1rem; background: #fff; }
+    .gate input:focus { outline: none; border-color: var(--lavender-deep); }
+    .gate a.gate-buy { display: inline-block; margin-top: 0.9rem; font-weight: 600; color: var(--lavender-deep); text-decoration: none; font-size: 0.9rem; }
+    .locked-blur { filter: blur(5px); pointer-events: none; user-select: none; opacity: 0.6; }
+    .banner { border-radius: var(--radius-sm); padding: 0.7rem 1rem; font-size: 0.88rem; margin-top: 0.8rem; display: none; }
+    .banner.show { display: block; }
+    .banner-error { background: #fbe9e9; color: #8c2626; border: 1px solid var(--rose-deep); }
+    .banner-ok { background: #eef7f1; color: #275f41; border: 1px solid var(--sage-deep); }
+
+    .disclaimer { font-size: 0.74rem; color: var(--ink-soft); margin-top: 1.5rem; line-height: 1.5; }
+    .disclaimer a { color: var(--ink-mid); }
+
+    .cta-card { margin-top: 1.5rem; background: var(--ink); color: #fff; border-radius: var(--radius); padding: 1.75rem; text-align: center; }
+    .cta-card h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
+    .cta-card p { font-size: 0.92rem; opacity: 0.85; margin-bottom: 1.2rem; }
+    .cta-card a { display: inline-block; background: #fff; color: var(--ink); font-weight: 700; padding: 0.8rem 1.8rem; border-radius: var(--radius-pill); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="nav-logo">
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="navSG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stop-color="#c4b5f4"/>
+            <stop offset="100%" stop-color="#b8acdf"/>
+          </linearGradient>
+          <filter id="navTex">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise"/>
+            <feColorMatrix type="saturate" values="0" in="noise" result="gn"/>
+            <feBlend in="SourceGraphic" in2="gn" mode="multiply" result="bl"/>
+            <feComposite in="bl" in2="SourceGraphic" operator="in"/>
+          </filter>
+        </defs>
+        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="url(#navSG)" filter="url(#navTex)"/>
+        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="none" stroke="#9a88cc" stroke-width="3"/>
+        <path d="M50 65 Q32 52 32 42 Q32 34 40 34 Q45 34 50 40 Q55 34 60 34 Q68 34 68 42 Q68 52 50 65 Z" fill="#e8a0a0" filter="url(#navTex)"/>
+      </svg>
+      NDIS Ready
+    </a>
+    <div class="nav-right">
+      <a class="plain" href="/tools.html">AI writer</a>
+      <a class="plain" href="/health-check.html">Health check</a>
+      <a class="nav-cta" href="/#pricing">View pricing &rarr;</a>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <div class="page-head">
+      <div class="eyebrow">Audit Readiness</div>
+      <h1>How audit-ready are you?</h1>
+      <p>Answer honestly across the NDIS Practice Standards. You'll get a readiness score, your biggest gaps ranked by priority, and the exact document in your pack that closes each one.</p>
+    </div>
+
+    <!-- ASSESSMENT -->
+    <div id="assessment">
+      <div class="progress-bar">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-meta"><span id="progressText">0 of 0 answered</span><span id="progressPct">0%</span></div>
+      </div>
+      <div id="modules"></div>
+      <div class="card">
+        <div class="actions-bar">
+          <button class="btn btn-primary" id="seeResults" disabled onclick="computeResults()">See my readiness report →</button>
+          <span class="hint" id="answerHint">Answer all questions to unlock your report.</span>
+        </div>
+      </div>
+      <p class="disclaimer">
+        This self-assessment is an indicative readiness guide only — it is not a certification or a substitute for an audit. Your approved quality auditor makes the final determination against the
+        <a href="https://www.ndiscommission.gov.au/rules-and-standards/ndis-practice-standards" target="_blank" rel="noopener">NDIS Practice Standards</a>.
+        Nothing you enter is stored or sent anywhere — scoring runs entirely in your browser.
+      </p>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="results">
+      <div class="score-hero" id="scoreHero">
+        <div class="score-num" id="scoreNum">0<small>/100</small></div>
+        <div class="score-meta">
+          <div class="score-label" id="scoreLabel"></div>
+          <div class="score-desc" id="scoreDesc"></div>
+        </div>
+      </div>
+
+      <div class="card mod-scores">
+        <h3>Readiness by Practice Standards area</h3>
+        <div id="modScores"></div>
+      </div>
+
+      <!-- GATE (shown to non-buyers) -->
+      <div class="gate" id="gate">
+        <h3>🔓 Unlock your full action plan</h3>
+        <p>Your overall score is free. The prioritised gap list below — and which document fixes each gap — is included with any NDIS Ready pack. Already bought? Paste your access code.</p>
+        <div class="gate-row">
+          <input type="text" id="tokenInput" placeholder="Paste your access code" />
+          <button class="btn btn-primary" onclick="unlock()">Unlock</button>
+        </div>
+        <a class="gate-buy" href="/#pricing">See plans &amp; pricing →</a>
+        <div class="banner banner-error" id="gateError"></div>
+      </div>
+
+      <div id="fullReport">
+        <div class="card gaps">
+          <h3>Your top priorities to close</h3>
+          <ul id="gapList"></ul>
+          <p class="hint" id="noGaps" style="display:none;">No significant gaps detected — strong result. Keep your evidence current.</p>
+        </div>
+        <div class="card strengths">
+          <h3>What you're already doing well</h3>
+          <ul id="strengthList"></ul>
+        </div>
+        <div class="actions-bar" style="margin-bottom:1.5rem;">
+          <button class="btn btn-primary" onclick="downloadReport()">⬇ Download report (.txt)</button>
+          <button class="btn btn-ghost" onclick="restart()">Start over</button>
+        </div>
+      </div>
+
+      <div class="cta-card">
+        <h3>Close every gap with the full pack</h3>
+        <p>Each gap above maps to a ready-to-edit, personalised document in the NDIS Ready library — written to the Practice Standards your auditor checks against.</p>
+        <a href="/#pricing">See what's included →</a>
+      </div>
+
+      <p class="disclaimer">
+        Indicative guide only — not a certification or audit. Final compliance is determined by your approved quality auditor against the current
+        <a href="https://www.ndiscommission.gov.au/rules-and-standards/ndis-practice-standards" target="_blank" rel="noopener">NDIS Practice Standards</a>
+        and <a href="https://www.legislation.gov.au/F2018L00631/latest/text" target="_blank" rel="noopener">Quality Indicators Guidelines</a>. Nothing you entered was stored.
+      </p>
+    </div>
+  </div>
+
+  <script>
+  // =============================================================
+  // Question bank — grouped by NDIS Practice Standards module.
+  // Each question: { id, text, doc:{id,name}, prio:'high'|'med' }
+  // doc = the pack document that closes the gap if answer is No/Partial.
+  // Scoring: Yes=2, Partial=1, No=0. Module % = sum/(2*count).
+  // =============================================================
+  const MODULES = [
+    {
+      key: 'rights', label: 'Rights & Responsibilities', color: '#e8a0a0',
+      sub: 'Core Module, Part 1 — choice, dignity, privacy, freedom from harm',
+      questions: [
+        { id:'r1', text:'Do you have a current Participant Rights policy that covers choice, dignity, privacy and freedom from abuse?', doc:{id:'1.1',name:'Participant Rights Policy'}, prio:'high' },
+        { id:'r2', text:'Do you obtain and record informed consent before providing supports?', doc:{id:'3.6',name:'Consent Policy'}, prio:'high' },
+        { id:'r3', text:'Do you have a documented complaints and feedback process that participants are told about?', doc:{id:'1.2',name:'Complaints and Feedback Policy'}, prio:'high' },
+        { id:'r4', text:'Do you have an Abuse and Neglect Prevention policy and a way to act on concerns?', doc:{id:'1.5',name:'Abuse and Neglect Prevention Policy'}, prio:'high' },
+        { id:'r5', text:'Do you support participants with decision-making and respect cultural diversity?', doc:{id:'3.7',name:'Supported Decision Making Policy'}, prio:'med' },
+      ],
+    },
+    {
+      key: 'governance', label: 'Governance & Operational Management', color: '#b8acdf',
+      sub: 'Core Module, Part 2 — governance, risk, quality, continuity, finances',
+      questions: [
+        { id:'g1', text:'Do you have a governance framework defining roles, responsibilities and decision-making?', doc:{id:'2.1',name:'Governance Framework'}, prio:'high' },
+        { id:'g2', text:'Do you have a risk management policy and a maintained risk register?', doc:{id:'2.2',name:'Risk Management Policy'}, prio:'high' },
+        { id:'g3', text:'Do you have a documented continuity plan for emergencies and disasters?', doc:{id:'2.12',name:'Business Continuity Plan'}, prio:'high' },
+        { id:'g4', text:'Do you have a quality management framework with internal audits and continuous improvement?', doc:{id:'6.1',name:'Quality Management Framework'}, prio:'med' },
+        { id:'g5', text:'Do you keep records securely and manage participant privacy per the Privacy Act?', doc:{id:'2.10',name:'Record Keeping and Privacy Policy'}, prio:'high' },
+        { id:'g6', text:'Do you have a conflict of interest and a whistleblower policy in place?', doc:{id:'2.9',name:'Conflict of Interest Policy'}, prio:'med' },
+        { id:'g7', text:'Do you have sound financial management practices documented?', doc:{id:'2.3',name:'Financial Management Policy'}, prio:'med' },
+      ],
+    },
+    {
+      key: 'hr', label: 'Human Resource Management', color: '#9ec4b0',
+      sub: 'Core & Verification — screening, training, supervision of workers',
+      questions: [
+        { id:'h1', text:'Do you verify and record a valid NDIS Worker Screening Check for every worker before they start?', doc:{id:'5.7',name:'Staff NDIS Worker Screening Checklist'}, prio:'high' },
+        { id:'h2', text:'Do you have a documented recruitment and screening procedure?', doc:{id:'2.5',name:'Staff Recruitment and Screening Procedure'}, prio:'med' },
+        { id:'h3', text:'Do you have written employment contracts and position descriptions for staff?', doc:{id:'HR.1',name:'Employment Contract (Permanent)'}, prio:'med' },
+        { id:'h4', text:'Do you provide induction and ongoing training, and keep a training register?', doc:{id:'7.5',name:'Training Register'}, prio:'high' },
+        { id:'h5', text:'Do you supervise and review worker performance regularly?', doc:{id:'HR.6',name:'Performance Review and Supervision Form'}, prio:'med' },
+      ],
+    },
+    {
+      key: 'supports', label: 'Provision of Supports', color: '#efcba8',
+      sub: 'Core Module, Part 3 — assessment, planning, safe delivery',
+      questions: [
+        { id:'s1', text:'Do you have an intake and eligibility process for new participants?', doc:{id:'3.2',name:'Intake and Eligibility Procedure'}, prio:'med' },
+        { id:'s2', text:'Do you develop individual support plans with each participant?', doc:{id:'3.4',name:'Individual Support Plan Template'}, prio:'high' },
+        { id:'s3', text:'Do you deliver supports using a person-centred practice approach?', doc:{id:'3.5',name:'Person-Centred Practice Framework'}, prio:'med' },
+        { id:'s4', text:'Do you have a transition and exit planning process when supports change or end?', doc:{id:'3.8',name:'Transition and Exit Planning Procedure'}, prio:'med' },
+      ],
+    },
+    {
+      key: 'incidents', label: 'Incident & Complaints Management', color: '#e8a0a0',
+      sub: 'Core & Verification — incidents, reportable incidents, feedback',
+      questions: [
+        { id:'i1', text:'Do you have an incident management system with a form and register?', doc:{id:'1.3',name:'Incident Management Policy'}, prio:'high' },
+        { id:'i2', text:'Do you know how and when to notify reportable incidents to the Commission?', doc:{id:'1.4',name:'Reportable Incidents Procedure'}, prio:'high' },
+        { id:'i3', text:'Do you record complaints in a register and act on them?', doc:{id:'7.2',name:'Complaints Register'}, prio:'med' },
+      ],
+    },
+    {
+      key: 'safety', label: 'High-Risk Supports & Safe Environment', color: '#b8acdf',
+      sub: 'Core Part 4 & supplementary — restrictive practices, medication, manual handling, mealtime',
+      questions: [
+        { id:'sf1', text:'If you use any restrictive practices, do you have a compliant policy and authorisations?', doc:{id:'3.10',name:'Restrictive Practices Policy'}, prio:'high' },
+        { id:'sf2', text:'If you support medication, do you have a medication management procedure?', doc:{id:'3.12',name:'Medication Management Policy'}, prio:'high' },
+        { id:'sf3', text:'Do you have manual handling and WHS practices to keep the environment safe?', doc:{id:'3.14',name:'Manual Handling Policy'}, prio:'med' },
+        { id:'sf4', text:'If you support mealtimes/dysphagia, do you have a mealtime management procedure?', doc:{id:'3.16',name:'Mealtime Management Procedure'}, prio:'med' },
+        { id:'sf5', text:'Do you have an emergency and disaster management plan for supports?', doc:{id:'3.15',name:'Emergency and Disaster Management Plan'}, prio:'high' },
+      ],
+    },
+    {
+      key: 'audit', label: 'Audit Evidence & Self-Assessment', color: '#9ec4b0',
+      sub: 'Demonstrating compliance — self-assessment, evidence, corrective actions',
+      questions: [
+        { id:'a1', text:'Have you completed a self-assessment against the Practice Standards before your audit?', doc:{id:'6.6',name:'NDIS Practice Standards Self-Assessment'}, prio:'high' },
+        { id:'a2', text:'Do you keep evidence ready (registers, records, policies) for an auditor to review?', doc:{id:'6.7',name:'Audit Preparation Checklist'}, prio:'high' },
+        { id:'a3', text:'Do you log and close out non-conformities with a corrective action process?', doc:{id:'6.5',name:'Corrective Action Procedure'}, prio:'med' },
+      ],
+    },
+  ];
+
+  const SCORE = { yes: 2, partial: 1, no: 0 };
+  const answers = {};       // id -> 'yes'|'partial'|'no'
+  let totalQuestions = 0;
+  let isUnlocked = false;
+
+  // ---- token handling (mirrors AI writer) ----
+  function getToken() {
+    const url = new URLSearchParams(window.location.search).get('token');
+    if (url) { localStorage.setItem('aiwriter_token', url); return url; }
+    return localStorage.getItem('aiwriter_token') || '';
+  }
+
+  // ---- build the assessment UI ----
+  function render() {
+    const root = document.getElementById('modules');
+    let html = '';
+    MODULES.forEach(m => {
+      totalQuestions += m.questions.length;
+      html += `<div class="card module">
+        <div class="module-head">
+          <span class="module-dot" style="background:${m.color}"></span>
+          <div><div class="module-title">${m.label}</div><div class="module-sub">${m.sub}</div></div>
+        </div>`;
+      m.questions.forEach((q, idx) => {
+        html += `<div class="q" id="q-${q.id}">
+          <div class="q-text"><span class="q-num">${q.id.toUpperCase()}</span>${q.text}</div>
+          <div class="opts">
+            <div class="opt" data-q="${q.id}" data-v="yes" onclick="pick('${q.id}','yes')">Yes</div>
+            <div class="opt" data-q="${q.id}" data-v="partial" onclick="pick('${q.id}','partial')">Partly</div>
+            <div class="opt" data-q="${q.id}" data-v="no" onclick="pick('${q.id}','no')">No / Unsure</div>
+          </div>
+        </div>`;
+      });
+      html += `</div>`;
+    });
+    root.innerHTML = html;
+    updateProgress();
+  }
+
+  function pick(id, val) {
+    answers[id] = val;
+    document.querySelectorAll(`.opt[data-q="${id}"]`).forEach(el => {
+      el.className = 'opt';
+      if (el.dataset.v === val) el.classList.add('sel-' + val);
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const done = Object.keys(answers).length;
+    const pct = Math.round((done / totalQuestions) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${done} of ${totalQuestions} answered`;
+    document.getElementById('progressPct').textContent = pct + '%';
+    const ready = done === totalQuestions;
+    document.getElementById('seeResults').disabled = !ready;
+    document.getElementById('answerHint').textContent = ready
+      ? 'All set — generate your report.'
+      : `${totalQuestions - done} question${totalQuestions - done === 1 ? '' : 's'} left.`;
+  }
+
+  // ---- scoring ----
+  let lastReport = null;
+  function computeResults() {
+    let earned = 0, max = 0;
+    const modResults = [];
+    const gaps = [];
+    const strengths = [];
+
+    MODULES.forEach(m => {
+      let mEarned = 0, mMax = 0;
+      m.questions.forEach(q => {
+        const a = answers[q.id] || 'no';
+        earned += SCORE[a]; max += 2;
+        mEarned += SCORE[a]; mMax += 2;
+        if (a === 'no') {
+          gaps.push({ prio: q.prio, weight: q.prio === 'high' ? 0 : 1, title: q.text, doc: q.doc, level: 'Missing' });
+        } else if (a === 'partial') {
+          gaps.push({ prio: q.prio, weight: q.prio === 'high' ? 2 : 3, title: q.text, doc: q.doc, level: 'Partial' });
+        } else {
+          strengths.push(q.text);
+        }
+      });
+      modResults.push({ label: m.label, color: m.color, pct: Math.round((mEarned / mMax) * 100) });
+    });
+
+    const overall = Math.round((earned / max) * 100);
+    // sort gaps: high-missing first, then high-partial, then med-missing, then med-partial
+    gaps.sort((a, b) => a.weight - b.weight);
+
+    lastReport = { overall, modResults, gaps, strengths };
+    showResults(lastReport);
+  }
+
+  function band(pct) {
+    if (pct >= 80) return { cls: 'ok', label: 'Audit-ready', desc: 'Strong coverage across the Practice Standards. Keep your evidence current and rehearse your audit.' };
+    if (pct >= 55) return { cls: 'mid', label: 'Gaps to close', desc: 'A solid base, but an auditor would likely find gaps. Work through the priorities below before booking your audit.' };
+    return { cls: 'bad', label: 'Not yet ready', desc: 'Significant gaps remain. Address the high-priority items below first — most map directly to a document you can put in place quickly.' };
+  }
+
+  function showResults(rep) {
+    document.getElementById('assessment').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    const b = band(rep.overall);
+    document.getElementById('scoreHero').className = 'score-hero ' + b.cls;
+    document.getElementById('scoreNum').innerHTML = rep.overall + '<small>/100</small>';
+    document.getElementById('scoreLabel').textContent = b.label;
+    document.getElementById('scoreDesc').textContent = b.desc;
+
+    // module bars
+    const ms = document.getElementById('modScores');
+    ms.innerHTML = rep.modResults.map(m => {
+      const c = m.pct >= 80 ? 'var(--green)' : m.pct >= 55 ? 'var(--amber)' : 'var(--red)';
+      return `<div class="mod-row">
+        <span class="mod-name">${m.label}</span>
+        <span class="mod-track"><span class="mod-bar" style="width:${m.pct}%;background:${c}"></span></span>
+        <span class="mod-pct">${m.pct}%</span>
+      </div>`;
+    }).join('');
+
+    // gaps + strengths
+    const gl = document.getElementById('gapList');
+    if (rep.gaps.length === 0) {
+      gl.innerHTML = '';
+      document.getElementById('noGaps').style.display = 'block';
+    } else {
+      document.getElementById('noGaps').style.display = 'none';
+      gl.innerHTML = rep.gaps.map(g => {
+        const pcls = g.prio === 'high' ? 'p-high' : 'p-med';
+        const plabel = g.prio === 'high' ? 'High priority' : 'Medium';
+        const action = g.level === 'Missing' ? 'Put this in place' : 'Finish / formalise this';
+        return `<li class="gap ${pcls}">
+          <div class="gap-top"><span class="gap-prio">${plabel}</span><span class="gap-title">${g.level}: ${g.title}</span></div>
+          <div class="gap-fix">${action}.</div>
+          <div class="gap-doc">Use: ${g.doc.id} — ${g.doc.name}</div>
+        </li>`;
+      }).join('');
+    }
+    document.getElementById('strengthList').innerHTML = rep.strengths.length
+      ? rep.strengths.map(s => `<li>${s}</li>`).join('')
+      : '<li style="color:var(--ink-soft)">Work through the priorities above to build your strengths.</li>';
+
+    applyGate();
+  }
+
+  // ---- gate: overall score is free; gap list + download require a token ----
+  function applyGate() {
+    isUnlocked = !!getToken();
+    const gate = document.getElementById('gate');
+    const full = document.getElementById('fullReport');
+    if (isUnlocked) {
+      gate.style.display = 'none';
+      full.classList.remove('locked-blur');
+    } else {
+      gate.style.display = 'block';
+      full.classList.add('locked-blur');
+    }
+  }
+
+  async function unlock() {
+    const input = document.getElementById('tokenInput').value.trim();
+    const err = document.getElementById('gateError');
+    err.className = 'banner banner-error';
+    if (!input) { err.textContent = 'Please paste your access code.'; err.classList.add('show'); return; }
+    err.textContent = 'Checking…'; err.className = 'banner banner-ok show';
+    try {
+      const res = await fetch('/api/validate-access', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: input }),
+      });
+      const data = await res.json();
+      if (data.valid) {
+        localStorage.setItem('aiwriter_token', input);
+        err.className = 'banner banner-ok show'; err.textContent = 'Unlocked — enjoy your full report.';
+        setTimeout(applyGate, 400);
+      } else {
+        err.className = 'banner banner-error show';
+        err.textContent = 'That code didn\u2019t match a purchase. Check your delivery email, or see plans below.';
+      }
+    } catch (e) {
+      err.className = 'banner banner-error show';
+      err.textContent = 'Couldn\u2019t verify right now. Please try again in a moment.';
+    }
+  }
+
+  // ---- download ----
+  function downloadReport() {
+    if (!lastReport) return;
+    const r = lastReport;
+    const b = band(r.overall);
+    const date = new Date().toLocaleDateString('en-AU', { day:'2-digit', month:'long', year:'numeric' });
+    let t = '';
+    t += 'NDIS READY — AUDIT READINESS SELF-ASSESSMENT\n';
+    t += '=============================================\n';
+    t += `Generated: ${date}\n\n`;
+    t += `OVERALL READINESS: ${r.overall}/100 — ${b.label}\n`;
+    t += `${b.desc}\n\n`;
+    t += 'READINESS BY AREA\n-----------------\n';
+    r.modResults.forEach(m => { t += `  ${m.pct.toString().padStart(3)}%  ${m.label}\n`; });
+    t += '\nTOP PRIORITIES TO CLOSE\n-----------------------\n';
+    if (r.gaps.length === 0) {
+      t += '  No significant gaps detected — strong result. Keep your evidence current.\n';
+    } else {
+      r.gaps.forEach((g, i) => {
+        t += `  ${i+1}. [${g.prio === 'high' ? 'HIGH' : 'MED'}] ${g.level}: ${g.title}\n`;
+        t += `      → Use document ${g.doc.id} — ${g.doc.name}\n`;
+      });
+    }
+    t += '\nWHAT YOU\u2019RE DOING WELL\n---------------------\n';
+    if (r.strengths.length) { r.strengths.forEach(s => { t += `  + ${s}\n`; }); }
+    else { t += '  (Work through the priorities above.)\n'; }
+    t += '\n---------------------------------------------\n';
+    t += 'Indicative guide only — not a certification or audit. Final compliance is\n';
+    t += 'determined by your approved quality auditor against the current NDIS Practice\n';
+    t += 'Standards. Nothing you entered was stored. ndis-ready.com.au\n';
+
+    const blob = new Blob([t], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `NDIS-Audit-Readiness-${new Date().toISOString().slice(0,10)}.txt`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  function restart() {
+    for (const k in answers) delete answers[k];
+    document.querySelectorAll('.opt').forEach(el => el.className = 'opt');
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('assessment').style.display = 'block';
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  render();
+  </script>
+</body>
+</html>
