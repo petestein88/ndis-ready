@@ -101,6 +101,18 @@ const DOCUMENT_LIBRARY = [
   { id: '7.5', name: '7.5 - Training Register',                       category: 'hr',          free: false },
   { id: '7.6', name: '7.6 - Participant Feedback Form',               category: 'incidents',   free: false },
   { id: '7.7', name: '7.7 - Worker Incident Statement Form',          category: 'incidents',   free: false },
+
+  // ── HR & Workforce Template Pack (value_bundle $499 only) ───────────────
+  // Practical, fillable SCHADS-aware operational templates — distinct from
+  // the HR *policies* above. Stored in templates/HR Pack/. pack:'hr'.
+  { id: 'HR.1', name: 'HR.1 - Employment Contract (Permanent)',        category: 'hr', free: false, pack: 'hr' },
+  { id: 'HR.2', name: 'HR.2 - Employment Contract (Casual)',           category: 'hr', free: false, pack: 'hr' },
+  { id: 'HR.3', name: 'HR.3 - Weekly Roster Template (SCHADS)',        category: 'hr', free: false, pack: 'hr' },
+  { id: 'HR.4', name: 'HR.4 - Timesheet and Shift Record',             category: 'hr', free: false, pack: 'hr' },
+  { id: 'HR.5', name: 'HR.5 - Leave Request Form',                     category: 'hr', free: false, pack: 'hr' },
+  { id: 'HR.6', name: 'HR.6 - Performance Review and Supervision Form', category: 'hr', free: false, pack: 'hr' },
+  { id: 'HR.7', name: 'HR.7 - Disciplinary and Warning Letter',        category: 'hr', free: false, pack: 'hr' },
+  { id: 'HR.8', name: 'HR.8 - Probation Review Form',                  category: 'hr', free: false, pack: 'hr' },
 ];
 
 // Free samples live in a separate subfolder
@@ -113,6 +125,10 @@ const FREE_SAMPLE_MAP = {
 function getStoragePath(doc, productTier) {
   if (productTier === 'free_sample') {
     return FREE_SAMPLE_MAP[doc.id] || null;
+  }
+  // HR & Workforce Template Pack lives in its own subfolder
+  if (doc.pack === 'hr') {
+    return `HR Pack/${doc.name}.docx`;
   }
   // Paid docs live in "65 Files/" subfolder
   return `65 Files/${doc.name}.docx`;
@@ -132,9 +148,17 @@ module.exports = async function handler(req, res) {
   console.log(`Generating documents for: ${email} — ${productTier}`);
 
   try {
-    const docsToDeliver = productTier === 'free_sample'
-      ? DOCUMENT_LIBRARY.filter(d => d.free)
-      : DOCUMENT_LIBRARY;
+    // free_sample → 3 free docs.
+    // registration_kit ($249) → all 65 core docs (no HR Pack).
+    // value_bundle ($499) → all 65 core docs + HR & Workforce Template Pack.
+    let docsToDeliver;
+    if (productTier === 'free_sample') {
+      docsToDeliver = DOCUMENT_LIBRARY.filter(d => d.free);
+    } else if (productTier === 'value_bundle') {
+      docsToDeliver = DOCUMENT_LIBRARY;                       // includes pack:'hr'
+    } else {
+      docsToDeliver = DOCUMENT_LIBRARY.filter(d => d.pack !== 'hr'); // 65 core only
+    }
 
     const variables = await generateVariables({ orgName, name, email, quizAnswers, profile });
 
