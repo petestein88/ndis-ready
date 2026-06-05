@@ -534,12 +534,73 @@
       display: flex; align-items: center; justify-content: center; gap: 0.375rem;
     }
 
+    /* ===== TWO-TIER PLAN CHOICE ===== */
+    .plan-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      margin-bottom: 1.25rem; text-align: left;
+    }
+    .plan-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 1.5rem 1.375rem;
+      display: flex; flex-direction: column; position: relative;
+    }
+    .plan-card-featured {
+      border: 2px solid var(--teal);
+      box-shadow: 0 8px 28px rgba(1,105,111,0.12);
+    }
+    .plan-badge {
+      position: absolute; top: -0.7rem; left: 1.375rem;
+      background: var(--teal); color: #fff;
+      font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.02em;
+      padding: 0.25rem 0.625rem; border-radius: var(--radius-full);
+    }
+    .plan-name {
+      font-family: var(--font-display); font-size: 1.125rem;
+      color: var(--text); margin-bottom: 0.25rem;
+    }
+    .plan-price {
+      font-family: var(--font-display); font-size: 2rem; color: var(--teal);
+      line-height: 1.1; margin-bottom: 0.5rem;
+    }
+    .plan-price span {
+      font-family: var(--font-body); font-size: 0.8125rem;
+      color: var(--text-muted); margin-left: 0.35rem; font-weight: 500;
+    }
+    .plan-tag {
+      font-size: 0.8125rem; color: var(--text-muted);
+      margin: 0 0 0.875rem; line-height: 1.4;
+    }
+    .plan-feats {
+      list-style: none; padding: 0; margin: 0 0 1.25rem;
+      display: flex; flex-direction: column; gap: 0.4rem; flex: 1;
+    }
+    .plan-feats li {
+      font-size: 0.8125rem; color: var(--text); line-height: 1.4;
+      padding-left: 1.25rem; position: relative;
+    }
+    .plan-feats li::before {
+      content: '\2713'; position: absolute; left: 0; top: 0;
+      color: var(--teal); font-weight: 700;
+    }
+    .plan-btn { width: 100%; justify-content: center; }
+    .plan-btn:disabled { opacity: 0.6; cursor: wait; }
+    .btn-ghost-line {
+      background: #fff; color: var(--teal);
+      border: 1.5px solid var(--teal);
+    }
+    .btn-ghost-line:hover { background: var(--lavender-lt); }
+    .plan-worth {
+      text-align: center; font-size: 0.75rem; color: var(--text-muted);
+      margin: 0.65rem 0 0;
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 600px) {
       .card { padding: 1.25rem; }
       .btn-row { flex-direction: column-reverse; align-items: stretch; }
       .btn-row .right { flex-direction: column; }
       .tab-btn { font-size: 0.7rem; padding: 0.5rem 0.25rem; }
+      .plan-grid { grid-template-columns: 1fr; gap: 1.5rem; }
     }
   </style>
 </head>
@@ -1021,16 +1082,50 @@
       <!-- Locked pack upsell -->
       <div class="locked-pack">
         <h3>Unlock all <span id="locked-count">62</span> remaining documents</h3>
-        <p>Your complete compliance pack — every policy, procedure, and form your auditor will ask for, pre-filled with your details.</p>
+        <p>Your complete compliance pack — every policy, procedure, and form your auditor will ask for, pre-filled with your details. Choose the option that fits:</p>
 
         <div class="locked-doc-list" id="locked-doc-list">
           <!-- Populated by JS -->
         </div>
 
-        <button class="btn btn-primary btn-lg" id="upsell-btn" onclick="goToStripe()" style="width:100%; justify-content:center;">
-          <span id="upsell-btn-label">Get my full compliance pack</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
+        <!-- Two-tier choice -->
+        <div class="plan-grid">
+          <!-- Registration Kit $249 -->
+          <div class="plan-card">
+            <div class="plan-name">Registration Kit</div>
+            <div class="plan-price">$249<span>one-time</span></div>
+            <p class="plan-tag">Everything you need to get registered</p>
+            <ul class="plan-feats">
+              <li>All 65 policy templates, personalised</li>
+              <li>AI document assistant</li>
+              <li>Submission-ready Word format — yours to keep</li>
+              <li>7-day secure download access</li>
+            </ul>
+            <button class="btn btn-ghost-line plan-btn" id="plan-btn-registration_kit" onclick="goToStripe('registration_kit', this)">
+              <span class="plan-btn-label">Get the Registration Kit — $249</span>
+            </button>
+          </div>
+
+          <!-- Value Bundle $499 (recommended) -->
+          <div class="plan-card plan-card-featured">
+            <div class="plan-badge">★ Best value</div>
+            <div class="plan-name">Value Bundle</div>
+            <div class="plan-price">$499<span>per year</span></div>
+            <p class="plan-tag">Get registered + stay audit-ready all year</p>
+            <ul class="plan-feats">
+              <li><strong>Everything in the Registration Kit</strong></li>
+              <li>Unlimited AI Note &amp; Incident Writer</li>
+              <li>Audit Readiness Self-Assessment</li>
+              <li>Mock Audit Interview Simulator</li>
+              <li>HR &amp; Workforce Template Pack</li>
+              <li>12 months access + free updates</li>
+            </ul>
+            <button class="btn btn-primary plan-btn" id="plan-btn-value_bundle" onclick="goToStripe('value_bundle', this)">
+              <span class="plan-btn-label">Get the Value Bundle — $499</span>
+            </button>
+            <p class="plan-worth">Worth $837 if bought separately</p>
+          </div>
+        </div>
 
         <div class="guarantee">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -1543,17 +1638,19 @@ function downloadDoc(docId, docName) {
   alert(`Your document "${docName}" is on its way to ${state.email}. If it hasn't arrived in a few minutes, check your spam folder.`);
 }
 
-// Upsell tier. Monthly subscriptions are disabled for now — we only sell
-// the one-time packs. 'value_bundle' and 'registration_kit' are the live
-// Stripe products handled by /api/create-checkout.js.
-const UPSELL_TIER = 'value_bundle';
-
-async function goToStripe() {
-  const btn   = document.getElementById('upsell-btn');
-  const label = document.getElementById('upsell-btn-label');
-  const original = label.textContent;
-  btn.disabled = true;
-  label.textContent = 'Opening secure checkout…';
+// Checkout. Monthly subscriptions are disabled for now — we only sell the
+// one-time packs. 'registration_kit' ($249) and 'value_bundle' ($499) are the
+// live Stripe products handled by /api/create-checkout.js. Users pick either.
+async function goToStripe(tier, clickedBtn) {
+  tier = tier || 'value_bundle';
+  // Resolve the button + its label span (works whether passed `this` or not)
+  const btn   = clickedBtn || document.getElementById('plan-btn-' + tier);
+  const label = btn ? btn.querySelector('.plan-btn-label') : null;
+  const original = label ? label.textContent : '';
+  // Disable BOTH plan buttons while a checkout is opening
+  const allBtns = document.querySelectorAll('.plan-btn');
+  allBtns.forEach(b => b.disabled = true);
+  if (label) label.textContent = 'Opening secure checkout…';
 
   // Forward quiz params so they survive the round-trip to thank-you.html
   const qp = new URLSearchParams();
@@ -1569,7 +1666,7 @@ async function goToStripe() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        tier:        UPSELL_TIER,
+        tier:        tier,
         email:       state.email,
         quiz_params: quizParamString,
       }),
@@ -1583,8 +1680,8 @@ async function goToStripe() {
     throw new Error(result.error || 'Could not start checkout');
   } catch (err) {
     console.error('Checkout error:', err);
-    btn.disabled = false;
-    label.textContent = original;
+    allBtns.forEach(b => b.disabled = false);
+    if (label) label.textContent = original;
     alert('Sorry — we could not open checkout just now. Please try again, or email hello@ndis-ready.com.au and we\u2019ll sort it out.');
   }
 }
