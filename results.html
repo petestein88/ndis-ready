@@ -371,6 +371,15 @@ function render(){
         </div>
       </div>
       <div class="side-col">
+        <div class="side-card peach">
+          <h3>Your 3 free documents</h3>
+          <p>Enter your email and we'll send your first 3 compliance documents to download instantly.</p>
+          <div style="display:flex;flex-direction:column;gap:0.35rem;margin-bottom:1rem;">
+            ${RULES.core.filter(d=>d.tier==='free').map(d=>`<div style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;font-weight:500;"><span style="color:#437a22;font-weight:700;">✓</span> ${d.title}</div>`).join('')}
+          </div>
+          <input class="email-input" type="email" id="sideEmail" placeholder="hello@yourorg.com.au"/>
+          <button class="btn btn-primary" style="width:100%" onclick="submitEmail()">Send my free docs →</button>
+        </div>
         <a href="${aiHref}" class="side-card ai-magic-card">
           <div class="ai-magic-badge">✨ Free · No card</div>
           <h3 style="color:var(--white);margin-bottom:0.4rem;">Watch the AI work</h3>
@@ -398,15 +407,6 @@ function render(){
           <p>Auditors interview your team, not your binder. Answer the questions a real auditor asks and see where your practice diverges from your paperwork.</p>
           <span class="btn" style="background:var(--ink);color:var(--white);width:100%;text-align:center;display:block;font-weight:700;">Start the interview →</span>
         </a>
-        <div class="side-card peach">
-          <h3>Your 3 free documents</h3>
-          <p>Enter your email and we'll send your first 3 compliance documents to download instantly.</p>
-          <div style="display:flex;flex-direction:column;gap:0.35rem;margin-bottom:1rem;">
-            ${RULES.core.filter(d=>d.tier==='free').map(d=>`<div style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;font-weight:500;"><span style="color:#437a22;font-weight:700;">✓</span> ${d.title}</div>`).join('')}
-          </div>
-          <input class="email-input" type="email" id="sideEmail" placeholder="hello@yourorg.com.au"/>
-          <button class="btn btn-primary" style="width:100%" onclick="submitEmail()">Send my free docs →</button>
-        </div>
         <div class="side-card">
           <h3 style="margin-bottom:0.75rem">Your compliance score</h3>
           <div class="stat-row">
