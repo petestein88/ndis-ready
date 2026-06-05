@@ -378,8 +378,37 @@
       font-weight: 600;
       box-shadow: var(--shadow-sm);
     }
+    .tab-btn.done { color: var(--teal); }
+    .tab-step-no {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.15rem; height: 1.15rem; border-radius: 50%;
+      background: var(--border); color: var(--text-muted);
+      font-size: 0.6875rem; font-weight: 700; margin-right: 0.3rem;
+      vertical-align: middle; transition: all 0.2s;
+    }
+    .tab-btn.active .tab-step-no { background: var(--teal); color: #fff; }
+    .tab-btn.done .tab-step-no { background: var(--teal); color: #fff; }
+    .tab-btn.done .tab-step-no::after { content: '\2713'; }
+    .tab-btn.done .tab-step-no { font-size: 0; }
+    .tab-btn.done .tab-step-no::after { font-size: 0.75rem; }
+    .tab-progress-note {
+      font-size: 0.8125rem; color: var(--text-muted);
+      margin: -1rem 0 1.5rem; text-align: center;
+    }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; animation: fadeUp 0.25s ease; }
+    .tab-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; margin-top: 1.75rem;
+      padding-top: 1.25rem; border-top: 1px solid var(--border);
+    }
+    .tab-skip {
+      background: none; border: none; cursor: pointer;
+      font-size: 0.8125rem; font-weight: 500; color: var(--text-muted);
+      text-decoration: underline; text-underline-offset: 3px;
+      padding: 0.5rem 0;
+    }
+    .tab-skip:hover { color: var(--text); }
 
     .section-note {
       font-size: 0.8125rem; color: var(--text-muted);
@@ -673,12 +702,13 @@
     </div>
 
     <div class="card">
-      <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('identity')">🏢 Identity</button>
-        <button class="tab-btn" onclick="switchTab('people')">👥 Key People</button>
-        <button class="tab-btn" onclick="switchTab('registration')">📋 Registration</button>
-        <button class="tab-btn" onclick="switchTab('operations')">⚙️ Operations</button>
+      <div class="tab-bar" id="tab-bar">
+        <button class="tab-btn active" id="tabbtn-identity" onclick="switchTab('identity')"><span class="tab-step-no">1</span> Identity</button>
+        <button class="tab-btn" id="tabbtn-people" onclick="switchTab('people')"><span class="tab-step-no">2</span> Key People</button>
+        <button class="tab-btn" id="tabbtn-registration" onclick="switchTab('registration')"><span class="tab-step-no">3</span> Registration</button>
+        <button class="tab-btn" id="tabbtn-operations" onclick="switchTab('operations')"><span class="tab-step-no">4</span> Operations</button>
       </div>
+      <div class="tab-progress-note" id="tab-progress-note">Section <strong id="tab-current-no">1</strong> of 4 — work through each section, then build your pack.</div>
 
       <!-- TAB: Identity -->
       <div class="tab-panel active" id="tab-identity">
@@ -761,6 +791,12 @@
             </div>
           </div>
         </div>
+        <div class="tab-nav">
+          <button class="tab-skip" onclick="switchTab('people')">Skip this section</button>
+          <button class="btn btn-primary" onclick="switchTab('people')">Next: Key People
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
       </div>
 
       <!-- TAB: Key People -->
@@ -807,6 +843,12 @@
             </div>
           </div>
         </div>
+        <div class="tab-nav">
+          <button class="tab-skip" onclick="switchTab('registration')">Skip this section</button>
+          <button class="btn btn-primary" onclick="switchTab('registration')">Next: Registration
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
       </div>
 
       <!-- TAB: Registration -->
@@ -847,6 +889,12 @@
             <textarea id="i_support_types" placeholder="e.g. SIL (Supported Independent Living), Community Participation, Personal Care"></textarea>
             <span class="ai-badge">✓ Auto-filled</span>
           </div>
+        </div>
+        <div class="tab-nav">
+          <button class="tab-skip" onclick="switchTab('operations')">Skip this section</button>
+          <button class="btn btn-primary" onclick="switchTab('operations')">Next: Operations
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
         </div>
       </div>
 
@@ -917,8 +965,8 @@
         </div>
       </div>
 
-      <div class="btn-row">
-        <button class="btn btn-ghost" onclick="goStep(2)">
+      <div class="btn-row" id="build-row" style="display:none;">
+        <button class="btn btn-ghost" onclick="switchTab('registration')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
           Back
         </button>
@@ -963,7 +1011,7 @@
     <div class="preview-results" id="preview-results">
       <div class="preview-header">
         <h2>Your 3 free compliance documents are ready</h2>
-        <p>Personalised for <strong id="preview-org-name">your organisation</strong>. Download them now — they're ready to submit to your auditor.</p>
+        <p>Personalised for <strong id="preview-org-name">your organisation</strong>. Download them right here — no need to wait for an email. We've also sent a copy and a 7-day download link to your inbox.</p>
       </div>
 
       <div class="preview-docs" id="preview-docs">
@@ -1095,18 +1143,54 @@ function showStep(n, pushHash = true) {
   state.currentStep = n;
   if (pushHash) window.location.hash = 'step-' + n;
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Entering Step 3 — always start on the first section
+  if (n === 3 && typeof switchTab === 'function') {
+    state.maxTabIndex = 0;
+    switchTab('identity', false);
+  }
 }
 
 // =============================================================
 // TAB SWITCHING (Step 3)
 // =============================================================
-function switchTab(name) {
-  document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    const tabs = ['identity','people','registration','operations'];
-    b.classList.toggle('active', tabs[i] === name);
-  });
+const TABS = ['identity','people','registration','operations'];
+// Furthest section the user has reached. They can revisit any visited section,
+// but the bottom "Build my documents" button only appears once they've stepped
+// through to the final (Operations) section.
+state.maxTabIndex = 0;
+
+function switchTab(name, scroll = true) {
+  const idx = TABS.indexOf(name);
+  if (idx === -1) return;
+
+  // Track furthest progress so we know they've seen every section
+  if (idx > state.maxTabIndex) state.maxTabIndex = idx;
+
+  // Panels
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
+
+  // Tab buttons: active = current, done = already passed
+  TABS.forEach((t, i) => {
+    const btn = document.getElementById('tabbtn-' + t);
+    if (!btn) return;
+    btn.classList.toggle('active', i === idx);
+    btn.classList.toggle('done', i < state.maxTabIndex && i !== idx);
+  });
+
+  // Progress note
+  const noteNo = document.getElementById('tab-current-no');
+  if (noteNo) noteNo.textContent = idx + 1;
+
+  // Only reveal the Build button on the final section
+  const buildRow = document.getElementById('build-row');
+  if (buildRow) buildRow.style.display = (idx === TABS.length - 1) ? 'flex' : 'none';
+
+  if (scroll) {
+    const bar = document.querySelector('.tab-bar');
+    if (bar) window.scrollTo({ top: bar.offsetTop - 90, behavior: 'smooth' });
+  }
 }
 
 // =============================================================
@@ -1442,13 +1526,21 @@ function showPreview(orgName) {
 }
 
 function downloadDoc(docId, docName) {
-  // If we got a download URL from the API, use it
-  if (state.generatedDocs && state.generatedDocs.downloadUrl) {
-    window.open(state.generatedDocs.downloadUrl, '_blank');
+  const gen = state.generatedDocs || {};
+  // 1. Best case: direct signed .docx link for this exact document
+  const manifest = gen.manifest || [];
+  const match = manifest.find(d => d.id === docId) || manifest.find(d => d.name === docName);
+  if (match && match.url) {
+    window.open(match.url, '_blank');
     return;
   }
-  // Fallback: trigger email delivery
-  alert(`Your document "${docName}" is being prepared and will be emailed to ${state.email} within a few minutes.`);
+  // 2. Fallback: the download page (loads all 3 docs from the access token)
+  if (gen.downloadUrl) {
+    window.open(gen.downloadUrl, '_blank');
+    return;
+  }
+  // 3. Last resort: docs were generated server-side and emailed
+  alert(`Your document "${docName}" is on its way to ${state.email}. If it hasn't arrived in a few minutes, check your spam folder.`);
 }
 
 // Upsell tier. Monthly subscriptions are disabled for now — we only sell

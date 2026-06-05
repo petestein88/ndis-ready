@@ -297,6 +297,8 @@ module.exports = async function handler(req, res) {
       success:     true,
       docCount:    downloadManifest.length,
       downloadUrl,
+      manifest:    downloadManifest,   // per-doc signed .docx URLs for instant on-page download
+      accessToken,
       expiresAt,
     });
 
