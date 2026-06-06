@@ -47,6 +47,15 @@
     .section-inner { max-width: 960px; margin: 0 auto; }
     .section-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.75rem; }
     .section h2 { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.2; color: var(--ink); margin-bottom: 1rem; }
+    .faq-list { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.85rem; max-width: 760px; }
+    .faq-item { background: var(--white); border: 1px solid rgba(0,0,0,0.08); border-radius: var(--radius); overflow: hidden; transition: border-color 0.2s; }
+    .faq-item[open] { border-color: var(--lavender-deep); }
+    .faq-item summary { list-style: none; cursor: pointer; padding: 1.25rem 1.5rem; font-family: var(--font-body); font-weight: 700; font-size: 1.02rem; color: var(--ink); display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary .faq-icon { flex-shrink: 0; width: 1.4rem; height: 1.4rem; color: var(--lavender-deep); transition: transform 0.2s; }
+    .faq-item[open] summary .faq-icon { transform: rotate(45deg); }
+    .faq-item .faq-answer { padding: 0 1.5rem 1.4rem; color: var(--ink-mid); font-size: 0.95rem; line-height: 1.7; }
+    .faq-item .faq-answer p { margin: 0; }
     .section > .section-inner > p.lead { color: var(--ink-mid); font-size: 1.05rem; max-width: 640px; margin-bottom: 3rem; }
     .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
     .step-card { background: var(--white); border-radius: var(--radius); padding: 2rem 1.75rem; border: 1px solid rgba(0,0,0,0.06); }
@@ -135,6 +144,7 @@
   <div style="display:flex;align-items:center;gap:1.25rem;">
     <a href="tools-suite.html" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">Tools</a>
     <a href="#pricing" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">Pricing</a>
+    <a href="#faq" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">FAQ</a>
     <a href="quiz.html" class="nav-cta">Take the quiz →</a>
   </div>
 </nav>
@@ -375,6 +385,57 @@
     <p style="text-align:center;font-size:0.85rem;color:var(--ink-soft);margin-top:2rem;">
       💡 Most providers choose the <strong>Best Value Bundle</strong> — get registered and <em>stay</em> compliant for one upfront payment, saving $338 vs buying separately.
     </p>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="section-inner">
+    <p class="section-label">FAQ</p>
+    <h2>Questions providers ask us</h2>
+    <p class="lead">Straight answers about what the kit is, what it isn't, and how it helps you get audit-ready.</p>
+    <div class="faq-list">
+
+      <details class="faq-item">
+        <summary>Will this kit guarantee I pass my audit?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+        <div class="faq-answer"><p>No, and we'd never claim otherwise. The pass-or-fail call belongs to the NDIS Commission and your auditor, not to us. What the kit gives you is a complete, professionally written document set mapped to the NDIS Practice Standards, so you arrive organised and prepared instead of scrambling. You still need to complete each document honestly and accurately for your own service.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary>I'm not confident with computers. Can I still use this?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+        <div class="faq-answer"><p>Absolutely. If you can send an email, you can use these. Every document opens in Microsoft Word or a free alternative like Google Docs, and you mostly just type your business name and details into clearly marked spaces. The 3 worked examples show you exactly what a finished document should look like, so you're never left guessing.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary>English isn't my first language. Will I understand it?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+        <div class="faq-answer"><p>We've written everything in plain, simple English — short sentences and as little jargon as we could manage. Plenty of our customers run their services in a second language. If a document still feels unclear, the worked examples make it easy to follow, and you can always email us for a hand.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary>What if I buy it and it's not right for me?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+        <div class="faq-answer"><p>You're covered by a 30-day pre-download refund plus 30 days of email support. If you haven't downloaded the kit yet, just email us within 30 days for a full refund — no awkward questions. Once you've downloaded it, you get 30 days of email support to help you put the documents to work.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Is this legal or compliance advice?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+        <div class="faq-answer"><p>No. These are professionally prepared templates and general information to help you organise your documentation — they are not legal advice. If you need guidance on your specific situation, please speak with a qualified professional.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary>When do I need to have this sorted by?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+        <div class="faq-answer"><p>The 2026 SIL transition is already underway. From 1 July 2026, SIL providers are expected to meet new registration and Practice Standards requirements. If you're currently unregistered and delivering SIL, the NDIS Commission transition pathway indicates you may need to apply by 1 October 2026 to keep delivering while your application is processed. Starting your documentation now buys you more time to customise it, train your team, and gather your evidence.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Can I use this if I have no compliance background?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+        <div class="faq-answer"><p>Yes. The kit is written in plain English and comes with worked examples to guide you. Just keep in mind you'll still need to tailor each document to reflect how your own service actually runs.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Can I claim this on tax?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+        <div class="faq-answer"><p>Buying for your NDIS business? Many Australian businesses may be able to claim compliance-related digital products as a business expense where the purchase is directly tied to earning business income. Hold onto your invoice and check with your accountant — a tax invoice is provided with every purchase.</p></div>
+      </details>
+
+    </div>
   </div>
 </section>
 
