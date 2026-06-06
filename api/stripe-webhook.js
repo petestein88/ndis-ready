@@ -154,14 +154,30 @@ async function handleCheckoutCompleted(session, req) {
     throw orderError;
   }
 
-  // 2. Fetch quiz answers for this lead (if they came through the quiz)
-  const { data: lead } = await supabase
+  // 2. Fetch the best lead record for this email.
+  // Prefer the most recent lead that actually has a profile (filled via the
+  // doc-builder), so paid docs get the full personalised data. Fall back to
+  // the most recent lead of any kind (quiz-only) if none has a profile.
+  let lead = null;
+  const { data: profileLead } = await supabase
     .from('leads')
     .select('*')
     .eq('email', email)
+    .not('profile', 'is', null)
     .order('created_at', { ascending: false })
     .limit(1)
-    .single();
+    .maybeSingle();
+  lead = profileLead;
+  if (!lead) {
+    const { data: anyLead } = await supabase
+      .from('leads')
+      .select('*')
+      .eq('email', email)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    lead = anyLead;
+  }
 
   // 3. Trigger document generation
   const baseUrl = process.env.VERCEL_URL
@@ -178,6 +194,10 @@ async function handleCheckoutCompleted(session, req) {
       productTier,
       quizAnswers: lead?.quiz_answers || null,
       orgName:     lead?.org_name    || name,
+      // Full org profile captured during the doc-builder preview — ensures
+      // EVERY paid doc is AI-populated with the customer's real details
+      // (ABN, addresses, key people, insurance, etc.), not just org name.
+      profile:     lead?.profile     || null,
     }),
   });
 

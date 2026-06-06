@@ -162,6 +162,42 @@ module.exports = async function handler(req, res) {
 
     const variables = await generateVariables({ orgName, name, email, quizAnswers, profile });
 
+    // Persist the full org profile against this lead so the post-payment
+    // webhook can re-use it to populate ALL paid docs (not just the free
+    // preview). The free preview is the moment we have the richest profile,
+    // so we capture it here. Non-fatal if it fails.
+    if (profile && Object.keys(profile).length > 0 && email) {
+      try {
+        const { data: existingLead } = await supabase
+          .from('leads')
+          .select('id')
+          .eq('email', email)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (existingLead?.id) {
+          await supabase
+            .from('leads')
+            .update({ profile, org_name: profile.org_name || orgName || null, updated_at: new Date().toISOString() })
+            .eq('id', existingLead.id);
+        } else {
+          await supabase
+            .from('leads')
+            .insert({
+              email,
+              org_name:     profile.org_name || orgName || null,
+              quiz_answers: quizAnswers || null,
+              profile,
+              source:       'profile_builder',
+              created_at:   new Date().toISOString(),
+            });
+        }
+      } catch (leadErr) {
+        console.warn('Could not persist profile to leads (non-fatal):', leadErr.message);
+      }
+    }
+
     const downloadManifest = [];
     // Each customer's personalised docs are written under their token folder
     const customerFolder = `${email.replace(/[^a-z0-9]/gi, '_')}/${Date.now()}`;
