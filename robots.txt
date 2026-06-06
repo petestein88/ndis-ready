@@ -21,4 +21,4 @@ Allow: /
 User-agent: Amazonbot
 Allow: /
 
-Sitemap: https://www.ndis-ready.com.au/sitemap.xml
+Sitemap: https://ndis-ready.com.au/sitemap.xml

@@ -13,6 +13,7 @@ const OpenAI = require('openai');
 const { createClient } = require('@supabase/supabase-js');
 const PizZip = require('pizzip');
 const Docxtemplater = require('docxtemplater');
+const { applyCors, isInternalCall, internalHeaders } = require('./_lib/security');
 
 const openai   = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const supabase = createClient(
@@ -135,6 +136,7 @@ function getStoragePath(doc, productTier) {
 }
 
 module.exports = async function handler(req, res) {
+  if (applyCors(req, res)) return;
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -143,6 +145,16 @@ module.exports = async function handler(req, res) {
 
   if (!email || !productTier) {
     return res.status(400).json({ error: 'Missing required fields: email, productTier' });
+  }
+
+  // AUTH GATE: the free 3-doc preview is public (the on-site profile builder
+  // needs it), but generating any PAID pack (registration_kit / value_bundle)
+  // must be an internal server-to-server call carrying the internal secret.
+  // This prevents anyone POSTing { productTier: 'value_bundle' } to get the
+  // full pack for free, bypassing payment.
+  if (productTier !== 'free_sample' && !isInternalCall(req)) {
+    console.warn(`Blocked unauthorised paid generation attempt for ${email} (${productTier})`);
+    return res.status(403).json({ error: 'Forbidden' });
   }
 
   console.log(`Generating documents for: ${email} — ${productTier}`);
@@ -311,7 +323,7 @@ module.exports = async function handler(req, res) {
 
     await fetch(`${baseUrl}/api/send-email`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: internalHeaders(),
       body: JSON.stringify({
         type:  'document_delivery',
         email,

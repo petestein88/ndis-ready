@@ -6,10 +6,12 @@
 // full report. Returns { valid, tier } — never any personal data.
 // =============================================================
 const { createClient } = require('@supabase/supabase-js');
+const { applyCors } = require('./_lib/security');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
 module.exports = async function handler(req, res) {
+  if (applyCors(req, res)) return;
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }

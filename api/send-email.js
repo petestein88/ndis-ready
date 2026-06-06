@@ -4,9 +4,20 @@
 // Handles all transactional emails via Resend
 // =============================================================
 
+const { applyCors, isInternalCall } = require('./_lib/security');
+
 module.exports = async function handler(req, res) {
+  if (applyCors(req, res)) return;
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Transactional emails are only ever triggered by our own server-side code
+  // (webhook, generate-documents). Require the internal secret so the public
+  // can't use this endpoint to send arbitrary emails from our domain.
+  if (!isInternalCall(req)) {
+    console.warn('Blocked unauthorised send-email attempt');
+    return res.status(403).json({ error: 'Forbidden' });
   }
 
   const { type, email, name, data } = req.body;

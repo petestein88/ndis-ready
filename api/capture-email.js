@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const { applyCors } = require('./_lib/security');
 
 // The 3 free sample docs delivered as attachments with the confirmation email.
 const FREE_DOCS = [
@@ -32,11 +33,7 @@ async function buildFreeDocAttachments(supabaseUrl, supabaseKey) {
 }
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (applyCors(req, res)) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {

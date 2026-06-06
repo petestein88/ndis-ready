@@ -1,33 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.ndis-ready.com.au/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <loc>https://ndis-ready.com.au/audit-readiness.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.ndis-ready.com.au/quiz.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.ndis-ready.com.au/results.html</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://ndis-ready.com.au/blog.html</loc>
+    <lastmod>2026-06-06</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.ndis-ready.com.au/thank-you.html</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://ndis-ready.com.au/health-check.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.ndis-ready.com.au/privacy.html</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
+    <loc>https://ndis-ready.com.au/</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.ndis-ready.com.au/terms-of-service.html</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
+    <loc>https://ndis-ready.com.au/mock-audit.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/privacy.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/quiz.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/results.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/terms-of-service.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/tools-suite.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/tools.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/blog/hiring-your-first-support-worker.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/blog/how-to-write-a-progress-note.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/blog/is-your-ndis-business-making-money.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/blog/ndis-practice-standards-plain-english.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/blog/ndis-sil-registration-checklist.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/blog/unregistered-sil-providers-2026-deadline.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/blog/what-an-ndis-auditor-asks.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ndis-ready.com.au/blog/why-templates-dont-pass-audits.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.6</priority>
   </url>
 </urlset>

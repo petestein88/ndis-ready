@@ -6,6 +6,7 @@
 
 const Stripe = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
+const { internalHeaders } = require('./_lib/security');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(
@@ -186,7 +187,7 @@ async function handleCheckoutCompleted(session, req) {
 
   const generateRes = await fetch(`${baseUrl}/api/generate-documents`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: internalHeaders(),
     body: JSON.stringify({
       orderId:     order.id,
       email,
@@ -226,7 +227,7 @@ async function handlePaymentFailed(pi, req) {
 
     await fetch(`${baseUrl}/api/send-email`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: internalHeaders(),
       body: JSON.stringify({
         type:  'payment_failed',
         email,

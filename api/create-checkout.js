@@ -1,4 +1,5 @@
 const Stripe = require('stripe');
+const { applyCors } = require('./_lib/security');
 
 const PRICE_IDS = {
   registration_kit: 'price_1Tc2doP7sgWyDZVxHk1HMjkm',
@@ -6,10 +7,7 @@ const PRICE_IDS = {
 };
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (applyCors(req, res)) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
@@ -18,9 +16,6 @@ module.exports = async function handler(req, res) {
       console.error('MISSING: STRIPE_SECRET_KEY env var is not set');
       return res.status(500).json({ error: 'Stripe key not configured on server' });
     }
-
-    // Log key prefix so we can see live vs test in Vercel logs without exposing the key
-    console.log('Stripe key prefix:', stripeKey.substring(0, 12));
 
     const stripe = new Stripe(stripeKey, { apiVersion: '2024-04-10' });
     const { tier, email, quiz_params } = req.body;
@@ -37,7 +32,7 @@ module.exports = async function handler(req, res) {
 
     const origin = req.headers.origin || 'https://ndis-ready.com.au';
     const successUrl = `${origin}/thank-you.html?session_id={CHECKOUT_SESSION_ID}${quiz_params ? '&' + quiz_params : ''}`;
-    const cancelUrl = `${origin}/pricing`;
+    const cancelUrl = `${origin}/#pricing`;
 
     const sessionParams = {
       mode: 'payment',
