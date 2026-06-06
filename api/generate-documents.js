@@ -443,6 +443,12 @@ async function generateVariables({ orgName, name, email, quizAnswers, profile })
     emergency_contact_phone:p.emergency_contact_phone || '',
     insurance_provider:     p.insurance_provider || '',
     insurance_policy_number:p.insurance_policy_number || '',
+    // Insurance cover amounts (not currently collected in the profile builder;
+    // rendered blank so the free-sample templates never show raw tags).
+    public_liability_amount:        p.public_liability_amount || '',
+    professional_indemnity_amount:  p.professional_indemnity_amount || '',
+    management_liability_amount:     p.management_liability_amount || '',
+    cyber_liability_amount:          p.cyber_liability_amount || '',
     // Document control
     review_date:            reviewDate,
     next_review_date:       nextReview,
