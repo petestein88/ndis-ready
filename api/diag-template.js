@@ -39,7 +39,14 @@ module.exports = async function handler(req, res) {
       const { data, error } = await supabase.storage.from('templates').download(path);
       if (error || !data) return res.status(404).json({ error: error && error.message, path });
       const buf = Buffer.from(await data.arrayBuffer());
-      return res.status(200).json({ path, sizeBytes: buf.length, ...placeholdersIn(buf) });
+      const out = { path, sizeBytes: buf.length, ...placeholdersIn(buf) };
+      if (req.query.raw === '1') {
+        const zip = new PizZip(buf);
+        const xml = zip.files['word/document.xml'].asText();
+        const idx = xml.indexOf('org_name');
+        out.rawSnippet = idx >= 0 ? xml.slice(Math.max(0, idx - 200), idx + 100) : 'org_name not found in document.xml';
+      }
+      return res.status(200).json(out);
     }
 
     if (action === 'fix-free-samples' && req.method === 'POST') {

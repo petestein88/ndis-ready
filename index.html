@@ -58,14 +58,17 @@
     .btn-primary:hover { background: #3d3650; transform: translateY(-1px); }
     .btn-secondary { background: transparent; color: var(--ink-mid); font-size: 0.95rem; font-weight: 500; padding: 0.85rem 1.5rem; border-radius: var(--radius-pill); text-decoration: none; border: 1.5px solid rgba(0,0,0,0.15); transition: border-color 0.2s; }
     .btn-secondary:hover { border-color: rgba(0,0,0,0.35); }
-    .tool-strip { max-width: 960px; margin: 0 auto; padding: 1.25rem 2rem 0.5rem; }
-    .tool-strip-label { text-align: center; font-size: 0.8rem; font-weight: 700; color: var(--ink-soft); letter-spacing: 0.02em; margin-bottom: 0.9rem; }
+    .tool-strip { max-width: 760px; margin: 0 auto; padding: 1.5rem 2rem 0.5rem; }
+    .tool-strip-label { text-align: center; font-size: 1.05rem; font-weight: 700; color: var(--ink); letter-spacing: 0.01em; margin-bottom: 1.4rem; }
     .tool-strip-label .free-word { color: var(--sage-deep); }
-    .tool-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem; }
-    .tool-chip { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--white); border: 1px solid rgba(0,0,0,0.09); border-radius: var(--radius-pill); padding: 0.55rem 1.1rem; text-decoration: none; color: var(--ink); font-size: 0.875rem; font-weight: 600; transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s; }
-    .tool-chip:hover { border-color: var(--lavender-deep); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(42,37,53,0.08); }
+    .tool-chips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .tool-chip { position: relative; display: flex; flex-direction: column; gap: 0.5rem; background: var(--white); border: 1px solid rgba(0,0,0,0.09); border-radius: 16px; padding: 1.25rem 1.25rem 1.15rem; text-decoration: none; color: var(--ink); transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s; min-height: 112px; }
+    .tool-chip:hover { border-color: var(--lavender-deep); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(42,37,53,0.10); }
     .tool-chip svg { flex-shrink: 0; }
-    .tool-chip .chip-free { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: var(--sage); color: var(--ink); padding: 0.12rem 0.45rem; border-radius: var(--radius-pill); }
+    .tool-chip .chip-title { display: flex; align-items: center; gap: 0.55rem; font-size: 1rem; font-weight: 700; line-height: 1.25; }
+    .tool-chip .chip-desc { font-size: 0.84rem; font-weight: 500; color: var(--ink-mid); line-height: 1.4; }
+    .tool-chip .chip-free { position: absolute; top: 1rem; right: 1rem; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: var(--sage); color: var(--ink); padding: 0.18rem 0.5rem; border-radius: var(--radius-pill); }
+    @media (max-width: 560px) { .tool-chips { grid-template-columns: 1fr; } }
     .section { padding: 3.25rem 2rem; }
     .section-inner { max-width: 960px; margin: 0 auto; }
     .section-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.75rem; }
@@ -191,20 +194,24 @@
   <p class="tool-strip-label"><span class="free-word">Free tools</span>, no sign-up &mdash; explore the full kit:</p>
   <div class="tool-chips">
     <a href="tools-suite.html" class="tool-chip">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--sage-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg>
-      AI Note &amp; Incident Writer <span class="chip-free">Free</span>
+      <span class="chip-free">Free</span>
+      <span class="chip-title"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--sage-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg> AI Note &amp; Incident Writer</span>
+      <span class="chip-desc">Turn rough notes into clean, audit-ready progress &amp; incident records.</span>
     </a>
     <a href="tools-suite.html" class="tool-chip">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--peach-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
-      Business Health Check <span class="chip-free">Free</span>
+      <span class="chip-free">Free</span>
+      <span class="chip-title"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--peach-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg> Business Health Check</span>
+      <span class="chip-desc">See where your provider stands against the NDIS Practice Standards.</span>
     </a>
     <a href="tools-suite.html" class="tool-chip">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--lavender-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      Audit Readiness Check <span class="chip-free">Free</span>
+      <span class="chip-free">Free</span>
+      <span class="chip-title"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--lavender-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Audit Readiness Check</span>
+      <span class="chip-desc">A quick checklist of what you need before your certification audit.</span>
     </a>
     <a href="tools-suite.html" class="tool-chip">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--rose-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-      Mock Audit Simulator <span class="chip-free">Free</span>
+      <span class="chip-free">Free</span>
+      <span class="chip-title"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--rose-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Mock Audit Simulator</span>
+      <span class="chip-desc">Practise the auditor&rsquo;s questions before the real assessment day.</span>
     </a>
   </div>
 </div>
