@@ -465,7 +465,23 @@ function renderPost(p) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${p.title} — NDIS Ready</title>
   <meta name="description" content="${p.dek.replace(/"/g, '&quot;')}" />
+  <link rel="canonical" href="https://ndis-ready.com.au/blog/${p.slug}.html" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="NDIS Ready" />
+  <meta property="og:url" content="https://ndis-ready.com.au/blog/${p.slug}.html" />
+  <meta property="og:title" content="${p.title.replace(/"/g, '&quot;')}" />
+  <meta property="og:description" content="${p.dek.replace(/"/g, '&quot;')}" />
+  <meta property="og:image" content="https://ndis-ready.com.au/og/${p.slug}.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="${p.title.replace(/"/g, '&quot;')} — NDIS Ready" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${p.title.replace(/"/g, '&quot;')}" />
+  <meta name="twitter:description" content="${p.dek.replace(/"/g, '&quot;')}" />
+  <meta name="twitter:image" content="https://ndis-ready.com.au/og/${p.slug}.png" />
   ${FONTS}
   <style>
 ${BASE_CSS}
@@ -540,7 +556,23 @@ function renderIndex() {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The NDIS Ready Blog — plain-English compliance help for small providers</title>
   <meta name="description" content="Plain-English guides on NDIS registration, audits, money and staffing — written for small providers who'd rather get on with the work." />
+  <link rel="canonical" href="https://ndis-ready.com.au/blog.html" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="NDIS Ready" />
+  <meta property="og:url" content="https://ndis-ready.com.au/blog.html" />
+  <meta property="og:title" content="The NDIS Ready Blog — NDIS compliance in plain English" />
+  <meta property="og:description" content="Plain-English guides on NDIS registration, audits, money and staffing — written for the people actually doing the work." />
+  <meta property="og:image" content="https://ndis-ready.com.au/og/blog.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="The NDIS Ready Blog — NDIS compliance in plain English" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The NDIS Ready Blog — NDIS compliance in plain English" />
+  <meta name="twitter:description" content="Plain-English guides on NDIS registration, audits, money and staffing." />
+  <meta name="twitter:image" content="https://ndis-ready.com.au/og/blog.png" />
   ${FONTS}
   <style>
 ${BASE_CSS}
