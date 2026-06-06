@@ -185,27 +185,70 @@ async function handleCheckoutCompleted(session, req) {
     ? `https://${process.env.VERCEL_URL}`
     : 'https://ndis-ready.com.au';
 
-  const generateRes = await fetch(`${baseUrl}/api/generate-documents`, {
-    method: 'POST',
-    headers: internalHeaders(),
-    body: JSON.stringify({
-      orderId:     order.id,
-      email,
-      name,
-      productTier,
-      quizAnswers: lead?.quiz_answers || null,
-      orgName:     lead?.org_name    || name,
-      // Full org profile captured during the doc-builder preview — ensures
-      // EVERY paid doc is AI-populated with the customer's real details
-      // (ABN, addresses, key people, insurance, etc.), not just org name.
-      profile:     lead?.profile     || null,
-    }),
+  const generatePayload = JSON.stringify({
+    orderId:     order.id,
+    email,
+    name,
+    productTier,
+    quizAnswers: lead?.quiz_answers || null,
+    orgName:     lead?.org_name    || name,
+    // Full org profile captured during the doc-builder preview — ensures
+    // EVERY paid doc is AI-populated with the customer's real details
+    // (ABN, addresses, key people, insurance, etc.), not just org name.
+    profile:     lead?.profile     || null,
   });
 
-  if (!generateRes.ok) {
-    const errText = await generateRes.text();
-    console.error('Document generation failed:', errText);
-    // Non-fatal — order is saved, can retry manually via Vercel logs
+  // Generation is the one step that can fail on a paid order (slow doc loop,
+  // transient storage error). Try twice before declaring failure, then make
+  // sure a failed paid order is NEVER silent: log it and alert internally.
+  let generateError = null;
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const generateRes = await fetch(`${baseUrl}/api/generate-documents`, {
+        method: 'POST',
+        headers: internalHeaders(),
+        body: generatePayload,
+      });
+
+      if (generateRes.ok) {
+        generateError = null;
+        break;
+      }
+
+      generateError = `HTTP ${generateRes.status}: ${await generateRes.text()}`;
+      console.error(`Document generation attempt ${attempt} failed:`, generateError);
+    } catch (err) {
+      generateError = err.message || String(err);
+      console.error(`Document generation attempt ${attempt} threw:`, generateError);
+    }
+  }
+
+  if (generateError) {
+    // 1. Durable record so the failed order is recoverable from the DB.
+    await logEvent('document_generation_failed', order.id, email, {
+      product_tier: productTier,
+      error:        generateError,
+    });
+
+    // 2. Internal alert so a human can fulfil manually — no paid order is lost.
+    try {
+      await fetch(`${baseUrl}/api/send-email`, {
+        method: 'POST',
+        headers: internalHeaders(),
+        body: JSON.stringify({
+          type:  'internal_alert',
+          email: 'hello@ndis-ready.com.au',
+          data:  {
+            subject: `\u26a0\ufe0f PAID ORDER NEEDS MANUAL FULFILMENT — ${email}`,
+            message: `A ${productTier} order was paid but document generation failed after 2 attempts.\n\n` +
+                     `Customer: ${email}\nName: ${name}\nOrder ID: ${order.id}\nTier: ${productTier}\n\n` +
+                     `Error: ${generateError}\n\nPlease fulfil manually and contact the customer.`,
+          },
+        }),
+      });
+    } catch (alertErr) {
+      console.error('Failed to send internal generation-failure alert:', alertErr.message);
+    }
   }
 }
 

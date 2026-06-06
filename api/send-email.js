@@ -115,6 +115,21 @@ module.exports = async function handler(req, res) {
       break;
     }
 
+    case 'internal_alert': {
+      // Operational alert to the team (e.g. a paid order needs manual fulfilment).
+      const alert = data || {};
+      subject = alert.subject || 'NDIS Ready internal alert';
+      const safeMessage = String(alert.message || '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      html = `
+<!DOCTYPE html><html><body style="font-family:sans-serif;padding:24px;background:#f7f6f2;">
+<div style="max-width:600px;margin:0 auto;background:#fff;border-radius:12px;padding:32px;">
+  <h2 style="color:#964219;margin-top:0;">${subject}</h2>
+  <pre style="white-space:pre-wrap;color:#28251d;font-family:sans-serif;font-size:14px;line-height:1.5;">${safeMessage}</pre>
+</div></body></html>`;
+      break;
+    }
+
     default:
       return res.status(400).json({ error: `Unknown email type: ${type}` });
   }

@@ -214,9 +214,11 @@ module.exports = async function handler(req, res) {
     // Each customer's personalised docs are written under their token folder
     const customerFolder = `${email.replace(/[^a-z0-9]/gi, '_')}/${Date.now()}`;
 
-    for (const doc of docsToDeliver) {
+    // Process one document end-to-end. Returns a manifest entry or null.
+    // Every failure mode is non-fatal — a single bad doc never breaks delivery.
+    const processDoc = async (doc) => {
       const storagePath = getStoragePath(doc, productTier);
-      if (!storagePath) continue;
+      if (!storagePath) return null;
 
       // 1. Download the master template from storage
       const { data: fileData, error: dlError } = await supabase.storage
@@ -225,7 +227,7 @@ module.exports = async function handler(req, res) {
 
       if (dlError || !fileData) {
         console.warn(`Could not download template ${storagePath}:`, dlError && dlError.message);
-        continue;
+        return null;
       }
 
       const templateBuffer = Buffer.from(await fileData.arrayBuffer());
@@ -250,7 +252,7 @@ module.exports = async function handler(req, res) {
 
       if (upError) {
         console.warn(`Could not upload personalised ${outPath}:`, upError.message);
-        continue;
+        return null;
       }
 
       // 4. Sign the personalised copy (7-day link)
@@ -260,15 +262,32 @@ module.exports = async function handler(req, res) {
 
       if (urlError) {
         console.warn(`Could not sign URL for ${outPath}:`, urlError.message);
-        continue;
+        return null;
       }
 
-      downloadManifest.push({
+      return {
         id:       doc.id,
         name:     doc.name,
         category: doc.category,
         url:      signedData.signedUrl,
-      });
+      };
+    };
+
+    // Run in controlled-concurrency batches. ~65 sequential round-trips become
+    // ~11 batches of 6 — roughly 6x faster wall-clock, well inside the 300s
+    // function budget, without overwhelming Supabase storage with 65 parallel
+    // requests. allSettled guarantees one failed doc never rejects the batch.
+    const CONCURRENCY = 6;
+    for (let i = 0; i < docsToDeliver.length; i += CONCURRENCY) {
+      const batch = docsToDeliver.slice(i, i + CONCURRENCY);
+      const settled = await Promise.allSettled(batch.map(processDoc));
+      for (const result of settled) {
+        if (result.status === 'fulfilled' && result.value) {
+          downloadManifest.push(result.value);
+        } else if (result.status === 'rejected') {
+          console.warn('Document processing threw (non-fatal):', result.reason && result.reason.message);
+        }
+      }
     }
 
     const accessToken = generateAccessToken();
