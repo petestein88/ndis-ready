@@ -39,6 +39,8 @@
     body { font-family: var(--font-body); background: var(--cream); color: var(--ink); line-height: 1.6; }
     a { color: inherit; }
     nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 2rem; max-width: 1200px; margin: 0 auto; }
+    @media(min-width:641px){ nav { padding-right: 13rem; } }
+    @media(max-width:640px){ nav { padding-right: 4.5rem; } }
     .nav-logo { font-family: var(--font-brand); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
     nav .nav-right { display: flex; align-items: center; gap: 1.25rem; }
     nav .nav-right a.plain { font-size: 0.875rem; font-weight: 600; color: var(--ink-mid); text-decoration: none; }
@@ -81,21 +83,11 @@
 <body>
   <nav>
     <a href="/" class="nav-logo">
-      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="navSG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stop-color="#c4b5f4"/><stop offset="100%" stop-color="#b8acdf"/>
-          </linearGradient>
-          <filter id="navTex">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise"/>
-            <feColorMatrix type="saturate" values="0" in="noise" result="gn"/>
-            <feBlend in="SourceGraphic" in2="gn" mode="multiply" result="bl"/>
-            <feComposite in="bl" in2="SourceGraphic" operator="in"/>
-          </filter>
-        </defs>
-        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="url(#navSG)" filter="url(#navTex)"/>
-        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="none" stroke="#9a88cc" stroke-width="3"/>
-        <path d="M50 65 Q32 52 32 42 Q32 34 40 34 Q45 34 50 40 Q55 34 60 34 Q68 34 68 42 Q68 52 50 65 Z" fill="#e8a0a0" filter="url(#navTex)"/>
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;">
+        <defs><linearGradient id="navLogo_blog" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0%" stop-color="#cabdf6"/><stop offset="100%" stop-color="#a18fd6"/></linearGradient></defs>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="url(#navLogo_blog)"/>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="none" stroke="#8a76c2" stroke-width="3.5"/>
+        <path d="M50 65 Q31 51 31 41 Q31 33 39.5 33 Q45 33 50 39.5 Q55 33 60.5 33 Q69 33 69 41 Q69 51 50 65 Z" fill="#ffffff" opacity="0.95"/>
       </svg>
       NDIS Ready
     </a>
@@ -114,13 +106,30 @@
       <span class="post-cat" style="background:#f3eefe;color:#5b4b86;">Staff</span>
       <h1>Hiring your first support worker: the paperwork</h1>
       <p class="dek">SCHADS, contracts, rosters and screening. Here is what you legally need in place before your first worker starts a shift.</p>
-      <div class="meta">June 2026 · 6 min read</div>
+      <div class="meta">June 2026 · 10 min read</div>
     </div>
     <div class="article-body">
 <p>Going from "just me" to your first employee is a big step — and one that comes with real legal obligations. Get the paperwork right and you protect yourself, your worker and your participants. Get it wrong and you're exposed to underpayment claims, unfair dismissal risk and audit problems.</p>
 
 <h2>Start with the right award: SCHADS</h2>
 <p>Most disability support workers are covered by the <strong>Social, Community, Home Care and Disability Services (SCHADS) Award</strong>. It sets minimum pay rates, penalty rates for evenings and weekends, casual loading, overtime, broken-shift rules and minimum engagement periods. Paying "a fair hourly rate" you made up yourself is how providers accidentally underpay — and the penalties are steep.</p>
+
+<h2>SCHADS classifications explained simply</h2>
+<p>SCHADS uses a classification structure to determine pay rates. The level you assign to your worker determines their minimum hourly rate, so it's important to get it right from day one. In simple terms:</p>
+<ul>
+  <li><strong>Lower classifications</strong> — Generally apply to workers with limited qualifications and experience who are performing routine support tasks under supervision.</li>
+  <li><strong>Higher classifications</strong> — Apply to workers with relevant qualifications (such as a Certificate III or IV in Individual Support), more experience, or who take on more complex or independent work.</li>
+  <li><strong>Supervisory roles</strong> — If someone is responsible for supervising other workers or coordinating shifts, they're typically on a higher classification.</li>
+</ul>
+<p>Check the current SCHADS Award on the Fair Work Ombudsman website — it has a summary of each level and what it covers. When in doubt, get advice. Misclassifying a worker (usually classifying them too low to save money) is one of the most common compliance failures in the sector, and the Fair Work Ombudsman does investigate complaints.</p>
+
+<h2>Casual vs permanent: the trade-offs</h2>
+<p>Many new providers default to casual because it feels flexible. But there are real trade-offs:</p>
+<ul>
+  <li><strong>Casual workers</strong> — Get a 25% casual loading on their base rate. No obligation to offer regular shifts. No paid leave entitlements. Good for genuinely variable rosters, but can be expensive on a stable roster where you know exactly when you need someone.</li>
+  <li><strong>Permanent part-time workers</strong> — Have a guaranteed minimum number of hours per week or fortnight. Accrue annual leave and personal leave. Lower hourly rate than casuals on equivalent hours (no loading). Better for participants too — consistent relationships with the same workers are a quality indicator auditors notice.</li>
+</ul>
+<p>There's also a provision in SCHADS around "regular casual" workers — if a casual has been engaged on a regular, systematic pattern for a period of time, they may have the right to request conversion to permanent employment. This is worth being aware of as you build your team.</p>
 
 <h2>The documents you need before day one</h2>
 <ul>
@@ -132,13 +141,92 @@
   <li><strong>A roster and timesheet system</strong> — that correctly applies SCHADS penalties and records hours.</li>
 </ul>
 
+<h2>Onboarding and induction: what to cover</h2>
+<p>Your induction isn't just a paperwork exercise — it's your worker's first real understanding of how your service runs. Cover these areas before their first shift with a participant:</p>
+<ul>
+  <li><strong>Your key policies</strong> — Incident management, complaints, safeguarding, privacy. Not just handed to them — walked through so they understand what to do.</li>
+  <li><strong>The NDIS Code of Conduct</strong> — Every support worker must understand and sign to acknowledge the Code. This is a legal requirement for registered providers.</li>
+  <li><strong>Each participant's individual profile</strong> — Before their first shift, your worker should know the participant's support plan, communication preferences, any known health or safety considerations, and their individual risk assessment.</li>
+  <li><strong>Emergency procedures</strong> — What to do in a fire, medical emergency, or if a participant goes missing. They need to know the procedure before they need it.</li>
+  <li><strong>Reporting obligations</strong> — How to report an incident, how to raise a concern, and who to contact after hours if something happens.</li>
+</ul>
+<p>Record all of this on a signed induction checklist. Keep it in the worker's personnel file. This document is one of the first things an auditor asks for.</p>
+
+<h2>Probation and supervision</h2>
+<p>The probation period exists for a reason — it's your opportunity to assess whether the worker is a good fit before the full rights of ongoing employment apply. A few things to know:</p>
+<ul>
+  <li><strong>Keep the probation period reasonable and clearly stated in the contract</strong> — Check what's permissible under SCHADS and the Fair Work Act for your situation.</li>
+  <li><strong>Conduct formal supervision sessions during probation</strong> — Not just a chat. A recorded meeting where you discuss how things are going, raise any concerns, and set expectations. Keep notes from each session.</li>
+  <li><strong>Don't skip the paperwork if you need to end employment during probation</strong> — Even during probation, you should follow a fair and documented process. Get HR or legal advice if you're unsure.</li>
+</ul>
+<p>After probation, continue regular supervision — at least quarterly for most workers, more frequently for new or developing workers. Supervision records are an audit requirement in the governance quality area.</p>
+
 <h2>Why this matters for your audit too</h2>
 <p>Your staff documents aren't just an HR formality — auditors check them. "How do you make sure your workers are suitable and supported?" is a standard audit question, and your contracts, screening records and induction checklists are the answer.</p>
+
+<h2>Record-keeping for audits</h2>
+<p>For each worker, maintain a personnel file that includes:</p>
+<ul>
+  <li><strong>NDIS Worker Screening clearance</strong> — with the clearance number and expiry date.</li>
+  <li><strong>Signed employment contract</strong> — including classification and rate.</li>
+  <li><strong>Signed induction checklist</strong> — with dates.</li>
+  <li><strong>Training records</strong> — any mandatory or additional training completed.</li>
+  <li><strong>Supervision records</strong> — dates, key topics discussed, any actions agreed.</li>
+  <li><strong>Performance management records</strong> — if applicable, any performance-related discussions documented.</li>
+</ul>
+<p>Store these files securely. Personnel records are confidential. If you're using paper files, they need to be in a locked cabinet. If digital, in a password-protected system with controlled access.</p>
+
+<blockquote>Your first hire is the foundation of your team culture. Build it right from day one.</blockquote>
 
 <div class="callout">
   <p><strong>Don't build these from scratch.</strong> Our HR &amp; Workforce Pack includes SCHADS-aware employment contracts, position descriptions, rosters, timesheets and induction checklists — personalised to your business. It comes bundled in our complete toolkit alongside your full document pack and every compliance tool.</p>
   <a class="cta-btn" href="/#pricing">See the complete toolkit &rarr;</a>
 </div>
+
+<h2>Common hiring mistakes small providers make</h2>
+<ul>
+  <li><strong>Paying a flat rate without checking the award</strong> — Even well-intentioned providers accidentally underpay when they don't check the SCHADS classification for their worker's role, qualifications and experience. Underpayment claims can be backdated.</li>
+  <li><strong>Starting someone before their screening check is complete</strong> — This is a serious compliance breach. No worker should be supporting participants without a valid NDIS Worker Screening clearance. Apply early and don't cut corners.</li>
+  <li><strong>Using a verbal agreement instead of a written contract</strong> — Verbal agreements create uncertainty and disputes. Always use a written contract, signed by both parties, before work begins.</li>
+  <li><strong>Skipping the induction</strong> — Induction takes time, but it protects everyone. A worker who doesn't know your incident procedure or the participant's risk assessment is a liability on day one.</li>
+  <li><strong>Not keeping records of training and supervision</strong> — If it's not written down, it didn't happen. Auditors will ask for training records and supervision logs. Verbal check-ins don't count.</li>
+</ul>
+
+<h2>Beyond the first hire: building a team culture from the start</h2>
+<p>The way you hire and onboard your first worker sets the tone for every hire after that. Providers who take the time to do it properly — clear expectations, thorough induction, regular supervision, documented everything — tend to retain their workers better, have fewer HR problems, and find audits much less stressful. Providers who rush it tend to spend a lot of time fixing things later.</p>
+<p>Your team culture starts with how you treat your first employee. Pay them correctly. Induct them properly. Supervise them regularly. Be clear about expectations and open about problems. Workers who feel supported and respected deliver better support to participants — and that's the whole point.</p>
+
+<blockquote>Your first hire is the foundation of your team culture. Build it right from day one.</blockquote>
+
+<div class="callout">
+  <p><strong>Want to see what good workforce documentation looks like?</strong> Our free Audit Readiness Self-Assessment includes a workforce section — so you can check where you stand before your first hire starts.</p>
+  <a class="cta-btn" href="/audit-readiness.html">Check my readiness &rarr;</a>
+</div>
+
+<h2>What to do if a worker isn't working out</h2>
+<p>Even with a careful hire, sometimes it doesn't work out. If a worker's performance is a concern, deal with it early and document everything. Here's the general approach:</p>
+<ul>
+  <li><strong>Have a direct conversation</strong> — Be specific about the concern, not vague. "Your progress notes need to be more detailed and objective" is actionable. "Your work isn't quite right" is not.</li>
+  <li><strong>Record the conversation</strong> — A supervision note or a brief follow-up email confirming what was discussed creates a record. If the situation escalates, this documentation matters.</li>
+  <li><strong>Set clear expectations and a timeline</strong> — Tell the worker what improvement looks like and when you'll review. Give them a fair chance to meet the standard.</li>
+  <li><strong>Get advice before you act</strong> — If you're considering ending employment, get advice from a workplace relations professional first. The Fair Work Act applies to you and the rules are worth understanding before you act.</li>
+</ul>
+<p>Performance management done well protects you, protects the worker, and protects your participants. Done poorly, it creates liability and bad feeling. When in doubt, seek advice.</p>
+
+<h2>Hiring well: a simple checklist before day one</h2>
+<ul>
+  <li><strong>NDIS Worker Screening clearance confirmed?</strong> — Non-negotiable. No clearance, no start.</li>
+  <li><strong>Employment contract signed?</strong> — With the correct SCHADS classification and rate. Both parties have a copy.</li>
+  <li><strong>Position description provided?</strong> — So expectations are clear from day one.</li>
+  <li><strong>Induction completed?</strong> — Key policies walked through, checklist signed and filed.</li>
+  <li><strong>Participant introductions arranged?</strong> — The worker knows who they're supporting, has read the support plan, and understands any health or safety considerations.</li>
+  <li><strong>Supervision schedule set?</strong> — First supervision within the first few weeks, and a regular cadence after that.</li>
+  <li><strong>Code of Conduct acknowledged?</strong> — Signed and filed.</li>
+</ul>
+
+<h2>The real cost of getting it wrong</h2>
+<p>Getting the paperwork wrong with your first hire can be expensive in ways that aren't immediately obvious. Underpayment claims under the Fair Work Act can be backdated for years — a worker who was paid $2 an hour under the SCHADS rate for two years represents a significant liability. Unfair dismissal claims for workers who weren't managed properly through a documented process can result in compensation payments and reputational damage. NDIS Commission concerns about a worker who was allowed to work without a valid screening check can jeopardise your registration.</p>
+<p>None of these are hypothetical. They happen to small providers regularly. The paperwork burden can feel heavy at the start, but it's far lighter than the alternative.</p>
 
 <p>Hiring well starts with the boring stuff done right. Get the paperwork sorted first and your first hire becomes an asset, not a liability.</p>
 
@@ -155,5 +243,77 @@
     <div><a href="/">Home</a> · <a href="/blog.html">Blog</a> · <a href="/#pricing">Pricing</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms-of-service.html">Terms</a></div>
     <div style="margin-top:0.6rem;">© 2026 NDIS Ready · hello@ndis-ready.com.au</div>
   </footer>
+<!-- CONTACT_WIDGET_START -->
+
+  <style id="contact-widget-css">
+    .contact-fab { position: fixed; top: 1rem; right: 1rem; z-index: 9998; display: inline-flex; align-items: center; gap: 0.45rem; background: linear-gradient(135deg, #b8acdf, #e8a0a0); color: #fff; font-family: 'Nunito', system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 800; padding: 0.6rem 1.25rem; border: none; border-radius: 999px; cursor: pointer; text-decoration: none; box-shadow: 0 4px 16px rgba(184,172,223,0.5); transition: transform 0.15s, box-shadow 0.2s; }
+    .contact-fab:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(184,172,223,0.65); }
+    .contact-fab svg { flex-shrink: 0; }
+    @media (max-width: 640px) { .contact-fab { font-size: 0.78rem; padding: 0.5rem 0.9rem; top: 0.6rem; right: 0.6rem; } .contact-fab .cf-label { display: none; } }
+    .contact-overlay { position: fixed; inset: 0; background: rgba(42,37,53,0.55); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 1.25rem; }
+    .contact-overlay.open { display: flex; }
+    .contact-modal { background: #fff; border-radius: 20px; max-width: 480px; width: 100%; padding: 2rem 2rem 1.75rem; box-shadow: 0 24px 60px rgba(42,37,53,0.3); position: relative; font-family: 'DM Sans', system-ui, sans-serif; max-height: 92vh; overflow-y: auto; }
+    .contact-modal h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.5rem; line-height: 1.2; color: #2a2535; margin: 0 0 0.5rem; }
+    .contact-modal .cm-sub { font-size: 0.95rem; color: #5a5370; margin: 0 0 1.25rem; line-height: 1.55; }
+    .contact-modal label { display: block; font-size: 0.8rem; font-weight: 700; color: #2a2535; margin: 0.75rem 0 0.3rem; }
+    .contact-modal input, .contact-modal textarea { width: 100%; font-family: inherit; font-size: 0.95rem; padding: 0.7rem 0.9rem; border: 1.5px solid #e2ddd3; border-radius: 12px; background: #faf8f4; color: #2a2535; box-sizing: border-box; }
+    .contact-modal input:focus, .contact-modal textarea:focus { outline: none; border-color: #b8acdf; }
+    .contact-modal textarea { resize: vertical; min-height: 110px; }
+    .contact-modal .cm-send { margin-top: 1.1rem; width: 100%; background: #2a2535; color: #fff; font-family: 'Nunito', system-ui, sans-serif; font-weight: 800; font-size: 0.95rem; padding: 0.85rem; border: none; border-radius: 999px; cursor: pointer; transition: background 0.2s; }
+    .contact-modal .cm-send:hover { background: #3d3650; }
+    .contact-modal .cm-send:disabled { opacity: 0.6; cursor: default; }
+    .contact-modal .cm-close { position: absolute; top: 1rem; right: 1.1rem; background: none; border: none; font-size: 1.5rem; line-height: 1; color: #9990b0; cursor: pointer; }
+    .contact-modal .cm-status { margin-top: 0.9rem; font-size: 0.9rem; text-align: center; min-height: 1.2rem; }
+    .contact-modal .cm-status.ok { color: #2f8a5a; font-weight: 700; }
+    .contact-modal .cm-status.err { color: #d42b2b; font-weight: 700; }
+  </style>
+
+  <button class="contact-fab" type="button" onclick="openContact()" aria-label="Contact us">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="cf-label">We're here to help &rarr;</span>
+  </button>
+  <div class="contact-overlay" id="contactOverlay" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+    <div class="contact-modal">
+      <button class="cm-close" type="button" aria-label="Close" onclick="closeContact()">&times;</button>
+      <h3 id="cmTitle">Got an idea? Question? Suggestion? Request?</h3>
+      <p class="cm-sub">Let us know &mdash; we love hearing from the community. Tell us what you want more of, what you're unsure about, or anything we can help with. A real person reads every message.</p>
+      <form id="contactForm" onsubmit="return submitContact(event)">
+        <label for="cmName">Your name</label>
+        <input type="text" id="cmName" name="name" placeholder="First name is fine" />
+        <label for="cmEmail">Your email <span style="font-weight:400;color:#9990b0;">(so we can reply)</span></label>
+        <input type="email" id="cmEmail" name="email" placeholder="you@example.com" />
+        <label for="cmMsg">Your message</label>
+        <textarea id="cmMsg" name="message" placeholder="Type anything here..." required></textarea>
+        <input type="text" id="cmCompany" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+        <button type="submit" class="cm-send" id="cmSend">Send it through &rarr;</button>
+        <div class="cm-status" id="cmStatus" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+  <script id="contact-widget-js">
+    function openContact(){var o=document.getElementById('contactOverlay');o.classList.add('open');setTimeout(function(){var m=document.getElementById('cmMsg');if(m)m.focus();},50);}
+    function closeContact(){document.getElementById('contactOverlay').classList.remove('open');}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeContact();});
+    document.addEventListener('click',function(e){if(e.target&&e.target.id==='contactOverlay')closeContact();});
+    async function submitContact(e){
+      e.preventDefault();
+      var btn=document.getElementById('cmSend'), st=document.getElementById('cmStatus');
+      var name=(document.getElementById('cmName').value||'').trim();
+      var email=(document.getElementById('cmEmail').value||'').trim();
+      var msg=(document.getElementById('cmMsg').value||'').trim();
+      if(!msg){st.className='cm-status err';st.textContent='Please type a message first.';return false;}
+      btn.disabled=true;btn.textContent='Sending...';st.className='cm-status';st.textContent='';
+      try{
+        var company=(document.getElementById('cmCompany').value||'');
+        var res=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,email:email,message:msg,company:company,page:location.pathname})});
+        if(res.ok){st.className='cm-status ok';st.textContent='Thank you! We\'ve got your message and will be in touch.';document.getElementById('contactForm').reset();setTimeout(closeContact,2200);}
+        else{var d=await res.json().catch(function(){return{};});st.className='cm-status err';st.textContent=d.error||'Something went wrong. Please email hello@ndis-ready.com.au directly.';}
+      }catch(err){st.className='cm-status err';st.textContent='Network error. Please email hello@ndis-ready.com.au directly.';}
+      btn.disabled=false;btn.textContent='Send it through \u2192';
+      return false;
+    }
+  </script>
+
+  <!-- CONTACT_WIDGET_END -->
 </body>
 </html>

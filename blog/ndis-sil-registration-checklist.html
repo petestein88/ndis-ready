@@ -39,6 +39,8 @@
     body { font-family: var(--font-body); background: var(--cream); color: var(--ink); line-height: 1.6; }
     a { color: inherit; }
     nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 2rem; max-width: 1200px; margin: 0 auto; }
+    @media(min-width:641px){ nav { padding-right: 13rem; } }
+    @media(max-width:640px){ nav { padding-right: 4.5rem; } }
     .nav-logo { font-family: var(--font-brand); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
     nav .nav-right { display: flex; align-items: center; gap: 1.25rem; }
     nav .nav-right a.plain { font-size: 0.875rem; font-weight: 600; color: var(--ink-mid); text-decoration: none; }
@@ -81,21 +83,11 @@
 <body>
   <nav>
     <a href="/" class="nav-logo">
-      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="navSG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stop-color="#c4b5f4"/><stop offset="100%" stop-color="#b8acdf"/>
-          </linearGradient>
-          <filter id="navTex">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise"/>
-            <feColorMatrix type="saturate" values="0" in="noise" result="gn"/>
-            <feBlend in="SourceGraphic" in2="gn" mode="multiply" result="bl"/>
-            <feComposite in="bl" in2="SourceGraphic" operator="in"/>
-          </filter>
-        </defs>
-        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="url(#navSG)" filter="url(#navTex)"/>
-        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="none" stroke="#9a88cc" stroke-width="3"/>
-        <path d="M50 65 Q32 52 32 42 Q32 34 40 34 Q45 34 50 40 Q55 34 60 34 Q68 34 68 42 Q68 52 50 65 Z" fill="#e8a0a0" filter="url(#navTex)"/>
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;">
+        <defs><linearGradient id="navLogo_blog" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0%" stop-color="#cabdf6"/><stop offset="100%" stop-color="#a18fd6"/></linearGradient></defs>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="url(#navLogo_blog)"/>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="none" stroke="#8a76c2" stroke-width="3.5"/>
+        <path d="M50 65 Q31 51 31 41 Q31 33 39.5 33 Q45 33 50 39.5 Q55 33 60.5 33 Q69 33 69 41 Q69 51 50 65 Z" fill="#ffffff" opacity="0.95"/>
       </svg>
       NDIS Ready
     </a>
@@ -114,7 +106,7 @@
       <span class="post-cat" style="background:#f3eefe;color:#5b4b86;">Getting registered</span>
       <h1>The NDIS SIL registration checklist for 2026</h1>
       <p class="dek">Every document you actually need to register as a Supported Independent Living provider — in plain English, with nothing missing.</p>
-      <div class="meta">June 2026 · 6 min read</div>
+      <div class="meta">June 2026 · 10 min read</div>
     </div>
     <div class="article-body">
 <p>If you've decided to register as a Supported Independent Living (SIL) provider, the first wall you hit is paperwork. The NDIS Commission doesn't hand you a tidy list — they point you at the <strong>NDIS Practice Standards</strong> and expect you to translate dozens of pages of "outcomes" into actual documents. Most new providers have no idea where to start, and the ones who guess usually guess wrong.</p>
@@ -133,11 +125,39 @@
   <li><strong>Emergency and disaster management</strong> — including fire, evacuation and continuity of supports.</li>
 </ul>
 
+<h2>What "good" looks like for each document type</h2>
+<p>It's not enough to have the document — it needs to be fit for purpose. Here's what auditors expect to see in each category:</p>
+<ul>
+  <li><strong>Incident management policy</strong> — A clear step-by-step process (notice, record, report, review), defined timeframes for reporting to the NDIS Commission, and a template your staff can fill in at the time of the incident. Blank policies with no accompanying register are a red flag.</li>
+  <li><strong>Complaints policy</strong> — The Easy Read version for participants, a log where every complaint is entered, and evidence that you followed up. Auditors will ask: "Show me a complaint you received. What did you do?"</li>
+  <li><strong>Risk management</strong> — A living risk register (not a set-and-forget document) with ratings, controls and review dates. Each participant should also have an individual risk assessment tied to their support plan.</li>
+  <li><strong>Safeguarding policy</strong> — For SIL, this is your most-scrutinised area. Auditors look for clear definitions of abuse, neglect and exploitation; mandatory reporting obligations; and evidence that all staff have been trained on it.</li>
+  <li><strong>Medication management</strong> — A medication administration record (MAR) for each participant who takes medication, signed by the support worker on duty. Verbal instructions don't cut it.</li>
+  <li><strong>Emergency plan</strong> — An evacuation diagram, a list of contacts, and a record showing your team completed a drill or walkthrough. The plan needs to be site-specific, not generic.</li>
+</ul>
+
 <h2>The registers and forms behind the policies</h2>
 <p>Policies say what you'll do. Registers and forms prove you actually did it. You'll need an incident register, a complaints register, a risk register, a conflict-of-interest register, consent forms, service agreements, and progress note templates — among others. This is where most DIY providers fall short: they write a policy but have nothing to show it ever happened.</p>
 
 <h2>The HR and worker documents</h2>
 <p>The Commission also checks how you screen, induct and supervise staff: worker screening records, position descriptions, a code of conduct, induction checklists and supervision records. The day you hire your first support worker, these need to exist.</p>
+
+<h2>Priority order: what to build first</h2>
+<p>If you're starting from nothing, tackle the documents in this order — it mirrors roughly how an auditor works through the quality areas:</p>
+<ul>
+  <li><strong>Step 1 — Rights and governance foundation</strong> — Privacy policy, consent forms, code of conduct, and your conflict-of-interest register. These underpin everything else.</li>
+  <li><strong>Step 2 — Safety and safeguarding</strong> — Incident policy and register, safeguarding policy, complaints policy and register. Auditors spend significant time here for SIL.</li>
+  <li><strong>Step 3 — Participant-facing documents</strong> — Service agreements and support plans. Every participant in your service needs both, signed and dated.</li>
+  <li><strong>Step 4 — Operational management</strong> — Risk register, emergency plan, medication management policy and medication administration records.</li>
+  <li><strong>Step 5 — Workforce documents</strong> — Employment contracts, position descriptions, screening records, induction checklists and supervision records.</li>
+  <li><strong>Step 6 — Continuous improvement</strong> — Your quality improvement register and evidence that you review your policies at least annually.</li>
+</ul>
+
+<blockquote>The document you're missing is never the one you'd guess. Build the full set from the start.</blockquote>
+
+<h2>A realistic timeline</h2>
+<p>Most small providers who build their document library from scratch — writing and personalising each document themselves — take several months before they feel ready to book an audit. The writing isn't the only time cost: you also need to embed the processes, train your team, and start building a real evidence trail. Auditors want to see that your system has actually been running, not set up last week.</p>
+<p>Providers who use a ready-made, pre-written document pack can cut the writing phase dramatically — but still need the embedding and evidence-building time. Whatever path you choose, starting earlier is almost always better than waiting.</p>
 
 <h2>How many documents is that, really?</h2>
 <p>For a typical small SIL provider, it lands at <strong>around 65 core documents</strong> — and that's before you personalise a single one to your business. Writing them from scratch is weeks of work, and a generic template you found online won't carry your organisation's name, your ABN, or anything specific to how you operate.</p>
@@ -146,6 +166,50 @@
   <p><strong>Not sure which ones apply to you?</strong> Our free 2-minute quiz builds a personalised checklist based on the supports you offer — so you see exactly what <em>your</em> business needs, not a generic list.</p>
   <a class="cta-btn" href="/quiz.html">Take the free quiz &rarr;</a>
 </div>
+
+<h2>Common mistakes to avoid</h2>
+<ul>
+  <li><strong>Downloading a generic template and submitting it unchanged</strong> — Placeholder text, wrong organisation names, and policies that don't match your actual practice are audit red flags. Every document must be personalised.</li>
+  <li><strong>Writing policies without the matching registers</strong> — A beautiful incident management policy means nothing without an incident register that shows real entries. Both pieces must exist.</li>
+  <li><strong>Leaving NDIS Worker Screening too late</strong> — Screening checks take time to process. Apply well before you need your workers on the floor.</li>
+  <li><strong>Using the same support plan for every participant</strong> — Each person's plan must reflect their individual goals, preferences and risks. A photocopy with the name changed is not a personalised plan.</li>
+  <li><strong>Forgetting to review documents annually</strong> — Outdated policies can count against you. Your quality improvement process should include scheduled reviews with dates recorded.</li>
+</ul>
+
+<h2>Participant-facing documents you might overlook</h2>
+<p>Most checklists focus on policies and registers. But there's a whole category of participant-facing documents that are just as important — and easier to forget. These include:</p>
+<ul>
+  <li><strong>An Easy Read complaints brochure</strong> — The standard complaints policy isn't accessible to every participant. An Easy Read version (simple language, pictures or icons) demonstrates that you've actually made complaints accessible, not just written a policy about it.</li>
+  <li><strong>A participant handbook</strong> — A plain-English guide to your service: who you are, how you work, what participants can expect, and how they can raise concerns. Auditors look for this as evidence that participants genuinely know their rights.</li>
+  <li><strong>Exit and transition plans</strong> — If a participant leaves your service, they should have a plan for what happens next. This is especially important in SIL, where housing and support are interlinked.</li>
+  <li><strong>Feedback forms</strong> — A mechanism for participants to provide feedback (positive or negative) beyond the formal complaints process. Simple surveys, regular check-ins recorded, or a suggestion box. The form itself is less important than the habit of asking.</li>
+</ul>
+
+<h2>The certification audit process, step by step</h2>
+<p>Understanding how the audit actually works helps you prepare more calmly. Here is the typical sequence for a SIL certification audit:</p>
+<ul>
+  <li><strong>Application to the NDIS Commission</strong> — You apply through the Commission's portal and select your registration groups (in this case, SIL). The Commission will confirm the scope of your registration and refer you to the audit process.</li>
+  <li><strong>Choosing an approved quality auditor</strong> — You select an auditor from the Commission's list of approved quality auditors. You arrange and pay for the audit yourself. Shop around — prices and availability vary.</li>
+  <li><strong>Document review (desktop audit)</strong> — The auditor reviews your policies and documents before visiting. Gaps identified here can often be addressed before the on-site visit.</li>
+  <li><strong>On-site audit</strong> — The auditor visits your service, interviews you and your staff, and may speak with participants (with consent). This is where the "does it actually work?" question gets answered.</li>
+  <li><strong>Audit report</strong> — The auditor produces a report with findings: which outcomes are met, and which have non-conformities. Major non-conformities need to be resolved before registration is granted.</li>
+  <li><strong>Commission decision</strong> — Once any non-conformities are addressed and the auditor confirms this, the Commission makes the registration decision.</li>
+</ul>
+
+<h2>What to do in the first week after registration</h2>
+<p>Getting your registration certificate is a milestone worth celebrating. But the week after is also when smart providers lock in the habits that will keep them registered. Here's what to do immediately:</p>
+<ul>
+  <li><strong>Update your marketing and service agreement templates</strong> — You can now describe yourself as a registered NDIS provider. Update your website, your intake forms, and any promotional material accordingly.</li>
+  <li><strong>Notify your current participants</strong> — Share the good news. For plan-managed and self-managed participants, it may open up new options. For participants seeking an agency-managed arrangement, it means you can now support them.</li>
+  <li><strong>Set a calendar reminder for your mid-term review</strong> — Mark the approximate date of your mid-term review in your calendar now. You don't want to be caught off-guard.</li>
+  <li><strong>Review any non-conformities from your audit</strong> — If you had minor non-conformities that were noted but didn't block registration, address them now. Don't let them sit.</li>
+  <li><strong>Keep using your registers and systems</strong> — The single biggest mistake after registration is relaxing and letting the evidence trail lapse. Your next audit is already counting down.</li>
+</ul>
+
+<h2>Keeping your registration once you have it</h2>
+<p>Registration isn't a one-time achievement — it needs to be maintained. Registered providers are subject to mid-term reviews and renewal audits on a regular cycle. You also have ongoing obligations: reporting notifiable incidents to the Commission, renewing worker screening checks before they expire, and keeping your documents current. The organisations that find this easiest are the ones who treat compliance as part of how they run the business every day, not as something that only matters when an audit is coming.</p>
+
+<p>The providers who thrive long-term are the ones who build their compliance habits into the business from day one — not the ones who scramble every three years when the renewal audit looms. Start as you mean to go on, and registration stops being a burden and becomes a badge of confidence in the quality of your service.</p>
 
 <p>You can absolutely assemble all of this yourself. But if you'd rather get the full pack — all 65 core documents, written to the Practice Standards and personalised to your organisation — that's exactly what we built NDIS Ready to do.</p>
 
@@ -162,5 +226,77 @@
     <div><a href="/">Home</a> · <a href="/blog.html">Blog</a> · <a href="/#pricing">Pricing</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms-of-service.html">Terms</a></div>
     <div style="margin-top:0.6rem;">© 2026 NDIS Ready · hello@ndis-ready.com.au</div>
   </footer>
+<!-- CONTACT_WIDGET_START -->
+
+  <style id="contact-widget-css">
+    .contact-fab { position: fixed; top: 1rem; right: 1rem; z-index: 9998; display: inline-flex; align-items: center; gap: 0.45rem; background: linear-gradient(135deg, #b8acdf, #e8a0a0); color: #fff; font-family: 'Nunito', system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 800; padding: 0.6rem 1.25rem; border: none; border-radius: 999px; cursor: pointer; text-decoration: none; box-shadow: 0 4px 16px rgba(184,172,223,0.5); transition: transform 0.15s, box-shadow 0.2s; }
+    .contact-fab:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(184,172,223,0.65); }
+    .contact-fab svg { flex-shrink: 0; }
+    @media (max-width: 640px) { .contact-fab { font-size: 0.78rem; padding: 0.5rem 0.9rem; top: 0.6rem; right: 0.6rem; } .contact-fab .cf-label { display: none; } }
+    .contact-overlay { position: fixed; inset: 0; background: rgba(42,37,53,0.55); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 1.25rem; }
+    .contact-overlay.open { display: flex; }
+    .contact-modal { background: #fff; border-radius: 20px; max-width: 480px; width: 100%; padding: 2rem 2rem 1.75rem; box-shadow: 0 24px 60px rgba(42,37,53,0.3); position: relative; font-family: 'DM Sans', system-ui, sans-serif; max-height: 92vh; overflow-y: auto; }
+    .contact-modal h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.5rem; line-height: 1.2; color: #2a2535; margin: 0 0 0.5rem; }
+    .contact-modal .cm-sub { font-size: 0.95rem; color: #5a5370; margin: 0 0 1.25rem; line-height: 1.55; }
+    .contact-modal label { display: block; font-size: 0.8rem; font-weight: 700; color: #2a2535; margin: 0.75rem 0 0.3rem; }
+    .contact-modal input, .contact-modal textarea { width: 100%; font-family: inherit; font-size: 0.95rem; padding: 0.7rem 0.9rem; border: 1.5px solid #e2ddd3; border-radius: 12px; background: #faf8f4; color: #2a2535; box-sizing: border-box; }
+    .contact-modal input:focus, .contact-modal textarea:focus { outline: none; border-color: #b8acdf; }
+    .contact-modal textarea { resize: vertical; min-height: 110px; }
+    .contact-modal .cm-send { margin-top: 1.1rem; width: 100%; background: #2a2535; color: #fff; font-family: 'Nunito', system-ui, sans-serif; font-weight: 800; font-size: 0.95rem; padding: 0.85rem; border: none; border-radius: 999px; cursor: pointer; transition: background 0.2s; }
+    .contact-modal .cm-send:hover { background: #3d3650; }
+    .contact-modal .cm-send:disabled { opacity: 0.6; cursor: default; }
+    .contact-modal .cm-close { position: absolute; top: 1rem; right: 1.1rem; background: none; border: none; font-size: 1.5rem; line-height: 1; color: #9990b0; cursor: pointer; }
+    .contact-modal .cm-status { margin-top: 0.9rem; font-size: 0.9rem; text-align: center; min-height: 1.2rem; }
+    .contact-modal .cm-status.ok { color: #2f8a5a; font-weight: 700; }
+    .contact-modal .cm-status.err { color: #d42b2b; font-weight: 700; }
+  </style>
+
+  <button class="contact-fab" type="button" onclick="openContact()" aria-label="Contact us">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="cf-label">We're here to help &rarr;</span>
+  </button>
+  <div class="contact-overlay" id="contactOverlay" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+    <div class="contact-modal">
+      <button class="cm-close" type="button" aria-label="Close" onclick="closeContact()">&times;</button>
+      <h3 id="cmTitle">Got an idea? Question? Suggestion? Request?</h3>
+      <p class="cm-sub">Let us know &mdash; we love hearing from the community. Tell us what you want more of, what you're unsure about, or anything we can help with. A real person reads every message.</p>
+      <form id="contactForm" onsubmit="return submitContact(event)">
+        <label for="cmName">Your name</label>
+        <input type="text" id="cmName" name="name" placeholder="First name is fine" />
+        <label for="cmEmail">Your email <span style="font-weight:400;color:#9990b0;">(so we can reply)</span></label>
+        <input type="email" id="cmEmail" name="email" placeholder="you@example.com" />
+        <label for="cmMsg">Your message</label>
+        <textarea id="cmMsg" name="message" placeholder="Type anything here..." required></textarea>
+        <input type="text" id="cmCompany" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+        <button type="submit" class="cm-send" id="cmSend">Send it through &rarr;</button>
+        <div class="cm-status" id="cmStatus" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+  <script id="contact-widget-js">
+    function openContact(){var o=document.getElementById('contactOverlay');o.classList.add('open');setTimeout(function(){var m=document.getElementById('cmMsg');if(m)m.focus();},50);}
+    function closeContact(){document.getElementById('contactOverlay').classList.remove('open');}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeContact();});
+    document.addEventListener('click',function(e){if(e.target&&e.target.id==='contactOverlay')closeContact();});
+    async function submitContact(e){
+      e.preventDefault();
+      var btn=document.getElementById('cmSend'), st=document.getElementById('cmStatus');
+      var name=(document.getElementById('cmName').value||'').trim();
+      var email=(document.getElementById('cmEmail').value||'').trim();
+      var msg=(document.getElementById('cmMsg').value||'').trim();
+      if(!msg){st.className='cm-status err';st.textContent='Please type a message first.';return false;}
+      btn.disabled=true;btn.textContent='Sending...';st.className='cm-status';st.textContent='';
+      try{
+        var company=(document.getElementById('cmCompany').value||'');
+        var res=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,email:email,message:msg,company:company,page:location.pathname})});
+        if(res.ok){st.className='cm-status ok';st.textContent='Thank you! We\'ve got your message and will be in touch.';document.getElementById('contactForm').reset();setTimeout(closeContact,2200);}
+        else{var d=await res.json().catch(function(){return{};});st.className='cm-status err';st.textContent=d.error||'Something went wrong. Please email hello@ndis-ready.com.au directly.';}
+      }catch(err){st.className='cm-status err';st.textContent='Network error. Please email hello@ndis-ready.com.au directly.';}
+      btn.disabled=false;btn.textContent='Send it through \u2192';
+      return false;
+    }
+  </script>
+
+  <!-- CONTACT_WIDGET_END -->
 </body>
 </html>

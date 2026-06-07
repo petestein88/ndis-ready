@@ -39,6 +39,8 @@
     body { font-family: var(--font-body); background: var(--cream); color: var(--ink); line-height: 1.6; }
     a { color: inherit; }
     nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 2rem; max-width: 1200px; margin: 0 auto; }
+    @media(min-width:641px){ nav { padding-right: 13rem; } }
+    @media(max-width:640px){ nav { padding-right: 4.5rem; } }
     .nav-logo { font-family: var(--font-brand); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
     nav .nav-right { display: flex; align-items: center; gap: 1.25rem; }
     nav .nav-right a.plain { font-size: 0.875rem; font-weight: 600; color: var(--ink-mid); text-decoration: none; }
@@ -81,21 +83,11 @@
 <body>
   <nav>
     <a href="/" class="nav-logo">
-      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="navSG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stop-color="#c4b5f4"/><stop offset="100%" stop-color="#b8acdf"/>
-          </linearGradient>
-          <filter id="navTex">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise"/>
-            <feColorMatrix type="saturate" values="0" in="noise" result="gn"/>
-            <feBlend in="SourceGraphic" in2="gn" mode="multiply" result="bl"/>
-            <feComposite in="bl" in2="SourceGraphic" operator="in"/>
-          </filter>
-        </defs>
-        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="url(#navSG)" filter="url(#navTex)"/>
-        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="none" stroke="#9a88cc" stroke-width="3"/>
-        <path d="M50 65 Q32 52 32 42 Q32 34 40 34 Q45 34 50 40 Q55 34 60 34 Q68 34 68 42 Q68 52 50 65 Z" fill="#e8a0a0" filter="url(#navTex)"/>
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;">
+        <defs><linearGradient id="navLogo_blog" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0%" stop-color="#cabdf6"/><stop offset="100%" stop-color="#a18fd6"/></linearGradient></defs>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="url(#navLogo_blog)"/>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="none" stroke="#8a76c2" stroke-width="3.5"/>
+        <path d="M50 65 Q31 51 31 41 Q31 33 39.5 33 Q45 33 50 39.5 Q55 33 60.5 33 Q69 33 69 41 Q69 51 50 65 Z" fill="#ffffff" opacity="0.95"/>
       </svg>
       NDIS Ready
     </a>
@@ -114,13 +106,21 @@
       <span class="post-cat" style="background:#eef7f1;color:#275f41;">Audits</span>
       <h1>NDIS Practice Standards, explained in plain English</h1>
       <p class="dek">The Practice Standards sound like legal jargon. Here is what they actually mean for a small provider — and what you have to show.</p>
-      <div class="meta">June 2026 · 5 min read</div>
+      <div class="meta">June 2026 · 10 min read</div>
     </div>
     <div class="article-body">
 <p>Open the NDIS Practice Standards and you'll find phrases like "each participant accesses supports that respect their culture, diversity, values and beliefs." True, important — and almost useless when you're trying to work out what to actually <em>do</em>. Let's translate.</p>
 
 <h2>What the Practice Standards really are</h2>
 <p>They're the benchmark your auditor measures you against. They're grouped into <strong>quality areas</strong>, and each one has "outcomes" you're expected to meet. You don't get marked on intentions — you get marked on evidence.</p>
+
+<h2>Verification vs certification: which audit do you need?</h2>
+<p>Before you do anything else, it helps to know which type of audit applies to you. There are two pathways:</p>
+<ul>
+  <li><strong>Verification</strong> — A lighter-touch, mostly document-based review. Generally applies to lower-risk supports where you're not working intensively or intimately with participants. A desk review rather than a site visit.</li>
+  <li><strong>Certification</strong> — A more thorough process that includes on-site visits, staff interviews and participant interviews. Required for higher-risk supports including SIL. This is the one that most small SIL providers are heading toward.</li>
+</ul>
+<p>If you're delivering SIL, it's almost certainly certification. That means the auditor will visit your service, talk to your staff and — with consent — talk to participants. A folder of clean documents is necessary but not sufficient.</p>
 
 <h2>The core module, in everyday language</h2>
 <ul>
@@ -130,6 +130,27 @@
   <li><strong>Support provision environment</strong> — Is the place safe, clean and suitable? Show it with safety checks, incident records and emergency procedures.</li>
 </ul>
 
+<h2>"They say X, you show Y" — more worked translations</h2>
+<p>Here are some of the most commonly misunderstood outcomes, and what they mean in practice:</p>
+<ul>
+  <li><strong>"Participants are supported to exercise choice and control"</strong> — This means each person's service agreement is individually negotiated, not a take-it-or-leave-it form. Show: a signed service agreement with the participant's goals in their own words, and notes from any review meetings.</li>
+  <li><strong>"The provider has a complaints management system that participants can access"</strong> — This means participants know how to complain — not just that a complaints policy exists. Show: an Easy Read complaints brochure given to each participant, a signed acknowledgement, and at least one entry in your complaints register (even if it was a minor issue).</li>
+  <li><strong>"The provider identifies and manages risks"</strong> — This means a live risk register that is actually reviewed, not a document you wrote once and filed. Show: a risk register with dates, updated risk ratings, and actions taken. Individual participant risk assessments are also expected.</li>
+  <li><strong>"The provider delivers supports in a manner consistent with relevant laws"</strong> — This is about worker screening, privacy, mandatory reporting and employment law. Show: current NDIS Worker Screening clearances for everyone delivering supports, and evidence of mandatory reporter training.</li>
+  <li><strong>"Workers are trained and supported"</strong> — This isn't just about qualifications. It's about ongoing supervision and professional development. Show: supervision records with dates and topics, and a training register for each worker.</li>
+</ul>
+
+<h2>Supplementary modules: when do they apply?</h2>
+<p>Beyond the core module, some providers need to meet additional supplementary modules depending on the supports they deliver. For small SIL providers, the most relevant ones are:</p>
+<ul>
+  <li><strong>High-intensity daily activities</strong> — If your workers provide complex bowel care, enteral feeding, tracheostomy management or other clinical tasks, there are additional requirements around staff competencies and clinical governance. This is a significant extra layer and is worth being honest about upfront when you apply.</li>
+  <li><strong>Specialist behaviour support</strong> — If any participant has a behaviour support plan involving regulated restrictive practices, additional requirements apply. Even if you're not the behaviour support provider, you may need policies around implementing and monitoring the plan.</li>
+</ul>
+<p>If none of those apply to your service, the core module and the SIL-specific outcomes are your focus. Don't over-complicate it — know your scope and build evidence for that scope.</p>
+
+<h2>How an audit is actually scored</h2>
+<p>Auditors don't just mark you pass or fail on the whole thing. Each outcome gets a finding: either "met" or "not met." If something is not met, you'll typically receive a non-conformity — either a major or minor one. Major non-conformities (usually things that put participants at risk) need to be resolved before certification is granted. Minor ones may have a timeframe to correct. The goal isn't perfection; it's demonstrating that your systems are real, working and proportionate to your service.</p>
+
 <h2>The phrase that trips everyone up: "evidence"</h2>
 <p>Auditors don't want to hear that you "always" do something. They want to <em>see</em> it — a signed agreement, a dated incident report, a completed induction checklist. A policy that says the right thing but has no records behind it is a fail waiting to happen.</p>
 
@@ -137,6 +158,38 @@
   <p><strong>Want to know where you stand right now?</strong> Our free Audit Readiness Self-Assessment scores you against each quality area and shows your biggest gaps — ranked, and mapped to the exact document that closes each one.</p>
   <a class="cta-btn" href="/audit-readiness.html">Check my readiness &rarr;</a>
 </div>
+
+<h2>A simple test you can run today</h2>
+<p>Pick any quality area from the list above. Now ask yourself: if an auditor walked in tomorrow and asked to see evidence for that area, what would you hand them? A document with the right words in it is a start. A document <em>plus</em> a completed register or signed form showing it happened is what you need. If you have the document but not the evidence, that's your next priority.</p>
+
+<h2>Building your quality management system over time</h2>
+<p>The Practice Standards aren't just an audit checklist — they're the framework for running a genuinely good service. Providers who understand them this way tend to find audits much less stressful, because they're already doing what the Standards require as a matter of routine.</p>
+<p>A quality management system doesn't need to be complicated. For a small provider, it can be as simple as:</p>
+<ul>
+  <li><strong>A policy folder</strong> — Physical or digital. All your policies and procedures in one place, clearly named, with version dates.</li>
+  <li><strong>A set of registers</strong> — Incident, complaints, risk, conflict of interest, quality improvement. Used regularly, not just when an audit looms.</li>
+  <li><strong>A training register</strong> — A record of every training session, including dates, topics and who attended.</li>
+  <li><strong>A supervision log</strong> — A record of regular one-on-one supervision with each worker, including key discussion points and any actions agreed.</li>
+  <li><strong>An annual review calendar</strong> — A schedule for reviewing each policy at least once a year and recording that the review happened.</li>
+</ul>
+<p>None of this is exotic. It's the kind of system that naturally grows as your business grows, as long as you build the habits early.</p>
+
+<h2>Getting help when you're stuck</h2>
+<p>The Practice Standards can still feel overwhelming, even after reading a plain-English guide like this. If you're stuck on a specific quality area or unsure whether your evidence is strong enough, there are options. The NDIS Commission's own website has guidance materials. Some disability peak bodies offer workshops and webinars for small providers. And tools like NDIS Ready exist specifically to help small providers build the evidence base without spending months doing it from scratch.</p>
+
+<h2>Questions new providers ask all the time</h2>
+<p><strong>"How long does the certification audit process take from start to finish?"</strong> There's no fixed answer, but from the time you submit your application to the Commission to the time you receive a registration decision, providers commonly report a process of several months. The bulk of that time is the document preparation and evidence-building phase before the audit itself. The on-site audit day (or days, for larger services) is typically just one part of the process.</p>
+<p><strong>"Can I start delivering SIL while my registration is being processed?"</strong> Whether you can continue to deliver supports to existing plan-managed or self-managed participants while working through registration depends on the specific rules in place at the time. Don't assume — check with the NDIS Commission directly or get advice.</p>
+<p><strong>"Do all my workers need to be fully qualified?"</strong> Not necessarily. Qualifications are desirable and relevant to SCHADS classification, but the Practice Standards focus more on whether workers are screened, inducted, supervised and competent for the supports they deliver. A worker without a formal qualification who is thoroughly inducted, closely supervised and demonstrably competent may satisfy the requirements for certain tasks. High-intensity supports are the exception — those have additional competency requirements.</p>
+<p><strong>"What if my policy doesn't cover something an auditor asks about?"</strong> Be honest. Acknowledge the gap and explain what you're doing to address it. Auditors are not looking for perfection — they're looking for a genuinely functioning system and a provider who understands their obligations. A candid response combined with a clear remediation plan is far better than a bluff.</p>
+
+<h2>The Practice Standards as a tool, not just a hurdle</h2>
+<p>Providers who get the most out of the registration process are the ones who use the Practice Standards as a management tool, not just a compliance checklist. The quality areas are, at their core, a framework for running a good service: looking after participants, looking after staff, managing risk, learning from mistakes, and staying financially viable. All of the things a small business owner should be doing anyway.</p>
+<p>When you build your document library and evidence trail with that mindset — not "what do I need to pass?" but "what do I need to run this well?" — compliance stops feeling like overhead. It becomes part of how the business works. And that's exactly the result the Practice Standards are designed to produce.</p>
+
+<h2>A self-check you can do right now</h2>
+<p>Before you close this article, pick one quality area from the core module. Write down the name of the document you'd hand an auditor for each outcome. Then go and physically find that document. Is it up to date? Does it have your organisation's name on it? Is there any accompanying evidence — a register entry, a signed form, a training record — that shows it's actually in use?</p>
+<p>If yes to all three: you're in good shape for that quality area. If no to any of them: you've just found your next priority. That's the practical value of understanding the Standards — you can self-diagnose, fix the gap, and move on. No guesswork required.</p>
 
 <p>The Practice Standards aren't out to get you. They're a checklist of "can you prove it?" Once you see them that way, getting ready stops feeling like guesswork.</p>
 
@@ -153,5 +206,77 @@
     <div><a href="/">Home</a> · <a href="/blog.html">Blog</a> · <a href="/#pricing">Pricing</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms-of-service.html">Terms</a></div>
     <div style="margin-top:0.6rem;">© 2026 NDIS Ready · hello@ndis-ready.com.au</div>
   </footer>
+<!-- CONTACT_WIDGET_START -->
+
+  <style id="contact-widget-css">
+    .contact-fab { position: fixed; top: 1rem; right: 1rem; z-index: 9998; display: inline-flex; align-items: center; gap: 0.45rem; background: linear-gradient(135deg, #b8acdf, #e8a0a0); color: #fff; font-family: 'Nunito', system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 800; padding: 0.6rem 1.25rem; border: none; border-radius: 999px; cursor: pointer; text-decoration: none; box-shadow: 0 4px 16px rgba(184,172,223,0.5); transition: transform 0.15s, box-shadow 0.2s; }
+    .contact-fab:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(184,172,223,0.65); }
+    .contact-fab svg { flex-shrink: 0; }
+    @media (max-width: 640px) { .contact-fab { font-size: 0.78rem; padding: 0.5rem 0.9rem; top: 0.6rem; right: 0.6rem; } .contact-fab .cf-label { display: none; } }
+    .contact-overlay { position: fixed; inset: 0; background: rgba(42,37,53,0.55); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 1.25rem; }
+    .contact-overlay.open { display: flex; }
+    .contact-modal { background: #fff; border-radius: 20px; max-width: 480px; width: 100%; padding: 2rem 2rem 1.75rem; box-shadow: 0 24px 60px rgba(42,37,53,0.3); position: relative; font-family: 'DM Sans', system-ui, sans-serif; max-height: 92vh; overflow-y: auto; }
+    .contact-modal h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.5rem; line-height: 1.2; color: #2a2535; margin: 0 0 0.5rem; }
+    .contact-modal .cm-sub { font-size: 0.95rem; color: #5a5370; margin: 0 0 1.25rem; line-height: 1.55; }
+    .contact-modal label { display: block; font-size: 0.8rem; font-weight: 700; color: #2a2535; margin: 0.75rem 0 0.3rem; }
+    .contact-modal input, .contact-modal textarea { width: 100%; font-family: inherit; font-size: 0.95rem; padding: 0.7rem 0.9rem; border: 1.5px solid #e2ddd3; border-radius: 12px; background: #faf8f4; color: #2a2535; box-sizing: border-box; }
+    .contact-modal input:focus, .contact-modal textarea:focus { outline: none; border-color: #b8acdf; }
+    .contact-modal textarea { resize: vertical; min-height: 110px; }
+    .contact-modal .cm-send { margin-top: 1.1rem; width: 100%; background: #2a2535; color: #fff; font-family: 'Nunito', system-ui, sans-serif; font-weight: 800; font-size: 0.95rem; padding: 0.85rem; border: none; border-radius: 999px; cursor: pointer; transition: background 0.2s; }
+    .contact-modal .cm-send:hover { background: #3d3650; }
+    .contact-modal .cm-send:disabled { opacity: 0.6; cursor: default; }
+    .contact-modal .cm-close { position: absolute; top: 1rem; right: 1.1rem; background: none; border: none; font-size: 1.5rem; line-height: 1; color: #9990b0; cursor: pointer; }
+    .contact-modal .cm-status { margin-top: 0.9rem; font-size: 0.9rem; text-align: center; min-height: 1.2rem; }
+    .contact-modal .cm-status.ok { color: #2f8a5a; font-weight: 700; }
+    .contact-modal .cm-status.err { color: #d42b2b; font-weight: 700; }
+  </style>
+
+  <button class="contact-fab" type="button" onclick="openContact()" aria-label="Contact us">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="cf-label">We're here to help &rarr;</span>
+  </button>
+  <div class="contact-overlay" id="contactOverlay" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+    <div class="contact-modal">
+      <button class="cm-close" type="button" aria-label="Close" onclick="closeContact()">&times;</button>
+      <h3 id="cmTitle">Got an idea? Question? Suggestion? Request?</h3>
+      <p class="cm-sub">Let us know &mdash; we love hearing from the community. Tell us what you want more of, what you're unsure about, or anything we can help with. A real person reads every message.</p>
+      <form id="contactForm" onsubmit="return submitContact(event)">
+        <label for="cmName">Your name</label>
+        <input type="text" id="cmName" name="name" placeholder="First name is fine" />
+        <label for="cmEmail">Your email <span style="font-weight:400;color:#9990b0;">(so we can reply)</span></label>
+        <input type="email" id="cmEmail" name="email" placeholder="you@example.com" />
+        <label for="cmMsg">Your message</label>
+        <textarea id="cmMsg" name="message" placeholder="Type anything here..." required></textarea>
+        <input type="text" id="cmCompany" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+        <button type="submit" class="cm-send" id="cmSend">Send it through &rarr;</button>
+        <div class="cm-status" id="cmStatus" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+  <script id="contact-widget-js">
+    function openContact(){var o=document.getElementById('contactOverlay');o.classList.add('open');setTimeout(function(){var m=document.getElementById('cmMsg');if(m)m.focus();},50);}
+    function closeContact(){document.getElementById('contactOverlay').classList.remove('open');}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeContact();});
+    document.addEventListener('click',function(e){if(e.target&&e.target.id==='contactOverlay')closeContact();});
+    async function submitContact(e){
+      e.preventDefault();
+      var btn=document.getElementById('cmSend'), st=document.getElementById('cmStatus');
+      var name=(document.getElementById('cmName').value||'').trim();
+      var email=(document.getElementById('cmEmail').value||'').trim();
+      var msg=(document.getElementById('cmMsg').value||'').trim();
+      if(!msg){st.className='cm-status err';st.textContent='Please type a message first.';return false;}
+      btn.disabled=true;btn.textContent='Sending...';st.className='cm-status';st.textContent='';
+      try{
+        var company=(document.getElementById('cmCompany').value||'');
+        var res=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,email:email,message:msg,company:company,page:location.pathname})});
+        if(res.ok){st.className='cm-status ok';st.textContent='Thank you! We\'ve got your message and will be in touch.';document.getElementById('contactForm').reset();setTimeout(closeContact,2200);}
+        else{var d=await res.json().catch(function(){return{};});st.className='cm-status err';st.textContent=d.error||'Something went wrong. Please email hello@ndis-ready.com.au directly.';}
+      }catch(err){st.className='cm-status err';st.textContent='Network error. Please email hello@ndis-ready.com.au directly.';}
+      btn.disabled=false;btn.textContent='Send it through \u2192';
+      return false;
+    }
+  </script>
+
+  <!-- CONTACT_WIDGET_END -->
 </body>
 </html>

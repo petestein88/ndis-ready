@@ -39,6 +39,8 @@
     body { font-family: var(--font-body); background: var(--cream); color: var(--ink); line-height: 1.6; }
     a { color: inherit; }
     nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 2rem; max-width: 1200px; margin: 0 auto; }
+    @media(min-width:641px){ nav { padding-right: 13rem; } }
+    @media(max-width:640px){ nav { padding-right: 4.5rem; } }
     .nav-logo { font-family: var(--font-brand); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
     nav .nav-right { display: flex; align-items: center; gap: 1.25rem; }
     nav .nav-right a.plain { font-size: 0.875rem; font-weight: 600; color: var(--ink-mid); text-decoration: none; }
@@ -81,21 +83,11 @@
 <body>
   <nav>
     <a href="/" class="nav-logo">
-      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="navSG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stop-color="#c4b5f4"/><stop offset="100%" stop-color="#b8acdf"/>
-          </linearGradient>
-          <filter id="navTex">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise"/>
-            <feColorMatrix type="saturate" values="0" in="noise" result="gn"/>
-            <feBlend in="SourceGraphic" in2="gn" mode="multiply" result="bl"/>
-            <feComposite in="bl" in2="SourceGraphic" operator="in"/>
-          </filter>
-        </defs>
-        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="url(#navSG)" filter="url(#navTex)"/>
-        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="none" stroke="#9a88cc" stroke-width="3"/>
-        <path d="M50 65 Q32 52 32 42 Q32 34 40 34 Q45 34 50 40 Q55 34 60 34 Q68 34 68 42 Q68 52 50 65 Z" fill="#e8a0a0" filter="url(#navTex)"/>
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;">
+        <defs><linearGradient id="navLogo_blog" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0%" stop-color="#cabdf6"/><stop offset="100%" stop-color="#a18fd6"/></linearGradient></defs>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="url(#navLogo_blog)"/>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="none" stroke="#8a76c2" stroke-width="3.5"/>
+        <path d="M50 65 Q31 51 31 41 Q31 33 39.5 33 Q45 33 50 39.5 Q55 33 60.5 33 Q69 33 69 41 Q69 51 50 65 Z" fill="#ffffff" opacity="0.95"/>
       </svg>
       NDIS Ready
     </a>
@@ -114,7 +106,7 @@
       <span class="post-cat" style="background:#fdeef0;color:#9a4b54;">Day to day</span>
       <h1>How to write a progress note that protects you</h1>
       <p class="dek">Vague notes are an audit risk. Here is how to write a progress note that is objective, factual and stands up to scrutiny.</p>
-      <div class="meta">June 2026 · 5 min read</div>
+      <div class="meta">June 2026 · 10 min read</div>
     </div>
     <div class="article-body">
 <p>Progress notes feel like the most boring part of the job — a quick line at the end of a shift. But when an auditor or, worse, an investigator goes looking, your notes are the record of what actually happened. Good notes protect you and the participant. Sloppy ones do the opposite.</p>
@@ -130,15 +122,94 @@
   <li><strong>What you did about it</strong> — any action taken, follow-up or report made.</li>
 </ul>
 
+<h2>Good vs bad: real examples</h2>
+<p>Sometimes the easiest way to understand what good looks like is to see it side by side with what bad looks like. Here are a few common examples:</p>
+<ul>
+  <li><strong>Bad:</strong> "Had a good day. Was happy and cooperative." <strong>Good:</strong> "Assisted participant with meal preparation as per support plan. Participant made her own sandwich with minimal prompting and said she was pleased with how it turned out. No issues noted during the 2-hour shift."</li>
+  <li><strong>Bad:</strong> "Difficult shift. Participant was non-compliant." <strong>Good:</strong> "Participant declined to attend his scheduled day program, stating he was tired. We discussed options and agreed he would rest at home. I contacted the supervisor to advise. Participant was calm and engaged for the remainder of the shift."</li>
+  <li><strong>Bad:</strong> "Minor fall. Seems okay." <strong>Good:</strong> "At approximately 2:15pm, participant lost footing in the bathroom and fell, landing on her left side. No visible injury. Participant reported no pain. I assisted her to stand, checked for signs of injury, and completed an incident report. I notified the participant's emergency contact and my manager. Participant requested to rest for the remainder of the shift."</li>
+</ul>
+<p>Notice that the good versions take maybe 30 extra seconds to write, but they tell a complete story. Anyone who reads them months later knows exactly what happened, who was involved, and what was done about it.</p>
+
+<h2>A simple template for everyday notes</h2>
+<p>You don't need elaborate software to write a good note. A consistent structure helps. Try this as a mental checklist:</p>
+<ul>
+  <li><strong>Opening line</strong> — Date, time, who you supported, what the shift was for (e.g., "Community access support, 10am–2pm").</li>
+  <li><strong>What was delivered</strong> — What actually happened during the shift, linked to the participant's goals or support plan where possible.</li>
+  <li><strong>What was observed</strong> — How the participant was presenting, any notable behaviour or conversation (in their own words if relevant), any concerns.</li>
+  <li><strong>Actions and follow-up</strong> — Anything you escalated, reported or communicated to anyone else. If nothing needed following up, say so briefly.</li>
+  <li><strong>Sign-off</strong> — Your name and signature (or digital equivalent), and the time you wrote the note.</li>
+</ul>
+
 <h2>Words to avoid</h2>
 <p>Steer clear of vague, judgmental or diagnostic language: "good day", "difficult", "manipulative", "non-compliant". They tell the reader nothing useful and can read as disrespectful. Stick to specifics.</p>
+<p>Also avoid medical or clinical diagnoses in your notes unless you are qualified to make them. Instead of "appeared depressed," write "appeared quiet and withdrawn, made minimal eye contact, and declined to engage in planned activities." That's observable. "Depressed" is a clinical judgment you likely aren't qualified to make.</p>
 
 <blockquote>If it isn't written down, it didn't happen. If it's written badly, it can be used against you.</blockquote>
+
+<h2>Progress notes vs incident reports: what's the difference?</h2>
+<p>This trips a lot of workers up. A <strong>progress note</strong> is a routine record of the support delivered during a shift. An <strong>incident report</strong> is a separate, specific document for when something goes wrong or outside the ordinary.</p>
+<p>If something happened that needs an incident report (a fall, an allegation, a near-miss, a significant change in the participant's condition), you should write both: a brief mention in the progress note AND a full incident report in the incident management system. Don't try to fit the incident into the progress note and call it done. The incident report is what gets assessed for reportability to the NDIS Commission.</p>
+
+<h2>Privacy and storage</h2>
+<p>Progress notes contain sensitive personal information. They need to be stored securely, accessible only to the people who need them, and kept for the period required by your jurisdiction's records laws (check the specific requirements for your state, as they vary). A few basics:</p>
+<ul>
+  <li><strong>Paper notes</strong> — If you're still using paper, they need to be in a locked location, not sitting on a kitchen bench or left in a car.</li>
+  <li><strong>Digital notes</strong> — Use a password-protected system. Don't store participant information in personal email or general messaging apps like WhatsApp.</li>
+  <li><strong>Access controls</strong> — Not everyone in your organisation needs access to every participant's notes. Limit access to those who are actively supporting that person.</li>
+  <li><strong>Participant access</strong> — Participants have the right to see their own records. Your privacy policy should explain how they can request access.</li>
+</ul>
+
+<h2>Common phrases to replace</h2>
+<p>Here's a quick cheat-sheet for language upgrades. Replace these:</p>
+<ul>
+  <li><strong>"Had a good day"</strong> — Replace with a specific description of what happened.</li>
+  <li><strong>"Was upset / emotional"</strong> — Replace with what you actually observed: "Cried during the morning routine" or "Raised his voice when asked to leave the house."</li>
+  <li><strong>"Refused to cooperate"</strong> — Replace with what specifically happened: "Declined to attend the day program, stating he preferred to stay home."</li>
+  <li><strong>"Challenging behaviour"</strong> — Describe the specific behaviour instead: "Paced the hallway for approximately 20 minutes, declined to speak with me, and did not eat at lunch."</li>
+  <li><strong>"As per usual"</strong> — This tells the reader nothing. Write what actually happened, even if it was routine.</li>
+</ul>
 
 <div class="callout">
   <p><strong>Short on time at the end of a shift?</strong> Our AI Note &amp; Incident Writer takes your rough notes and returns a clean, objective, audit-ready progress note in seconds — in the factual language auditors expect. It's real AI, and you always review before use. Free to try.</p>
   <a class="cta-btn" href="/tools.html">Try the AI writer &rarr;</a>
 </div>
+
+<h2>What auditors look for in your notes</h2>
+<p>During a certification audit, your progress notes are one of the primary evidence sources for the "provision of supports" quality area. Auditors look for:</p>
+<ul>
+  <li><strong>Consistency</strong> — Do the notes match what's in the support plan? If the plan says the participant is working toward cooking independently, are the notes tracking that goal?</li>
+  <li><strong>Completeness</strong> — Are there notes for every shift? A support period with gaps in the notes is a question mark. What happened on those days?</li>
+  <li><strong>Objectivity</strong> — Are the notes factual, or full of opinions and judgements? The more objective, the better.</li>
+  <li><strong>Timeliness</strong> — Are notes being written at the time of the shift, or clearly backdated? Notes dated three days after a shift raise questions.</li>
+</ul>
+
+<h2>Using notes to track participant progress toward goals</h2>
+<p>Progress notes shouldn't just document what happened — they should, over time, tell the story of the participant's journey toward their goals. If a participant's NDIS plan includes a goal around community participation, your notes should reflect what you're doing to support that goal, how the participant is progressing, and any barriers or achievements along the way. This is what makes notes valuable to the participant, not just to the auditor.</p>
+<p>A practical habit: at the start of each shift, briefly remind yourself what goals this participant is working toward. At the end, ask: did anything happen today that's relevant to those goals? If so, include it in the note. This connects your day-to-day work to the purpose of the NDIS plan.</p>
+
+<h2>Getting your team to write better notes</h2>
+<p>If you have support workers who write poor notes, address it early. Vague notes are a habit, and habits are easier to fix in the first few weeks than after months of reinforcement. Some practical approaches:</p>
+<ul>
+  <li><strong>Share examples</strong> — Show your workers a good note and a poor note side by side. Make it concrete. "This is the standard we're aiming for."</li>
+  <li><strong>Review notes regularly</strong> — As a manager, check in on notes weekly for new workers. Praise good examples. Gently correct poor ones in supervision, not in front of other staff.</li>
+  <li><strong>Use the AI writer as a support tool</strong> — Not as a replacement for workers writing notes, but as a way for workers to check whether their rough draft is hitting the right standard before they submit it.</li>
+</ul>
+
+<h2>How long to keep progress notes</h2>
+<p>Progress notes need to be retained for a minimum period after the support is delivered. The specific requirement varies by state and territory and may also be covered in your privacy policy obligations. As a general principle, most providers retain participant records for at least seven years after the last service delivery, or longer if the participant was a child. Check the requirements that apply to your state and build your retention schedule into your privacy policy. When records are disposed of, they should be destroyed securely — shredded if paper, properly deleted if digital.</p>
+
+<h2>When notes become legal documents</h2>
+<p>Progress notes can be subpoenaed as evidence in legal proceedings — including investigations by the NDIS Commission, coronial inquiries, civil claims, and criminal matters. This is not meant to frighten you, but to underline why accuracy matters. A note written in the heat of the moment, with language that sounds dismissive or judgmental, can be read very differently in a formal context months or years later. Write every note as if a judge might read it. Not because it's likely — but because that standard produces the clearest, most professional record.</p>
+
+<h2>Making note-writing part of the shift routine</h2>
+<p>The hardest part of good note-writing is not the skill — it's the habit. By the end of a long shift, the temptation to write something quick and move on is very human. Here are some practical ways to build the habit into the shift structure:</p>
+<ul>
+  <li><strong>Write notes at the end of each support task, not just the end of the shift</strong> — If you're supporting someone for four hours across different activities, jot a few words about each activity as you go. It's faster and more accurate than trying to reconstruct a whole shift from memory.</li>
+  <li><strong>Use voice-to-text for a rough draft</strong> — Many workers find it easier to speak their notes than type them. Use your phone's voice-to-text function to capture the rough version, then tidy it up before submitting.</li>
+  <li><strong>Set a rule: notes before you leave the shift</strong> — Whatever system you use, the note should be written before the support worker leaves. Notes written the next day are less accurate and look worse in an audit.</li>
+  <li><strong>Review your own notes occasionally</strong> — Once a month, read back through your own notes for one participant. Are they telling a coherent story? Would someone unfamiliar with this person be able to understand what's been happening? If not, that's your calibration check.</li>
+</ul>
 
 <p>Good notes are a habit, and habits get easier with the right tools. Get them right and you've turned a chore into your best protection.</p>
 
@@ -155,5 +226,77 @@
     <div><a href="/">Home</a> · <a href="/blog.html">Blog</a> · <a href="/#pricing">Pricing</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms-of-service.html">Terms</a></div>
     <div style="margin-top:0.6rem;">© 2026 NDIS Ready · hello@ndis-ready.com.au</div>
   </footer>
+<!-- CONTACT_WIDGET_START -->
+
+  <style id="contact-widget-css">
+    .contact-fab { position: fixed; top: 1rem; right: 1rem; z-index: 9998; display: inline-flex; align-items: center; gap: 0.45rem; background: linear-gradient(135deg, #b8acdf, #e8a0a0); color: #fff; font-family: 'Nunito', system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 800; padding: 0.6rem 1.25rem; border: none; border-radius: 999px; cursor: pointer; text-decoration: none; box-shadow: 0 4px 16px rgba(184,172,223,0.5); transition: transform 0.15s, box-shadow 0.2s; }
+    .contact-fab:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(184,172,223,0.65); }
+    .contact-fab svg { flex-shrink: 0; }
+    @media (max-width: 640px) { .contact-fab { font-size: 0.78rem; padding: 0.5rem 0.9rem; top: 0.6rem; right: 0.6rem; } .contact-fab .cf-label { display: none; } }
+    .contact-overlay { position: fixed; inset: 0; background: rgba(42,37,53,0.55); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 1.25rem; }
+    .contact-overlay.open { display: flex; }
+    .contact-modal { background: #fff; border-radius: 20px; max-width: 480px; width: 100%; padding: 2rem 2rem 1.75rem; box-shadow: 0 24px 60px rgba(42,37,53,0.3); position: relative; font-family: 'DM Sans', system-ui, sans-serif; max-height: 92vh; overflow-y: auto; }
+    .contact-modal h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.5rem; line-height: 1.2; color: #2a2535; margin: 0 0 0.5rem; }
+    .contact-modal .cm-sub { font-size: 0.95rem; color: #5a5370; margin: 0 0 1.25rem; line-height: 1.55; }
+    .contact-modal label { display: block; font-size: 0.8rem; font-weight: 700; color: #2a2535; margin: 0.75rem 0 0.3rem; }
+    .contact-modal input, .contact-modal textarea { width: 100%; font-family: inherit; font-size: 0.95rem; padding: 0.7rem 0.9rem; border: 1.5px solid #e2ddd3; border-radius: 12px; background: #faf8f4; color: #2a2535; box-sizing: border-box; }
+    .contact-modal input:focus, .contact-modal textarea:focus { outline: none; border-color: #b8acdf; }
+    .contact-modal textarea { resize: vertical; min-height: 110px; }
+    .contact-modal .cm-send { margin-top: 1.1rem; width: 100%; background: #2a2535; color: #fff; font-family: 'Nunito', system-ui, sans-serif; font-weight: 800; font-size: 0.95rem; padding: 0.85rem; border: none; border-radius: 999px; cursor: pointer; transition: background 0.2s; }
+    .contact-modal .cm-send:hover { background: #3d3650; }
+    .contact-modal .cm-send:disabled { opacity: 0.6; cursor: default; }
+    .contact-modal .cm-close { position: absolute; top: 1rem; right: 1.1rem; background: none; border: none; font-size: 1.5rem; line-height: 1; color: #9990b0; cursor: pointer; }
+    .contact-modal .cm-status { margin-top: 0.9rem; font-size: 0.9rem; text-align: center; min-height: 1.2rem; }
+    .contact-modal .cm-status.ok { color: #2f8a5a; font-weight: 700; }
+    .contact-modal .cm-status.err { color: #d42b2b; font-weight: 700; }
+  </style>
+
+  <button class="contact-fab" type="button" onclick="openContact()" aria-label="Contact us">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="cf-label">We're here to help &rarr;</span>
+  </button>
+  <div class="contact-overlay" id="contactOverlay" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+    <div class="contact-modal">
+      <button class="cm-close" type="button" aria-label="Close" onclick="closeContact()">&times;</button>
+      <h3 id="cmTitle">Got an idea? Question? Suggestion? Request?</h3>
+      <p class="cm-sub">Let us know &mdash; we love hearing from the community. Tell us what you want more of, what you're unsure about, or anything we can help with. A real person reads every message.</p>
+      <form id="contactForm" onsubmit="return submitContact(event)">
+        <label for="cmName">Your name</label>
+        <input type="text" id="cmName" name="name" placeholder="First name is fine" />
+        <label for="cmEmail">Your email <span style="font-weight:400;color:#9990b0;">(so we can reply)</span></label>
+        <input type="email" id="cmEmail" name="email" placeholder="you@example.com" />
+        <label for="cmMsg">Your message</label>
+        <textarea id="cmMsg" name="message" placeholder="Type anything here..." required></textarea>
+        <input type="text" id="cmCompany" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+        <button type="submit" class="cm-send" id="cmSend">Send it through &rarr;</button>
+        <div class="cm-status" id="cmStatus" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+  <script id="contact-widget-js">
+    function openContact(){var o=document.getElementById('contactOverlay');o.classList.add('open');setTimeout(function(){var m=document.getElementById('cmMsg');if(m)m.focus();},50);}
+    function closeContact(){document.getElementById('contactOverlay').classList.remove('open');}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeContact();});
+    document.addEventListener('click',function(e){if(e.target&&e.target.id==='contactOverlay')closeContact();});
+    async function submitContact(e){
+      e.preventDefault();
+      var btn=document.getElementById('cmSend'), st=document.getElementById('cmStatus');
+      var name=(document.getElementById('cmName').value||'').trim();
+      var email=(document.getElementById('cmEmail').value||'').trim();
+      var msg=(document.getElementById('cmMsg').value||'').trim();
+      if(!msg){st.className='cm-status err';st.textContent='Please type a message first.';return false;}
+      btn.disabled=true;btn.textContent='Sending...';st.className='cm-status';st.textContent='';
+      try{
+        var company=(document.getElementById('cmCompany').value||'');
+        var res=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,email:email,message:msg,company:company,page:location.pathname})});
+        if(res.ok){st.className='cm-status ok';st.textContent='Thank you! We\'ve got your message and will be in touch.';document.getElementById('contactForm').reset();setTimeout(closeContact,2200);}
+        else{var d=await res.json().catch(function(){return{};});st.className='cm-status err';st.textContent=d.error||'Something went wrong. Please email hello@ndis-ready.com.au directly.';}
+      }catch(err){st.className='cm-status err';st.textContent='Network error. Please email hello@ndis-ready.com.au directly.';}
+      btn.disabled=false;btn.textContent='Send it through \u2192';
+      return false;
+    }
+  </script>
+
+  <!-- CONTACT_WIDGET_END -->
 </body>
 </html>

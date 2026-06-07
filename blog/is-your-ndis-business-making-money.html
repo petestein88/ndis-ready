@@ -39,6 +39,8 @@
     body { font-family: var(--font-body); background: var(--cream); color: var(--ink); line-height: 1.6; }
     a { color: inherit; }
     nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 2rem; max-width: 1200px; margin: 0 auto; }
+    @media(min-width:641px){ nav { padding-right: 13rem; } }
+    @media(max-width:640px){ nav { padding-right: 4.5rem; } }
     .nav-logo { font-family: var(--font-brand); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
     nav .nav-right { display: flex; align-items: center; gap: 1.25rem; }
     nav .nav-right a.plain { font-size: 0.875rem; font-weight: 600; color: var(--ink-mid); text-decoration: none; }
@@ -81,21 +83,11 @@
 <body>
   <nav>
     <a href="/" class="nav-logo">
-      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="navSG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stop-color="#c4b5f4"/><stop offset="100%" stop-color="#b8acdf"/>
-          </linearGradient>
-          <filter id="navTex">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise"/>
-            <feColorMatrix type="saturate" values="0" in="noise" result="gn"/>
-            <feBlend in="SourceGraphic" in2="gn" mode="multiply" result="bl"/>
-            <feComposite in="bl" in2="SourceGraphic" operator="in"/>
-          </filter>
-        </defs>
-        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="url(#navSG)" filter="url(#navTex)"/>
-        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="none" stroke="#9a88cc" stroke-width="3"/>
-        <path d="M50 65 Q32 52 32 42 Q32 34 40 34 Q45 34 50 40 Q55 34 60 34 Q68 34 68 42 Q68 52 50 65 Z" fill="#e8a0a0" filter="url(#navTex)"/>
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;">
+        <defs><linearGradient id="navLogo_blog" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0%" stop-color="#cabdf6"/><stop offset="100%" stop-color="#a18fd6"/></linearGradient></defs>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="url(#navLogo_blog)"/>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="none" stroke="#8a76c2" stroke-width="3.5"/>
+        <path d="M50 65 Q31 51 31 41 Q31 33 39.5 33 Q45 33 50 39.5 Q55 33 60.5 33 Q69 33 69 41 Q69 51 50 65 Z" fill="#ffffff" opacity="0.95"/>
       </svg>
       NDIS Ready
     </a>
@@ -114,7 +106,7 @@
       <span class="post-cat" style="background:#fdf4e3;color:#7a5616;">Money</span>
       <h1>Is your NDIS business actually making money?</h1>
       <p class="dek">The hidden cost per support hour catches out almost every new provider. Here is how to check before it hurts.</p>
-      <div class="meta">June 2026 · 6 min read</div>
+      <div class="meta">June 2026 · 10 min read</div>
     </div>
     <div class="article-body">
 <p>The NDIS price guide says you can charge, say, around $70 an hour for standard weekday support. That sounds healthy — until you work out what an hour of support actually <em>costs</em> you to deliver. For a lot of new providers, the gap is uncomfortably thin, and some are quietly losing money on every shift.</p>
@@ -134,6 +126,43 @@
 
 <p>Add those up and your "true cost per support hour" can be far higher than the wage alone — sometimes high enough that a weekend shift at penalty rates costs more than the NDIS will pay for it.</p>
 
+<h2>A worked example — illustrative numbers only</h2>
+<p>Let's put some rough numbers together to show how the maths works. <em>These are illustrative only — your actual figures will differ based on your award classification, your worker's level and your state. Always verify against the current SCHADS award and NDIS pricing arrangements.</em></p>
+<p>Imagine you have a casual support worker at a standard classification. Their base weekday rate might be around $30-something per hour (the exact rate depends on the SCHADS classification level — check the Fair Work Ombudsman for your specific situation). Add casual loading, and that rate climbs. Now add superannuation on top of the casual rate.</p>
+<p>But that's just the direct wage for hours worked. Before you've calculated your true hourly cost, you also need to factor in:</p>
+<ul>
+  <li><strong>Travel time</strong> — If your worker drives 20 minutes to a participant's home, you may be obligated to pay for some of that travel time under SCHADS. That's paid time you can't bill to the NDIS.</li>
+  <li><strong>Training and induction</strong> — The first week of a new worker's employment often involves induction, mandatory training, and policy walkthroughs. All paid time, zero revenue.</li>
+  <li><strong>Supervision time</strong> — Regular one-on-ones with your workers are a compliance requirement. Add that time to your cost model.</li>
+  <li><strong>Your own admin time</strong> — Invoicing, rostering, compliance paperwork. Even if you're not paying yourself properly yet, this time has a cost. At some point, either you get paid for it or you burn out.</li>
+</ul>
+<p>By the time you add all of this up and divide it across billable hours only, the true cost per delivered hour can be significantly higher than the base wage. That's why a shift that looks profitable on paper can look very different in your bank account.</p>
+
+<h2>Penalty shifts: when do they make sense?</h2>
+<p>Weekend and evening shifts attract penalty rates under SCHADS. The NDIS pricing arrangements do allow higher rates for these time slots — but the gap between the premium rate you can charge and the penalty rate you must pay can be tighter than you'd expect. Before you commit to a roster that's heavy on penalty-rate hours, it's worth modelling the specific shift:</p>
+<ul>
+  <li>What is the billable rate for a Saturday afternoon?</li>
+  <li>What will I actually pay my worker for that shift, including penalties and super?</li>
+  <li>After travel and non-billable time, is there anything left?</li>
+</ul>
+<p>Some shifts will always be thin on margin. That's okay, as long as you know it going in and your overall mix of shifts balances out. The problem is when providers roster weekend-heavy without ever checking whether the maths stacks up.</p>
+
+<h2>Rostering tips to protect your margin</h2>
+<ul>
+  <li><strong>Minimise dead travel time</strong> — Group participants who live close together under the same worker where possible. Every kilometre of non-billable travel eats margin.</li>
+  <li><strong>Use permanent part-time workers for predictable rosters</strong> — Permanent part-time workers cost less per hour than casual workers (no casual loading) on predictable, regularly scheduled shifts. If your roster is stable, the switch can make a real difference.</li>
+  <li><strong>Set a minimum engagement length</strong> — SCHADS has minimum shift lengths. Short ad-hoc shifts can be disproportionately expensive once you factor in travel and the minimum engagement. Build shifts that make sense financially.</li>
+  <li><strong>Track your billable ratio</strong> — What percentage of the hours you pay your workers are actually billed to participants? If it's below a healthy level, you need to find and fix the leak.</li>
+</ul>
+
+<h2>Cashflow: the hidden killer</h2>
+<p>Even if your margins are healthy, cashflow can kill a young provider. The NDIS pays in arrears — you deliver the support, then claim, then wait for payment. Meanwhile, your workers need to be paid on time every fortnight. If you're growing quickly, the gap between cash out and cash in can become a serious problem. A few things that help:</p>
+<ul>
+  <li><strong>Claim promptly and frequently</strong> — Don't let claims pile up. The sooner you lodge a claim, the sooner you get paid.</li>
+  <li><strong>Set aside a cash buffer before you hire</strong> — As a rough guide, having enough cash to cover at least a couple of payroll cycles before revenue comes in will protect you from cashflow crises.</li>
+  <li><strong>Watch your service agreement values</strong> — If a participant's plan runs low unexpectedly and you're not tracking it, you may deliver services you can't claim. Keep an eye on remaining plan values for each participant.</li>
+</ul>
+
 <h2>Why this matters before you grow</h2>
 <p>Scaling a service that loses money per hour just means losing money faster. The time to check the maths is <em>before</em> you take on more participants or hire more staff.</p>
 
@@ -141,6 +170,36 @@
   <p><strong>Run your numbers in under a minute.</strong> Our free Business Health Check calculates your true cost per support hour and your real margin against NDIS price limits — no signup, no backend, just the maths.</p>
   <a class="cta-btn" href="/health-check.html">Check my viability &rarr;</a>
 </div>
+
+<h2>Pricing and quoting tips</h2>
+<p>When a new participant or their plan manager asks for your pricing, be clear and honest. Quote your actual rate from the NDIS pricing arrangements document — this is the maximum you can charge, not a flexible number you negotiate down. Know exactly what's included in that rate (direct support time) and what isn't (travel, if you're charging it separately). Clear, upfront pricing builds trust with plan managers and participants and avoids uncomfortable conversations later.</p>
+
+<blockquote>The providers who thrive are the ones who know their numbers. The ones who don't find out the hard way.</blockquote>
+
+<h2>When to review your numbers</h2>
+<p>Your cost structure isn't fixed. The SCHADS award is updated periodically, the NDIS pricing arrangements are reviewed, and your own mix of shifts and workers changes as you grow. It's worth revisiting your financial model at least annually, and whenever something significant changes — a new award rate, a roster restructure, or a change in the types of support you deliver.</p>
+<p>Providers who stay close to their numbers can spot problems early: a roster shift that's consistently unprofitable, a participant arrangement that's eating more admin time than it generates in revenue, or a superannuation rate change that's quietly widening the gap between income and cost. Catching these things early means you can fix them. Missing them for months means the damage is already done.</p>
+
+<h2>The bigger picture: planning for growth</h2>
+<p>Many small providers want to grow — more participants, more workers, perhaps a second house. Before you do, model it. Adding a second property means not just more revenue, but more overhead (rent, utilities, compliance costs), more staff, and more management time. The margin on house two might look the same as house one on paper, but if your management capacity is already stretched, the real cost of growth is your time and energy. Know what you're taking on before you commit.</p>
+<p>A simple growth plan might ask: how many billable hours per week do I need to cover all costs and pay myself a reasonable wage? At current rates, how many participants does that represent? What's my plan if one participant's funding changes? These are the questions that turn a provider from reactive to strategic.</p>
+
+<h2>Building a financially sustainable business, not just a compliant one</h2>
+<p>Compliance and financial sustainability go hand in hand. Providers who underprice their services to win participants end up cutting corners on staffing, training and documentation — which creates compliance risk. Providers who price correctly, roster efficiently and manage cashflow carefully have the resources to do compliance well. The businesses that thrive long-term are the ones that get both right.</p>
+<p>If you're not sure where to start, run your numbers first. Know your true cost per hour before you sign another service agreement. Then you can price with confidence and grow with your eyes open.</p>
+
+<h2>Common financial mistakes new NDIS providers make</h2>
+<ul>
+  <li><strong>Treating the NDIS price guide rate as profit</strong> — The rate is revenue. Your margin is what's left after all costs. These are not the same number.</li>
+  <li><strong>Not accounting for casual loading when quoting</strong> — If your worker is casual, your true wage cost is higher than the base hourly rate. Build this into your model from day one.</li>
+  <li><strong>Ignoring the cost of your own time</strong> — Every hour you spend on admin, compliance, invoicing and coordination is an hour you're not being paid for. Eventually, either you pay yourself for it (through management fees built into your model) or you wear it yourself. Know which one you're doing.</li>
+  <li><strong>Not tracking plan balances</strong> — A participant whose plan runs out mid-quarter means unclaimable shifts. Keep an eye on remaining plan values and flag early when a participant is running low.</li>
+  <li><strong>Growing faster than your cashflow can support</strong> — Taking on a second participant before your first month's claims have been paid can create a cash crisis. Grow at a pace your bank balance can handle.</li>
+</ul>
+
+<h2>A quick financial health check you can run now</h2>
+<p>Take one of your current participants and work out what a typical week looks like. Add up all the support hours you're delivering to them. Now calculate: what are you paying your worker for those hours, including all penalties and super? What's the total NDIS revenue you can claim? Subtract the wage cost, then subtract a fair share of overheads (software, insurance, your time). What's left?</p>
+<p>If there's a meaningful positive number, your pricing is working for that participant. If it's close to zero, or negative, you're losing money on that arrangement. Do this exercise for each participant and each shift type. It takes an hour but it tells you more about the health of your business than any other exercise you'll do this month.</p>
 
 <p>Knowing your real margin changes how you price, roster and grow. It's the difference between a business and an expensive hobby.</p>
 
@@ -157,5 +216,77 @@
     <div><a href="/">Home</a> · <a href="/blog.html">Blog</a> · <a href="/#pricing">Pricing</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms-of-service.html">Terms</a></div>
     <div style="margin-top:0.6rem;">© 2026 NDIS Ready · hello@ndis-ready.com.au</div>
   </footer>
+<!-- CONTACT_WIDGET_START -->
+
+  <style id="contact-widget-css">
+    .contact-fab { position: fixed; top: 1rem; right: 1rem; z-index: 9998; display: inline-flex; align-items: center; gap: 0.45rem; background: linear-gradient(135deg, #b8acdf, #e8a0a0); color: #fff; font-family: 'Nunito', system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 800; padding: 0.6rem 1.25rem; border: none; border-radius: 999px; cursor: pointer; text-decoration: none; box-shadow: 0 4px 16px rgba(184,172,223,0.5); transition: transform 0.15s, box-shadow 0.2s; }
+    .contact-fab:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(184,172,223,0.65); }
+    .contact-fab svg { flex-shrink: 0; }
+    @media (max-width: 640px) { .contact-fab { font-size: 0.78rem; padding: 0.5rem 0.9rem; top: 0.6rem; right: 0.6rem; } .contact-fab .cf-label { display: none; } }
+    .contact-overlay { position: fixed; inset: 0; background: rgba(42,37,53,0.55); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 1.25rem; }
+    .contact-overlay.open { display: flex; }
+    .contact-modal { background: #fff; border-radius: 20px; max-width: 480px; width: 100%; padding: 2rem 2rem 1.75rem; box-shadow: 0 24px 60px rgba(42,37,53,0.3); position: relative; font-family: 'DM Sans', system-ui, sans-serif; max-height: 92vh; overflow-y: auto; }
+    .contact-modal h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.5rem; line-height: 1.2; color: #2a2535; margin: 0 0 0.5rem; }
+    .contact-modal .cm-sub { font-size: 0.95rem; color: #5a5370; margin: 0 0 1.25rem; line-height: 1.55; }
+    .contact-modal label { display: block; font-size: 0.8rem; font-weight: 700; color: #2a2535; margin: 0.75rem 0 0.3rem; }
+    .contact-modal input, .contact-modal textarea { width: 100%; font-family: inherit; font-size: 0.95rem; padding: 0.7rem 0.9rem; border: 1.5px solid #e2ddd3; border-radius: 12px; background: #faf8f4; color: #2a2535; box-sizing: border-box; }
+    .contact-modal input:focus, .contact-modal textarea:focus { outline: none; border-color: #b8acdf; }
+    .contact-modal textarea { resize: vertical; min-height: 110px; }
+    .contact-modal .cm-send { margin-top: 1.1rem; width: 100%; background: #2a2535; color: #fff; font-family: 'Nunito', system-ui, sans-serif; font-weight: 800; font-size: 0.95rem; padding: 0.85rem; border: none; border-radius: 999px; cursor: pointer; transition: background 0.2s; }
+    .contact-modal .cm-send:hover { background: #3d3650; }
+    .contact-modal .cm-send:disabled { opacity: 0.6; cursor: default; }
+    .contact-modal .cm-close { position: absolute; top: 1rem; right: 1.1rem; background: none; border: none; font-size: 1.5rem; line-height: 1; color: #9990b0; cursor: pointer; }
+    .contact-modal .cm-status { margin-top: 0.9rem; font-size: 0.9rem; text-align: center; min-height: 1.2rem; }
+    .contact-modal .cm-status.ok { color: #2f8a5a; font-weight: 700; }
+    .contact-modal .cm-status.err { color: #d42b2b; font-weight: 700; }
+  </style>
+
+  <button class="contact-fab" type="button" onclick="openContact()" aria-label="Contact us">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="cf-label">We're here to help &rarr;</span>
+  </button>
+  <div class="contact-overlay" id="contactOverlay" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+    <div class="contact-modal">
+      <button class="cm-close" type="button" aria-label="Close" onclick="closeContact()">&times;</button>
+      <h3 id="cmTitle">Got an idea? Question? Suggestion? Request?</h3>
+      <p class="cm-sub">Let us know &mdash; we love hearing from the community. Tell us what you want more of, what you're unsure about, or anything we can help with. A real person reads every message.</p>
+      <form id="contactForm" onsubmit="return submitContact(event)">
+        <label for="cmName">Your name</label>
+        <input type="text" id="cmName" name="name" placeholder="First name is fine" />
+        <label for="cmEmail">Your email <span style="font-weight:400;color:#9990b0;">(so we can reply)</span></label>
+        <input type="email" id="cmEmail" name="email" placeholder="you@example.com" />
+        <label for="cmMsg">Your message</label>
+        <textarea id="cmMsg" name="message" placeholder="Type anything here..." required></textarea>
+        <input type="text" id="cmCompany" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+        <button type="submit" class="cm-send" id="cmSend">Send it through &rarr;</button>
+        <div class="cm-status" id="cmStatus" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+  <script id="contact-widget-js">
+    function openContact(){var o=document.getElementById('contactOverlay');o.classList.add('open');setTimeout(function(){var m=document.getElementById('cmMsg');if(m)m.focus();},50);}
+    function closeContact(){document.getElementById('contactOverlay').classList.remove('open');}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeContact();});
+    document.addEventListener('click',function(e){if(e.target&&e.target.id==='contactOverlay')closeContact();});
+    async function submitContact(e){
+      e.preventDefault();
+      var btn=document.getElementById('cmSend'), st=document.getElementById('cmStatus');
+      var name=(document.getElementById('cmName').value||'').trim();
+      var email=(document.getElementById('cmEmail').value||'').trim();
+      var msg=(document.getElementById('cmMsg').value||'').trim();
+      if(!msg){st.className='cm-status err';st.textContent='Please type a message first.';return false;}
+      btn.disabled=true;btn.textContent='Sending...';st.className='cm-status';st.textContent='';
+      try{
+        var company=(document.getElementById('cmCompany').value||'');
+        var res=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,email:email,message:msg,company:company,page:location.pathname})});
+        if(res.ok){st.className='cm-status ok';st.textContent='Thank you! We\'ve got your message and will be in touch.';document.getElementById('contactForm').reset();setTimeout(closeContact,2200);}
+        else{var d=await res.json().catch(function(){return{};});st.className='cm-status err';st.textContent=d.error||'Something went wrong. Please email hello@ndis-ready.com.au directly.';}
+      }catch(err){st.className='cm-status err';st.textContent='Network error. Please email hello@ndis-ready.com.au directly.';}
+      btn.disabled=false;btn.textContent='Send it through \u2192';
+      return false;
+    }
+  </script>
+
+  <!-- CONTACT_WIDGET_END -->
 </body>
 </html>

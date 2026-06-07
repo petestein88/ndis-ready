@@ -39,6 +39,8 @@
     body { font-family: var(--font-body); background: var(--cream); color: var(--ink); line-height: 1.6; }
     a { color: inherit; }
     nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 2rem; max-width: 1200px; margin: 0 auto; }
+    @media(min-width:641px){ nav { padding-right: 13rem; } }
+    @media(max-width:640px){ nav { padding-right: 4.5rem; } }
     .nav-logo { font-family: var(--font-brand); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
     nav .nav-right { display: flex; align-items: center; gap: 1.25rem; }
     nav .nav-right a.plain { font-size: 0.875rem; font-weight: 600; color: var(--ink-mid); text-decoration: none; }
@@ -81,21 +83,11 @@
 <body>
   <nav>
     <a href="/" class="nav-logo">
-      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="navSG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stop-color="#c4b5f4"/><stop offset="100%" stop-color="#b8acdf"/>
-          </linearGradient>
-          <filter id="navTex">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise"/>
-            <feColorMatrix type="saturate" values="0" in="noise" result="gn"/>
-            <feBlend in="SourceGraphic" in2="gn" mode="multiply" result="bl"/>
-            <feComposite in="bl" in2="SourceGraphic" operator="in"/>
-          </filter>
-        </defs>
-        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="url(#navSG)" filter="url(#navTex)"/>
-        <path d="M50 4 L90 18 L90 52 Q90 78 50 96 Q10 78 10 52 L10 18 Z" fill="none" stroke="#9a88cc" stroke-width="3"/>
-        <path d="M50 65 Q32 52 32 42 Q32 34 40 34 Q45 34 50 40 Q55 34 60 34 Q68 34 68 42 Q68 52 50 65 Z" fill="#e8a0a0" filter="url(#navTex)"/>
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;">
+        <defs><linearGradient id="navLogo_blog" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0%" stop-color="#cabdf6"/><stop offset="100%" stop-color="#a18fd6"/></linearGradient></defs>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="url(#navLogo_blog)"/>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="none" stroke="#8a76c2" stroke-width="3.5"/>
+        <path d="M50 65 Q31 51 31 41 Q31 33 39.5 33 Q45 33 50 39.5 Q55 33 60.5 33 Q69 33 69 41 Q69 51 50 65 Z" fill="#ffffff" opacity="0.95"/>
       </svg>
       NDIS Ready
     </a>
@@ -114,7 +106,7 @@
       <span class="post-cat" style="background:#eef7f1;color:#275f41;">Audits</span>
       <h1>What an NDIS auditor actually asks you</h1>
       <p class="dek">The audit is an interview, not a document review. Here are the questions that come up — and how to answer them with confidence.</p>
-      <div class="meta">June 2026 · 6 min read</div>
+      <div class="meta">June 2026 · 10 min read</div>
     </div>
     <div class="article-body">
 <p>Most first-time providers picture an audit as someone flipping through a folder. It's not. A big part of certification is the auditor <strong>talking to you and your staff</strong> — and that conversation is where unprepared providers come undone.</p>
@@ -130,6 +122,40 @@
   <li><strong>"What happens in an emergency?"</strong> A plan that staff actually know, not a document nobody has read.</li>
 </ul>
 
+<h2>More example questions — by quality area</h2>
+<p>Auditors tend to follow the quality areas in sequence. Here's a broader picture of what they may ask across each area:</p>
+<ul>
+  <li><strong>Rights and responsibilities —</strong> "How do participants know about their rights?" / "Tell me about a time a participant made a decision you didn't agree with — what did you do?" / "How do you ensure a participant's cultural or religious needs are respected?"</li>
+  <li><strong>Governance and operational management —</strong> "Who is responsible for compliance in your organisation?" / "What happens if a key person is unavailable — how do you keep the service running?" / "How often do you review your policies and how do you record that?"</li>
+  <li><strong>Provision of supports —</strong> "Walk me through how you develop a support plan with a participant." / "How do you make sure the support delivered matches what the participant agreed to?" / "What do you do if a participant's needs change?"</li>
+  <li><strong>Support provision environment —</strong> "How do you check that the home environment is safe for the participant?" / "What maintenance checks do you do and how often?" / "If a participant raised a safety concern about their home, what would happen?"</li>
+  <li><strong>Workforce —</strong> "Show me your worker screening records." / "How do you supervise your support workers?" / "What training have your workers completed in the last 12 months?" / "How do you handle a complaint about a worker?"</li>
+</ul>
+
+<h2>What a strong answer sounds like — and what a weak one sounds like</h2>
+<p>The difference between a strong answer and a weak one isn't confidence — it's specificity and evidence. Here are two examples:</p>
+<p><strong>Weak answer:</strong> "We always document incidents as soon as they happen. Everyone knows what to do."</p>
+<p><strong>Strong answer:</strong> "When an incident occurs, the support worker completes our incident report form — here's a copy — within 24 hours. It goes to me as the manager. I then assess whether it needs to be reported to the NDIS Commission under the reportable incidents framework. All incidents, whether reportable or not, go into our incident register — here it is — and we review them monthly to look for patterns. Here's an example from last month."</p>
+<p>Notice the strong answer names the document, mentions the register, explains the process and offers a real example. That's the formula: policy → record → real example.</p>
+
+<h2>How to prepare your staff</h2>
+<p>Your workers will likely be interviewed separately, without you in the room. That's by design — the auditor wants to know whether the practice is real, not just polished by management. Here's how to prepare them without coaching them to give scripted answers (which auditors can spot):</p>
+<ul>
+  <li><strong>Run a staff Q&amp;A session using real scenarios</strong> — "What would you do if a participant had a fall during your shift?" Let them answer in their own words. Correct any gaps in their understanding of the actual procedure.</li>
+  <li><strong>Make sure every worker has read the key policies</strong> — Not just been handed them. Use your induction checklist to record that they've read and understood the incident, complaints and safeguarding policies specifically.</li>
+  <li><strong>Remind them it's not a test they can fail</strong> — The auditor is checking the organisation's systems, not judging individual workers. An honest answer of "I'm not sure, but I'd ask my manager" is fine; a confident wrong answer is worse than admitting uncertainty.</li>
+  <li><strong>Practice the incident chain out loud</strong> — "Notice it, make the person safe, fill in the form, tell the manager, report if required, review." When it's a physical habit, it comes out naturally under pressure.</li>
+</ul>
+
+<h2>The day-of logistics</h2>
+<p>A few practical things that will make your audit day smoother:</p>
+<ul>
+  <li><strong>Have your documents organised, not piled</strong> — Know where everything is. A folder per quality area works well. Being able to quickly produce the right document when asked makes a good impression and saves stress.</li>
+  <li><strong>Have real examples ready</strong> — One incident, one complaint, one supervision session, one support plan review. You don't need dozens — you need a few real, complete examples you can walk the auditor through.</li>
+  <li><strong>Don't try to bluff gaps</strong> — If something is missing, it's much better to acknowledge it and explain what you're doing about it. Auditors respect honesty. They're used to working with growing businesses.</li>
+  <li><strong>Ask questions yourself</strong> — The audit is a two-way conversation. If an auditor raises a concern, ask them to clarify what evidence would address it. This shows maturity and gives you something concrete to act on.</li>
+</ul>
+
 <h2>The trap: confident words, missing evidence</h2>
 <p>You can answer every question perfectly and still get a "needs improvement" if you can't <em>show</em> it. The strongest answers sound like: "Here's our policy, here's the register where we record it, and here's a real example from last month."</p>
 
@@ -137,6 +163,37 @@
   <p><strong>Practice before the real thing.</strong> Our free Mock Audit Interview Simulator runs you through twelve of the questions a real auditor asks — and shows you exactly where your answers need backup.</p>
   <a class="cta-btn" href="/mock-audit.html">Practise the interview &rarr;</a>
 </div>
+
+<h2>After the audit: what happens next</h2>
+<p>When the on-site day is done, the auditor goes away and writes their report. This usually takes a few weeks. The report will cover each outcome that was assessed, with a finding for each. You'll receive a copy. If there are non-conformities, you'll need to address them and provide evidence of the fix — this is called a corrective action. Your auditor should be clear about what evidence they need to see to close each corrective action.</p>
+<p>Once all major non-conformities are resolved, the auditor submits their final report to the NDIS Commission, and the Commission makes the registration decision. The whole process from audit booking to registration can take a number of months, so factor that into your planning.</p>
+
+<h2>The mindset that makes audits manageable</h2>
+<p>Providers who approach their first audit with dread often discover it was less frightening than they'd imagined — especially if they prepared. The auditor is not trying to catch you out. They are checking whether the systems are real and working. If your team delivers good support and your records reflect that, the audit is just a conversation about what you do every day.</p>
+<p>The providers who find it hardest are the ones who built the documents but not the practice — who have the policy but not the register, or the register but not the consistent habit. Bridge that gap, and the audit becomes manageable for almost any provider.</p>
+
+<h2>Practical audit-day tips</h2>
+<p>The day itself doesn't have to be stressful. A few things that help:</p>
+<ul>
+  <li><strong>Have water and snacks ready</strong> — A certification audit can run most of the day. Keep your energy up.</li>
+  <li><strong>Have a quiet, private space for staff interviews</strong> — The auditor needs to speak to your workers without you present. Arrange a suitable space beforehand.</li>
+  <li><strong>Don't hover</strong> — Give the auditor space to do their job. Being overly present or jumping in to answer questions on behalf of your staff creates a poor impression.</li>
+  <li><strong>Take notes during feedback</strong> — At the end of the audit, the auditor usually gives you verbal feedback before the formal report. Write it down. You'll want to act on it and having it in writing helps.</li>
+  <li><strong>Follow up promptly on any corrective actions</strong> — If the auditor identifies gaps, don't delay. A fast, thorough response shows good faith and moves the process forward.</li>
+</ul>
+
+<h2>The relationship between your audit and your participants' experience</h2>
+<p>It's worth stepping back and remembering why all of this matters. The audit exists because SIL participants are some of the most vulnerable people in the community. They live in their homes, often with limited ability to advocate for themselves, and they depend on you and your team to keep them safe, supported and respected. The Practice Standards and the audit process are the system society has built to make sure that happens consistently, not just when things are going well.</p>
+<p>When you invest in doing the audit properly — the documents, the evidence, the staff training, the consistent practices — you're not just ticking a compliance box. You're building a service that genuinely looks after people. That's worth the effort, and most providers who go through the process come out the other side with a much better-run business as a result.</p>
+
+<h2>After your first audit: building on what you've learned</h2>
+<p>Your first certification audit is a learning experience, even if it goes smoothly. The auditor's report will highlight what's working and what could be stronger. Take that feedback seriously — not just the non-conformities you have to fix, but the suggestions and observations about areas that are merely adequate. Use them to improve.</p>
+<p>Many providers find that their second renewal audit, two or three years later, feels dramatically easier — because by then, the systems are well-established, the evidence trail is deep, and the team knows what to expect. Getting to that point starts with taking the first audit seriously and using it well.</p>
+
+<h2>One thing you can do today</h2>
+<p>If you've read this far and you're feeling overwhelmed, here's a simple starting point: pick one question from the list above — the one that made you most uncomfortable — and work on it this week. Find the policy that should answer it. Check the register that should back it up. Test whether your staff could answer it if asked. One question, one week. That's how audit readiness is built — one gap closed at a time.</p>
+
+<blockquote>Preparation is the difference between dreading the audit and being ready for it.</blockquote>
 
 <p>Walk in having rehearsed these answers — with the documents and records to back them — and the audit stops being scary. It becomes a conversation you're ready for.</p>
 
@@ -153,5 +210,77 @@
     <div><a href="/">Home</a> · <a href="/blog.html">Blog</a> · <a href="/#pricing">Pricing</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms-of-service.html">Terms</a></div>
     <div style="margin-top:0.6rem;">© 2026 NDIS Ready · hello@ndis-ready.com.au</div>
   </footer>
+<!-- CONTACT_WIDGET_START -->
+
+  <style id="contact-widget-css">
+    .contact-fab { position: fixed; top: 1rem; right: 1rem; z-index: 9998; display: inline-flex; align-items: center; gap: 0.45rem; background: linear-gradient(135deg, #b8acdf, #e8a0a0); color: #fff; font-family: 'Nunito', system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 800; padding: 0.6rem 1.25rem; border: none; border-radius: 999px; cursor: pointer; text-decoration: none; box-shadow: 0 4px 16px rgba(184,172,223,0.5); transition: transform 0.15s, box-shadow 0.2s; }
+    .contact-fab:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(184,172,223,0.65); }
+    .contact-fab svg { flex-shrink: 0; }
+    @media (max-width: 640px) { .contact-fab { font-size: 0.78rem; padding: 0.5rem 0.9rem; top: 0.6rem; right: 0.6rem; } .contact-fab .cf-label { display: none; } }
+    .contact-overlay { position: fixed; inset: 0; background: rgba(42,37,53,0.55); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 1.25rem; }
+    .contact-overlay.open { display: flex; }
+    .contact-modal { background: #fff; border-radius: 20px; max-width: 480px; width: 100%; padding: 2rem 2rem 1.75rem; box-shadow: 0 24px 60px rgba(42,37,53,0.3); position: relative; font-family: 'DM Sans', system-ui, sans-serif; max-height: 92vh; overflow-y: auto; }
+    .contact-modal h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.5rem; line-height: 1.2; color: #2a2535; margin: 0 0 0.5rem; }
+    .contact-modal .cm-sub { font-size: 0.95rem; color: #5a5370; margin: 0 0 1.25rem; line-height: 1.55; }
+    .contact-modal label { display: block; font-size: 0.8rem; font-weight: 700; color: #2a2535; margin: 0.75rem 0 0.3rem; }
+    .contact-modal input, .contact-modal textarea { width: 100%; font-family: inherit; font-size: 0.95rem; padding: 0.7rem 0.9rem; border: 1.5px solid #e2ddd3; border-radius: 12px; background: #faf8f4; color: #2a2535; box-sizing: border-box; }
+    .contact-modal input:focus, .contact-modal textarea:focus { outline: none; border-color: #b8acdf; }
+    .contact-modal textarea { resize: vertical; min-height: 110px; }
+    .contact-modal .cm-send { margin-top: 1.1rem; width: 100%; background: #2a2535; color: #fff; font-family: 'Nunito', system-ui, sans-serif; font-weight: 800; font-size: 0.95rem; padding: 0.85rem; border: none; border-radius: 999px; cursor: pointer; transition: background 0.2s; }
+    .contact-modal .cm-send:hover { background: #3d3650; }
+    .contact-modal .cm-send:disabled { opacity: 0.6; cursor: default; }
+    .contact-modal .cm-close { position: absolute; top: 1rem; right: 1.1rem; background: none; border: none; font-size: 1.5rem; line-height: 1; color: #9990b0; cursor: pointer; }
+    .contact-modal .cm-status { margin-top: 0.9rem; font-size: 0.9rem; text-align: center; min-height: 1.2rem; }
+    .contact-modal .cm-status.ok { color: #2f8a5a; font-weight: 700; }
+    .contact-modal .cm-status.err { color: #d42b2b; font-weight: 700; }
+  </style>
+
+  <button class="contact-fab" type="button" onclick="openContact()" aria-label="Contact us">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="cf-label">We're here to help &rarr;</span>
+  </button>
+  <div class="contact-overlay" id="contactOverlay" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+    <div class="contact-modal">
+      <button class="cm-close" type="button" aria-label="Close" onclick="closeContact()">&times;</button>
+      <h3 id="cmTitle">Got an idea? Question? Suggestion? Request?</h3>
+      <p class="cm-sub">Let us know &mdash; we love hearing from the community. Tell us what you want more of, what you're unsure about, or anything we can help with. A real person reads every message.</p>
+      <form id="contactForm" onsubmit="return submitContact(event)">
+        <label for="cmName">Your name</label>
+        <input type="text" id="cmName" name="name" placeholder="First name is fine" />
+        <label for="cmEmail">Your email <span style="font-weight:400;color:#9990b0;">(so we can reply)</span></label>
+        <input type="email" id="cmEmail" name="email" placeholder="you@example.com" />
+        <label for="cmMsg">Your message</label>
+        <textarea id="cmMsg" name="message" placeholder="Type anything here..." required></textarea>
+        <input type="text" id="cmCompany" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+        <button type="submit" class="cm-send" id="cmSend">Send it through &rarr;</button>
+        <div class="cm-status" id="cmStatus" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+  <script id="contact-widget-js">
+    function openContact(){var o=document.getElementById('contactOverlay');o.classList.add('open');setTimeout(function(){var m=document.getElementById('cmMsg');if(m)m.focus();},50);}
+    function closeContact(){document.getElementById('contactOverlay').classList.remove('open');}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeContact();});
+    document.addEventListener('click',function(e){if(e.target&&e.target.id==='contactOverlay')closeContact();});
+    async function submitContact(e){
+      e.preventDefault();
+      var btn=document.getElementById('cmSend'), st=document.getElementById('cmStatus');
+      var name=(document.getElementById('cmName').value||'').trim();
+      var email=(document.getElementById('cmEmail').value||'').trim();
+      var msg=(document.getElementById('cmMsg').value||'').trim();
+      if(!msg){st.className='cm-status err';st.textContent='Please type a message first.';return false;}
+      btn.disabled=true;btn.textContent='Sending...';st.className='cm-status';st.textContent='';
+      try{
+        var company=(document.getElementById('cmCompany').value||'');
+        var res=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,email:email,message:msg,company:company,page:location.pathname})});
+        if(res.ok){st.className='cm-status ok';st.textContent='Thank you! We\'ve got your message and will be in touch.';document.getElementById('contactForm').reset();setTimeout(closeContact,2200);}
+        else{var d=await res.json().catch(function(){return{};});st.className='cm-status err';st.textContent=d.error||'Something went wrong. Please email hello@ndis-ready.com.au directly.';}
+      }catch(err){st.className='cm-status err';st.textContent='Network error. Please email hello@ndis-ready.com.au directly.';}
+      btn.disabled=false;btn.textContent='Send it through \u2192';
+      return false;
+    }
+  </script>
+
+  <!-- CONTACT_WIDGET_END -->
 </body>
 </html>
