@@ -58,17 +58,6 @@
     .btn-primary:hover { background: #3d3650; transform: translateY(-1px); }
     .btn-secondary { background: transparent; color: var(--ink-mid); font-size: 0.95rem; font-weight: 500; padding: 0.85rem 1.5rem; border-radius: var(--radius-pill); text-decoration: none; border: 1.5px solid rgba(0,0,0,0.15); transition: border-color 0.2s; }
     .btn-secondary:hover { border-color: rgba(0,0,0,0.35); }
-    .tool-strip { max-width: 760px; margin: 0 auto; padding: 1.5rem 2rem 0.5rem; }
-    .tool-strip-label { text-align: center; font-size: 1.05rem; font-weight: 700; color: var(--ink); letter-spacing: 0.01em; margin-bottom: 1.4rem; }
-    .tool-strip-label .free-word { color: var(--sage-deep); }
-    .tool-chips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-    .tool-chip { position: relative; display: flex; flex-direction: column; gap: 0.5rem; background: var(--white); border: 1px solid rgba(0,0,0,0.09); border-radius: 16px; padding: 1.25rem 1.25rem 1.15rem; text-decoration: none; color: var(--ink); transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s; min-height: 112px; }
-    .tool-chip:hover { border-color: var(--lavender-deep); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(42,37,53,0.10); }
-    .tool-chip svg { flex-shrink: 0; }
-    .tool-chip .chip-title { display: flex; align-items: center; gap: 0.55rem; font-size: 1rem; font-weight: 700; line-height: 1.25; }
-    .tool-chip .chip-desc { font-size: 0.84rem; font-weight: 500; color: var(--ink-mid); line-height: 1.4; }
-    .tool-chip .chip-free { position: absolute; top: 1rem; right: 1rem; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: var(--sage); color: var(--ink); padding: 0.18rem 0.5rem; border-radius: var(--radius-pill); }
-    @media (max-width: 560px) { .tool-chips { grid-template-columns: 1fr; } }
     /* Toolkit boxes — replicated from tools-suite.html for visual consistency */
     .tk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.1rem; margin-top: 2.5rem; }
     .tk-tool { background: var(--white); border: 1px solid #ece7df; border-radius: var(--radius); padding: 1.6rem; box-shadow: 0 6px 24px rgba(42,37,53,0.05); display: flex; flex-direction: column; transition: transform 0.15s, box-shadow 0.15s; text-decoration: none; color: inherit; }
@@ -97,22 +86,24 @@
     .faq-item .faq-answer p { margin: 0; }
     .section > .section-inner > p.lead { color: var(--ink-mid); font-size: 1.05rem; max-width: 640px; margin-bottom: 3rem; }
     .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
-    .step-card { background: var(--white); border-radius: var(--radius); padding: 2rem 1.75rem; border: 1px solid rgba(0,0,0,0.06); }
-    .step-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; }
-    .step-card h3 { font-family: var(--font-display); font-size: 1.15rem; margin-bottom: 0.5rem; }
-    .step-card p { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.6; }
-    .step-num { font-size: 0.75rem; font-weight: 700; color: var(--ink-soft); letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .step-card { background: var(--white); border-radius: var(--radius); padding: 1.5rem 1.5rem; border: 1px solid rgba(0,0,0,0.06); }
+    .step-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.9rem; }
+    .step-card h3 { font-family: var(--font-display); font-size: 1.12rem; margin-bottom: 0.4rem; }
+    .step-card p { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.55; }
+    .step-num { font-size: 0.72rem; font-weight: 700; color: var(--ink-soft); letter-spacing: 0.05em; margin-bottom: 0.4rem; }
     .features-bg { background: var(--white); }
-    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
-    .feature-card { border-radius: var(--radius); padding: 1.75rem; border: 1px solid rgba(0,0,0,0.06); }
-    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
+    .feature-card { background: var(--white); border-radius: var(--radius); padding: 1.5rem; border: 1px solid rgba(0,0,0,0.06); }
+    .feat-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.9rem; }
+    .feature-card h3 { font-family: var(--font-display); font-size: 1.12rem; font-weight: 400; margin-bottom: 0.4rem; line-height: 1.25; }
     .soon-tag { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: rgba(0,0,0,0.12); color: var(--ink-mid); padding: 0.15rem 0.5rem; border-radius: var(--radius-pill); }
     .live-tag { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: var(--sage-deep); color: var(--white); padding: 0.15rem 0.5rem; border-radius: var(--radius-pill); }
     .feature-card p { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.6; }
     .scenarios { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
-    .scenario-card { border-radius: var(--radius); padding: 2rem; }
-    .scenario-card h3 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 0.75rem; }
-    .scenario-card p { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.65; }
+    .scenario-card { background: var(--white); border: 1px solid rgba(0,0,0,0.06); border-radius: var(--radius); padding: 1.5rem; }
+    .scen-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.9rem; }
+    .scenario-card h3 { font-family: var(--font-display); font-size: 1.12rem; margin-bottom: 0.4rem; line-height: 1.25; }
+    .scenario-card p { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.6; }
     .testimonials-bg { background: var(--cream); }
     .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
     .testimonial-card { background: var(--white); border-radius: var(--radius); padding: 2rem; border: 1px solid rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 1rem; }
@@ -166,7 +157,7 @@
     NDIS Ready
   </a>
   <div style="display:flex;align-items:center;gap:1.25rem;">
-    <a href="tools-suite.html" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">Tools</a>
+    <a href="tools-suite.html" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">Free Tools</a>
     <a href="blog.html" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">Blog</a>
     <a href="#pricing" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">Pricing</a>
     <a href="#faq" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">FAQ</a>
@@ -180,39 +171,13 @@
     Built for SIL providers — new and existing
   </div>
   <h1>Get <em>audit-ready</em> without the $10k consultant bill</h1>
-  <p>NDIS Ready builds every policy document you need to register and pass your certification audit — personalised to your organisation, in minutes.</p>
-  <p class="sub">No consultants. No confusing spreadsheets. Just a clear path through registration.</p>
+  <p>Every policy document you need to register and pass your audit — personalised to your organisation, in minutes.</p>
+  <p class="sub">No consultants. No spreadsheets. Just a clear path through registration.</p>
   <div class="hero-actions">
     <a href="#quiz" class="btn-primary">Take the free quiz →</a>
     <a href="#how-it-works" class="btn-secondary">See how it works</a>
   </div>
 </section>
-
-<div class="tool-strip">
-  <p class="tool-strip-label"><span class="free-word">Free tools</span>, no sign-up &mdash; explore the full kit:</p>
-  <div class="tool-chips">
-    <a href="tools-suite.html" class="tool-chip">
-      <span class="chip-free">Free</span>
-      <span class="chip-title"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--sage-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg> AI Note &amp; Incident Writer</span>
-      <span class="chip-desc">Turn rough notes into clean, audit-ready progress &amp; incident records.</span>
-    </a>
-    <a href="tools-suite.html" class="tool-chip">
-      <span class="chip-free">Free</span>
-      <span class="chip-title"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--peach-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg> Business Health Check</span>
-      <span class="chip-desc">See where your provider stands against the NDIS Practice Standards.</span>
-    </a>
-    <a href="tools-suite.html" class="tool-chip">
-      <span class="chip-free">Free</span>
-      <span class="chip-title"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--lavender-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Audit Readiness Check</span>
-      <span class="chip-desc">A quick checklist of what you need before your certification audit.</span>
-    </a>
-    <a href="tools-suite.html" class="tool-chip">
-      <span class="chip-free">Free</span>
-      <span class="chip-title"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--rose-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Mock Audit Simulator</span>
-      <span class="chip-desc">Practise the auditor&rsquo;s questions before the real assessment day.</span>
-    </a>
-  </div>
-</div>
 
 <section class="section" id="how-it-works">
   <div class="section-inner">
@@ -226,7 +191,7 @@
         </div>
         <div class="step-num">Step 01</div>
         <h3>Answer 9 questions</h3>
-        <p>Tell us about your services, your team, and your current situation. Takes five minutes.</p>
+        <p>Tell us about your services, team and situation. Takes five minutes.</p>
       </div>
       <div class="step-card">
         <div class="step-icon" style="background:var(--lavender);">
@@ -234,7 +199,7 @@
         </div>
         <div class="step-num">Step 02</div>
         <h3>Our AI builds your kit</h3>
-        <p>Upload any existing policies or company documents and fill out a short online form with any missing details. Our AI uses it all to pre-fill and personalise every document you need.</p>
+        <p>Upload any existing policies and fill in a short form. Our AI pre-fills and personalises every document you need.</p>
       </div>
       <div class="step-card">
         <div class="step-icon" style="background:var(--sage);">
@@ -242,34 +207,7 @@
         </div>
         <div class="step-num">Step 03</div>
         <h3>Download &amp; get audit-ready</h3>
-        <p>Get your complete, submission-ready document pack as Word files, ready to use the moment your auditor arrives.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section features-bg" id="features">
-  <div class="section-inner">
-    <p class="section-label">What's included</p>
-    <h2>Everything the NDIS Commission wants to see</h2>
-    <p class="lead">Every document is written to the NDIS Practice Standards and organised across the quality areas your auditor checks against — so nothing is missing.</p>
-    <div class="features-grid" style="margin-top:2.5rem;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));max-width:720px;">
-      <div class="feature-card" style="background:var(--rose);border-color:var(--rose-deep);">
-        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="var(--rose-deep)"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>65 policy templates</h3>
-        <p>Every document required for certification, personalised to your organisation and services.</p>
-      </div>
-      <div class="feature-card" style="background:var(--sage);border-color:var(--sage-deep);">
-        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg>AI document assistant</h3>
-        <p>Upload an existing policy and our AI instantly reads it and pre-fills your organisation profile — try it free after the quiz, before you pay a cent.</p>
-        <p style="margin-top:0.6rem;"><a href="tools.html" style="font-weight:700;color:var(--ink);text-decoration:none;">Try the free AI writer →</a></p>
-      </div>
-      <div class="feature-card" style="background:var(--lavender);border-color:var(--lavender-deep);">
-        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Mapped to the Practice Standards</h3>
-        <p>Your pack is organised across all seven NDIS quality areas — governance, service delivery, safeguarding, SIL, HR, quality &amp; audit — and written to the Practice Standards your auditor checks against.</p>
-      </div>
-      <div class="feature-card" style="background:var(--peach);border-color:var(--peach-deep);">
-        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Submission-ready Word files, yours to keep</h3>
-        <p>Download your complete, submission-ready pack as Word documents. No subscription required to keep them — they're yours.</p>
+        <p>Get your complete document pack as Word files, ready the moment your auditor arrives.</p>
       </div>
     </div>
   </div>
@@ -325,20 +263,67 @@
   </div>
 </section>
 
+<section class="section" id="features">
+  <div class="section-inner">
+    <p class="section-label">What's included</p>
+    <h2>Everything the NDIS Commission wants to see</h2>
+    <p class="lead">Every document is written to the NDIS Practice Standards and organised across the quality areas your auditor checks against — so nothing is missing.</p>
+    <div class="features-grid" style="margin-top:2.5rem;">
+      <div class="feature-card">
+        <div class="feat-icon" style="background:var(--rose);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--rose-deep)"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </div>
+        <h3>65 policy templates</h3>
+        <p>Every document required for certification, personalised to your organisation and services.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:var(--sage);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg>
+        </div>
+        <h3>AI document assistant</h3>
+        <p>Upload an existing policy and our AI reads it and pre-fills your profile — free after the quiz. <a href="tools.html" style="font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap;">Try it free →</a></p>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:var(--lavender);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <h3>Mapped to the Practice Standards</h3>
+        <p>Organised across all seven NDIS quality areas and written to the Practice Standards your auditor checks against.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:var(--peach);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <h3>Submission-ready Word files</h3>
+        <p>Download your complete pack as Word documents. No subscription required to keep them — they're yours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="scenarios">
   <div class="section-inner">
     <p class="section-label">Who it's for</p>
     <h2>Made for providers at every stage</h2>
     <div class="scenarios">
-      <div class="scenario-card" style="background:var(--rose);">
+      <div class="scenario-card">
+        <div class="scen-icon" style="background:var(--rose);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
         <h3>First-time registrants</h3>
         <p>You've been doing support work for years and want to go out on your own. We guide you through every document you need to get registered before 1 July 2026.</p>
       </div>
-      <div class="scenario-card" style="background:var(--lavender);">
+      <div class="scenario-card">
+        <div class="scen-icon" style="background:var(--lavender);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+        </div>
         <h3>Small SIL providers (2–15 staff)</h3>
         <p>You're registered but your policies are scattered across Google Drive, old Word docs, and your head. NDIS Ready brings it all into one place.</p>
       </div>
-      <div class="scenario-card" style="background:var(--sage);">
+      <div class="scenario-card">
+        <div class="scen-icon" style="background:var(--sage);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
         <h3>Providers approaching re-registration</h3>
         <p>Your next audit is 6–12 months away. Use NDIS Ready to identify gaps now, not the week before the auditor arrives.</p>
       </div>
@@ -417,17 +402,16 @@
         <div class="price-label" style="color:var(--ink-mid);">&#11088; Best Value Bundle</div>
         <div class="price-amount" style="color:var(--ink);">$499</div>
         <div class="price-period" style="color:var(--ink-mid);">per year — save $338</div>
-        <div class="price-note" style="color:var(--ink);background:rgba(255,255,255,0.45);padding:0.4rem 0.75rem;border-radius:8px;display:inline-block;margin-bottom:1.5rem;">Registration Kit + 12 months Stay Ready</div>
-        <ul style="margin-bottom:2rem;flex:1;">
-          <li style="color:var(--ink-mid);">Everything in Registration Kit</li>
+        <div class="price-note" style="color:var(--ink);">Registration Kit + 12 months Stay Ready</div>
+        <ul>
+          <li style="color:var(--ink-mid);">Everything in the Registration Kit</li>
           <li style="color:var(--ink-mid);">12 months access to your document library</li>
-          <li style="color:var(--ink-mid);"><strong>Unlimited AI Note &amp; Incident Report Writer</strong> — turn rough notes into audit-ready docs</li>
-          <li style="color:var(--ink-mid);"><strong>Audit Readiness Self-Assessment</strong> — score yourself against the Practice Standards and unlock a prioritised action plan mapped to every document</li>
-          <li style="color:var(--ink-mid);"><strong>Mock Audit Interview Simulator</strong> — rehearse the questions a real auditor asks your team and get a full non-conformity risk report</li>
-          <li style="color:var(--ink-mid);"><strong>HR &amp; Workforce Template Pack</strong> — SCHADS-aware employment contracts, rosters, timesheets, leave, performance &amp; probation forms</li>
-          <li style="color:var(--ink-mid);">Free updates as templates are revised</li>
-          <li style="color:var(--ink-mid);">Priority email support</li>
-          <li style="color:var(--ink-mid);">First access to new tools as we build them out</li>
+          <li style="color:var(--ink-mid);">Unlimited AI Note &amp; Incident Writer</li>
+          <li style="color:var(--ink-mid);">Audit Readiness Self-Assessment + action plan</li>
+          <li style="color:var(--ink-mid);">Mock Audit Interview Simulator + risk report</li>
+          <li style="color:var(--ink-mid);">HR &amp; Workforce template pack (SCHADS-aware)</li>
+          <li style="color:var(--ink-mid);">Free template updates &amp; priority support</li>
+          <li style="color:var(--ink-mid);">First access to new tools</li>
         </ul>
         <button class="btn-price" style="background:var(--ink);color:var(--white);" onclick="startCheckout('value_bundle', this)">Get the Value Bundle →</button>
         <p style="text-align:center;font-size:0.75rem;color:var(--ink-mid);margin-top:0.75rem;">Worth $837 if bought separately</p>
@@ -506,23 +490,15 @@
   </div>
 </section>
 
-<section class="section" id="quiz" style="background:var(--peach);text-align:center;">
-  <div class="section-inner" style="max-width:640px;">
-    <p class="section-label" style="text-align:center;">Free — takes 5 minutes</p>
-    <h2 style="text-align:center;margin-bottom:1rem;">Find out exactly what you need to get registered</h2>
-    <p style="color:var(--ink-mid);font-size:1.05rem;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto;">Answer 9 questions about your services and situation. We'll show you a personalised checklist of every document and step you need — before you spend a cent.</p>
-    <a href="quiz.html" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.5rem;">Take the free quiz →</a>
-    <p style="margin-top:1rem;font-size:0.85rem;color:var(--ink-soft);">No credit card. No sign-up required. Just answers.</p>
-  </div>
-</section>
-
-<section class="cta-section">
+<section class="cta-section" id="quiz">
   <div style="margin-bottom:1rem;" aria-hidden="true">
     <svg width="48" height="48" viewBox="0 0 24 24" fill="var(--rose-deep)" style="display:inline-block;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
   </div>
-  <h2>The 1 July deadline is close.<br/>Let's get you NDIS Ready.</h2>
-  <p>Get your personalised compliance pack and walk into your audit prepared.</p>
-  <a href="#quiz" class="btn-primary">Take the free quiz today</a>
+  <p class="section-label" style="text-align:center;">Free — takes 5 minutes</p>
+  <h2>The 1 July deadline is close.<br/>Find out exactly what you need to get registered.<br/>Let's get you NDIS Ready.</h2>
+  <p>Answer 9 questions about your services and situation. We'll show you a personalised checklist of every document and step you need — before you spend a cent.</p>
+  <a href="quiz.html" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.5rem;">Take the free quiz →</a>
+  <p style="margin-top:1rem;font-size:0.85rem;color:var(--ink-soft);">No credit card. No sign-up required. Just answers.</p>
 </section>
 
 <footer>
