@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The NDIS Ready toolkit, explained: what every tool does and when to use it — NDIS Ready</title>
+  <meta name="description" content="We built five free tools to take you from “am I even viable?” to “I’d pass an audit tomorrow.” Here is exactly what each one does, when to reach for it, and how they work together." />
+  <link rel="canonical" href="https://ndis-ready.com.au/blog/ndis-ready-toolkit-explained.html" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="NDIS Ready" />
+  <meta property="og:url" content="https://ndis-ready.com.au/blog/ndis-ready-toolkit-explained.html" />
+  <meta property="og:title" content="The NDIS Ready toolkit, explained: what every tool does and when to use it" />
+  <meta property="og:description" content="We built five free tools to take you from “am I even viable?” to “I’d pass an audit tomorrow.” Here is exactly what each one does, when to reach for it, and how they work together." />
+  <meta property="og:image" content="https://ndis-ready.com.au/og/ndis-ready-toolkit-explained.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="The NDIS Ready toolkit, explained: what every tool does and when to use it — NDIS Ready" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The NDIS Ready toolkit, explained: what every tool does and when to use it" />
+  <meta name="twitter:description" content="We built five free tools to take you from “am I even viable?” to “I’d pass an audit tomorrow.” Here is exactly what each one does, when to reach for it, and how they work together." />
+  <meta name="twitter:image" content="https://ndis-ready.com.au/og/ndis-ready-toolkit-explained.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+:root {
+      --rose: #f4c5c5; --rose-deep: #e8a0a0; --lavender: #d8d0f0; --lavender-deep: #b8acdf;
+      --sage: #c5ddd0; --sage-deep: #9ec4b0; --peach: #f7dfc8; --peach-deep: #efcba8;
+      --cream: #faf8f4; --white: #ffffff; --ink: #2a2535; --ink-mid: #5a5370; --ink-soft: #9990b0;
+      --green: #2f8a5a; --font-brand: 'Nunito', system-ui, sans-serif;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --radius: 18px; --radius-sm: 10px; --radius-pill: 999px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background: var(--cream); color: var(--ink); line-height: 1.6; }
+    a { color: inherit; }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 2rem; max-width: 1200px; margin: 0 auto; }
+    @media(min-width:641px){ nav { padding-right: 13rem; } }
+    @media(max-width:640px){ nav { padding-right: 4.5rem; } }
+    .nav-logo { font-family: var(--font-brand); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: var(--lavender-deep); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    nav .nav-right { display: flex; align-items: center; gap: 1.25rem; }
+    nav .nav-right a.plain { font-size: 0.875rem; font-weight: 600; color: var(--ink-mid); text-decoration: none; }
+    nav a.nav-cta { background: var(--ink); color: var(--white); font-size: 0.875rem; font-weight: 600; padding: 0.6rem 1.4rem; border-radius: var(--radius-pill); text-decoration: none; }
+    nav a.nav-cta:hover { background: #3d3650; }
+    @media (max-width: 820px) { nav .nav-right a.plain { display: none; } }
+    footer { border-top: 1px solid #ece7df; padding: 2rem; text-align: center; color: var(--ink-soft); font-size: 0.85rem; margin-top: 3rem; }
+    footer a { color: var(--ink-mid); text-decoration: none; margin: 0 0.5rem; }
+
+    .article-wrap { max-width: 720px; margin: 0 auto; padding: 1.5rem 1.5rem 2rem; }
+    .crumb { font-size: 0.82rem; color: var(--ink-soft); margin: 0.5rem 0 1.5rem; }
+    .crumb a { color: var(--ink-mid); text-decoration: none; }
+    .crumb a:hover { text-decoration: underline; }
+    .post-cat { display: inline-block; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.28rem 0.7rem; border-radius: 999px; margin-bottom: 1rem; }
+    .article-head h1 { font-family: var(--font-display); font-size: clamp(1.9rem, 4.5vw, 2.8rem); line-height: 1.14; margin-bottom: 0.8rem; }
+    .article-head .dek { font-size: 1.1rem; color: var(--ink-mid); margin-bottom: 1rem; }
+    .meta { font-size: 0.82rem; color: var(--ink-soft); border-bottom: 1px solid #ece7df; padding-bottom: 1.4rem; margin-bottom: 1.8rem; }
+    .article-body { font-size: 1.05rem; color: var(--ink); }
+    .article-body h2 { font-family: var(--font-display); font-size: 1.5rem; line-height: 1.2; margin: 1.9rem 0 0.7rem; }
+    .article-body p { margin-bottom: 1.1rem; }
+    .article-body ul { margin: 0 0 1.2rem 1.2rem; }
+    .article-body li { margin-bottom: 0.55rem; }
+    .article-body strong { color: var(--ink); }
+    .article-body em { font-style: italic; }
+    .article-body blockquote { font-family: var(--font-display); font-size: 1.35rem; line-height: 1.3; color: var(--lavender-deep); border-left: 3px solid var(--lavender-deep); padding: 0.3rem 0 0.3rem 1.2rem; margin: 1.6rem 0; font-style: italic; }
+    .callout { background: #f3eefe; border: 1px solid var(--lavender); border-radius: var(--radius); padding: 1.4rem 1.5rem; margin: 1.8rem 0; }
+    .callout p { font-size: 0.98rem; color: var(--ink-mid); margin-bottom: 1rem; }
+    .callout p strong { color: var(--ink); }
+    .callout .cta-btn { display: inline-block; background: var(--ink); color: #fff; font-weight: 700; font-size: 0.92rem; padding: 0.7rem 1.4rem; border-radius: var(--radius-pill); text-decoration: none; }
+    .callout .cta-btn:hover { background: #3d3650; }
+    .end-cta { background: var(--ink); color: #fff; border-radius: var(--radius); padding: 2rem 2.2rem; margin: 2.5rem 0 1rem; text-align: center; }
+    .end-cta h3 { font-family: var(--font-display); font-size: 1.6rem; color: #fff; margin-bottom: 0.6rem; }
+    .end-cta p { font-size: 0.98rem; opacity: 0.85; margin-bottom: 1.3rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+    .end-cta a { display: inline-block; background: #fff; color: var(--ink); font-weight: 700; padding: 0.8rem 1.8rem; border-radius: var(--radius-pill); text-decoration: none; }
+    .more-link { text-align: center; margin-top: 1.5rem; }
+    .more-link a { color: var(--ink-mid); font-weight: 600; text-decoration: none; font-size: 0.92rem; }
+    .more-link a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="nav-logo">
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;">
+        <defs><linearGradient id="navLogo_blog" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0%" stop-color="#cabdf6"/><stop offset="100%" stop-color="#a18fd6"/></linearGradient></defs>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="url(#navLogo_blog)"/>
+        <path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="none" stroke="#8a76c2" stroke-width="3.5"/>
+        <path d="M50 65 Q31 51 31 41 Q31 33 39.5 33 Q45 33 50 39.5 Q55 33 60.5 33 Q69 33 69 41 Q69 51 50 65 Z" fill="#ffffff" opacity="0.95"/>
+      </svg>
+      NDIS Ready
+    </a>
+    <div class="nav-right">
+      <a class="plain" href="/blog.html">Blog</a>
+      <a class="plain" href="/tools.html">AI writer</a>
+      <a class="plain" href="/health-check.html">Health check</a>
+      <a class="plain" href="/audit-readiness.html">Audit check</a>
+      <a class="nav-cta" href="/#pricing">View pricing &rarr;</a>
+    </div>
+  </nav>
+
+  <article class="article-wrap">
+    <div class="crumb"><a href="/">Home</a> · <a href="/blog.html">Blog</a></div>
+    <div class="article-head">
+      <span class="post-cat" style="background:#fdeef0;color:#9a4b54;">Day to day</span>
+      <h1>The NDIS Ready toolkit, explained: what every tool does and when to use it</h1>
+      <p class="dek">We built five free tools to take you from “am I even viable?” to “I’d pass an audit tomorrow.” Here is exactly what each one does, when to reach for it, and how they work together.</p>
+      <div class="meta">June 2026 · 9 min read</div>
+    </div>
+    <div class="article-body">
+<p>When you run a small NDIS provider business, the hardest part isn't the support work — it's everything around it. Are the numbers even going to stack up? Which documents do you actually need? Would your team survive an auditor's questions? Most providers answer these questions far too late, usually the week before an audit, when there's no time left to fix anything.</p>
+
+<p>So we built a set of free tools to answer those questions <em>early</em> — while you can still do something about the answers. This post walks through every tool in the NDIS Ready toolkit: what it does, when to use it, and how they fit together. You can open the whole suite any time on the <a href="/tools-suite.html">tools page</a>.</p>
+
+<h2>The short version</h2>
+<p>There are five pieces. Four are free tools you can use right now, and one is the document pack that sits underneath everything. Here's the map:</p>
+<ul>
+  <li><strong>Business Health Check</strong> — confirms your service is financially viable before you commit.</li>
+  <li><strong>Audit Readiness Self-Assessment</strong> — scores you against the Practice Standards and shows your document gaps.</li>
+  <li><strong>Mock Audit Interview Simulator</strong> — tests whether your day-to-day practice would hold up when an auditor questions your team.</li>
+  <li><strong>AI Note &amp; Incident Writer</strong> — turns rough shift notes into clean, audit-ready records, every day.</li>
+  <li><strong>Your personalised document pack</strong> — the 65+ policies, registers and forms that close the gaps the tools find.</li>
+</ul>
+<p>Read on for when to reach for each one.</p>
+
+<h2>1. Business Health Check — start here</h2>
+<p>Before you spend a dollar or write a single policy, the first question to answer is brutally simple: <strong>does this business actually make money?</strong> A surprising number of providers discover — months in — that their cost per support hour quietly exceeds the NDIS price limit they're billing against. By then they've already hired staff and signed participants.</p>
+<p>The Business Health Check fixes that. You plug in your real numbers — wages, on-costs, overheads, the supports you deliver — and in under a minute it shows your true cost per support hour and your actual margin against the relevant NDIS price limits. No spreadsheets, no accountant required for a first read.</p>
+<p><strong>When to use it:</strong> right at the very start, before you register or take on participants — and again any time your costs change (a pay rise, a new award level, rising overheads). If the numbers don't work, that's the most valuable thing you can learn on day one rather than month six. It's free to run, and the full report comes with the document pack. You can read more about the thinking behind it in our piece on <a href="/blog/is-your-ndis-business-making-money.html">whether your NDIS business is actually making money</a>.</p>
+
+<h2>2. Audit Readiness Self-Assessment — find your gaps</h2>
+<p>Once you know the business is viable, the next question is: <strong>what's missing?</strong> The NDIS Practice Standards span seven quality areas, and most new providers genuinely don't know which documents they're short on — they just have a vague, anxious sense that they're not ready.</p>
+<p>The Audit Readiness Self-Assessment turns that anxiety into a ranked list. You score yourself against the Practice Standards across all seven quality areas, and it shows your biggest gaps ordered by priority — with each gap mapped to the exact document that closes it. Instead of “I should probably sort out my compliance,” you get “I'm missing an incident register, a safeguarding policy and a medication management procedure, in that order.”</p>
+<p><strong>When to use it:</strong> after the Health Check, before you book an audit, and then every few months as a check-up. It's the fastest way to see how far you are from audit-ready and exactly what to build next. The score is free; the full mapped report comes with the pack. If the Practice Standards still feel like jargon, our <a href="/blog/ndis-practice-standards-plain-english.html">plain-English guide to the Practice Standards</a> breaks them down.</p>
+
+<h2>3. Mock Audit Interview Simulator — test your practice, not your binder</h2>
+<p>Here's the trap that catches well-prepared providers: they assume an audit is about documents. It isn't. <strong>Auditors interview your team.</strong> They sit down with your support workers and ask what they'd actually do — and if the answers don't match your beautiful policies, that gap is exactly what gets written up.</p>
+<p>The Mock Audit Interview Simulator rehearses that conversation. It asks the kind of questions a real auditor asks on the day — “What do you do if a participant has a fall?”, “How would you raise a complaint?”, “Where's the incident register?” — and shows you where your day-to-day practice diverges from your paperwork, before the real auditor finds it.</p>
+<p><strong>When to use it:</strong> in the weeks before an audit, and as a training exercise for new staff. It's the single best way to surface the “we wrote the policy but nobody actually does it that way” problem while you still have time to fix it. To understand what's coming, read <a href="/blog/what-an-ndis-auditor-asks.html">what an NDIS auditor actually asks you</a>.</p>
+
+<h2>4. AI Note &amp; Incident Writer — for every single day after</h2>
+<p>The first three tools are about getting <em>ready</em>. This one is about <em>staying</em> ready. Progress notes and incident reports are where compliance is won or lost in the long run — an auditor can pull any note from any shift, and rushed, vague or subjective notes are a constant source of non-conformities.</p>
+<p>The AI Note &amp; Incident Writer takes the rough notes your workers jot down at the end of a shift and returns a clean, objective NDIS progress note or incident report in seconds — in the plain, factual language auditors expect. This is real AI, used transparently and assistively: it drafts, but you always review and approve before anything is used. It doesn't invent facts; it tidies up what your worker recorded.</p>
+<p><strong>When to use it:</strong> every day, on every shift, by every worker. It's the tool that keeps your evidence trail clean without adding hours of admin. It's free to try, and unlimited with the document pack. Our guide on <a href="/blog/how-to-write-a-progress-note.html">writing a progress note that protects you</a> explains exactly what “good” looks like.</p>
+
+<blockquote>Tools test your readiness. Documents prove it. You need both.</blockquote>
+
+<h2>5. Your personalised document pack — the foundation</h2>
+<p>The four tools above will tell you, with uncomfortable precision, exactly what you're missing. The document pack is what fills those gaps. It's 65+ policies, procedures, registers and forms — every document the NDIS Commission expects, written to the Practice Standards and <strong>personalised to your organisation</strong>, not generic templates with a blank where your name should go. They arrive as submission-ready Word files that are yours to keep and edit.</p>
+<p>This is the piece that turns “I know what I'm missing” into “I have it.” And it's worth being honest about why generic templates aren't enough on their own — we wrote a whole piece on <a href="/blog/why-templates-dont-pass-audits.html">why templates alone won't pass your audit</a>.</p>
+
+<h2>How the toolkit works together</h2>
+<p>Used in order, the pieces form a simple path from “should I even do this?” to “I'd pass an audit tomorrow”:</p>
+<ul>
+  <li><strong>Step 1 — Check the numbers.</strong> Run the Business Health Check to confirm your service is financially viable. No point building compliance for a business that loses money on every hour.</li>
+  <li><strong>Step 2 — Find your gaps.</strong> Run the Audit Readiness Self-Assessment to see which documents you're missing, then the Mock Audit Interview to see where your day-to-day practice wouldn't hold up.</li>
+  <li><strong>Step 3 — Close them.</strong> Your personalised document pack gives you every policy, register and form you need — and the AI Writer keeps your notes audit-ready from then on.</li>
+</ul>
+<p>Each tool is useful on its own, but together they cover the full lifecycle: viability, readiness, practice, and the daily evidence trail.</p>
+
+<div class="callout">
+  <p><strong>Want to see the whole suite in one place?</strong> The tools page lays out every tool with a one-line summary and a direct link to open each one. Most are free to try right now — no account, no card.</p>
+  <a class="cta-btn" href="/tools-suite.html">Explore the full toolkit &rarr;</a>
+</div>
+
+<h2>Which tool should you open first?</h2>
+<p>It depends on where you are:</p>
+<ul>
+  <li><strong>Thinking about starting a provider business?</strong> Open the Business Health Check first. Confirm it's viable before anything else.</li>
+  <li><strong>Already running, getting ready to register or re-audit?</strong> Start with the Audit Readiness Self-Assessment, then the Mock Audit Interview.</li>
+  <li><strong>Already registered and just want to stay clean?</strong> Put the AI Note &amp; Incident Writer in front of every worker, every shift.</li>
+  <li><strong>Not sure what applies to you at all?</strong> Take the free 2-minute quiz — it builds a personalised checklist based on the supports you offer.</li>
+</ul>
+<p>Whatever stage you're at, the point is the same: find out where you stand <em>before</em> it costs you. The tools are free, they take minutes, and they're built specifically for small providers who'd rather get on with the work than wrestle with compliance jargon.</p>
+
+      <div class="end-cta">
+        <h3>Open the full toolkit</h3>
+        <p>Every tool in one place — the Business Health Check, Audit Readiness, Mock Audit and AI Writer. Most are free to try right now.</p>
+        <a href="/tools-suite.html">Explore the tools &rarr;</a>
+      </div>
+      <div class="more-link"><a href="/blog.html">&larr; More from the NDIS Ready blog</a></div>
+    </div>
+  </article>
+
+  <footer>
+    <div><a href="/">Home</a> · <a href="/blog.html">Blog</a> · <a href="/#pricing">Pricing</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms-of-service.html">Terms</a></div>
+    <div style="margin-top:0.6rem;">© 2026 NDIS Ready · hello@ndis-ready.com.au</div>
+  </footer>
+<!-- CONTACT_WIDGET_START -->
+
+  <style id="contact-widget-css">
+    .contact-fab { position: fixed; top: 1rem; right: 1rem; z-index: 9998; display: inline-flex; align-items: center; gap: 0.45rem; background: linear-gradient(135deg, #b8acdf, #e8a0a0); color: #fff; font-family: 'Nunito', system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 800; padding: 0.6rem 1.25rem; border: none; border-radius: 999px; cursor: pointer; text-decoration: none; box-shadow: 0 4px 16px rgba(184,172,223,0.5); transition: transform 0.15s, box-shadow 0.2s; }
+    .contact-fab:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(184,172,223,0.65); }
+    .contact-fab svg { flex-shrink: 0; }
+    @media (max-width: 640px) { .contact-fab { font-size: 0.78rem; padding: 0.5rem 0.9rem; top: 0.6rem; right: 0.6rem; } .contact-fab .cf-label { display: none; } }
+    .contact-overlay { position: fixed; inset: 0; background: rgba(42,37,53,0.55); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 1.25rem; }
+    .contact-overlay.open { display: flex; }
+    .contact-modal { background: #fff; border-radius: 20px; max-width: 480px; width: 100%; padding: 2rem 2rem 1.75rem; box-shadow: 0 24px 60px rgba(42,37,53,0.3); position: relative; font-family: 'DM Sans', system-ui, sans-serif; max-height: 92vh; overflow-y: auto; }
+    .contact-modal h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.5rem; line-height: 1.2; color: #2a2535; margin: 0 0 0.5rem; }
+    .contact-modal .cm-sub { font-size: 0.95rem; color: #5a5370; margin: 0 0 1.25rem; line-height: 1.55; }
+    .contact-modal label { display: block; font-size: 0.8rem; font-weight: 700; color: #2a2535; margin: 0.75rem 0 0.3rem; }
+    .contact-modal input, .contact-modal textarea { width: 100%; font-family: inherit; font-size: 0.95rem; padding: 0.7rem 0.9rem; border: 1.5px solid #e2ddd3; border-radius: 12px; background: #faf8f4; color: #2a2535; box-sizing: border-box; }
+    .contact-modal input:focus, .contact-modal textarea:focus { outline: none; border-color: #b8acdf; }
+    .contact-modal textarea { resize: vertical; min-height: 110px; }
+    .contact-modal .cm-send { margin-top: 1.1rem; width: 100%; background: #2a2535; color: #fff; font-family: 'Nunito', system-ui, sans-serif; font-weight: 800; font-size: 0.95rem; padding: 0.85rem; border: none; border-radius: 999px; cursor: pointer; transition: background 0.2s; }
+    .contact-modal .cm-send:hover { background: #3d3650; }
+    .contact-modal .cm-send:disabled { opacity: 0.6; cursor: default; }
+    .contact-modal .cm-close { position: absolute; top: 1rem; right: 1.1rem; background: none; border: none; font-size: 1.5rem; line-height: 1; color: #9990b0; cursor: pointer; }
+    .contact-modal .cm-status { margin-top: 0.9rem; font-size: 0.9rem; text-align: center; min-height: 1.2rem; }
+    .contact-modal .cm-status.ok { color: #2f8a5a; font-weight: 700; }
+    .contact-modal .cm-status.err { color: #d42b2b; font-weight: 700; }
+  </style>
+
+  <button class="contact-fab" type="button" onclick="openContact()" aria-label="Contact us">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="cf-label">We're here to help &rarr;</span>
+  </button>
+  <div class="contact-overlay" id="contactOverlay" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+    <div class="contact-modal">
+      <button class="cm-close" type="button" aria-label="Close" onclick="closeContact()">&times;</button>
+      <h3 id="cmTitle">Got an idea? Question? Suggestion? Request?</h3>
+      <p class="cm-sub">Let us know &mdash; we love hearing from the community. Tell us what you want more of, what you're unsure about, or anything we can help with. A real person reads every message.</p>
+      <form id="contactForm" onsubmit="return submitContact(event)">
+        <label for="cmName">Your name</label>
+        <input type="text" id="cmName" name="name" placeholder="First name is fine" />
+        <label for="cmEmail">Your email <span style="font-weight:400;color:#9990b0;">(so we can reply)</span></label>
+        <input type="email" id="cmEmail" name="email" placeholder="you@example.com" />
+        <label for="cmMsg">Your message</label>
+        <textarea id="cmMsg" name="message" placeholder="Type anything here..." required></textarea>
+        <input type="text" id="cmCompany" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+        <button type="submit" class="cm-send" id="cmSend">Send it through &rarr;</button>
+        <div class="cm-status" id="cmStatus" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+  <script id="contact-widget-js">
+    function openContact(){var o=document.getElementById('contactOverlay');o.classList.add('open');setTimeout(function(){var m=document.getElementById('cmMsg');if(m)m.focus();},50);}
+    function closeContact(){document.getElementById('contactOverlay').classList.remove('open');}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeContact();});
+    document.addEventListener('click',function(e){if(e.target&&e.target.id==='contactOverlay')closeContact();});
+    async function submitContact(e){
+      e.preventDefault();
+      var btn=document.getElementById('cmSend'), st=document.getElementById('cmStatus');
+      var name=(document.getElementById('cmName').value||'').trim();
+      var email=(document.getElementById('cmEmail').value||'').trim();
+      var msg=(document.getElementById('cmMsg').value||'').trim();
+      if(!msg){st.className='cm-status err';st.textContent='Please type a message first.';return false;}
+      btn.disabled=true;btn.textContent='Sending...';st.className='cm-status';st.textContent='';
+      try{
+        var company=(document.getElementById('cmCompany').value||'');
+        var res=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,email:email,message:msg,company:company,page:location.pathname})});
+        if(res.ok){st.className='cm-status ok';st.textContent='Thank you! We\'ve got your message and will be in touch.';document.getElementById('contactForm').reset();setTimeout(closeContact,2200);}
+        else{var d=await res.json().catch(function(){return{};});st.className='cm-status err';st.textContent=d.error||'Something went wrong. Please email hello@ndis-ready.com.au directly.';}
+      }catch(err){st.className='cm-status err';st.textContent='Network error. Please email hello@ndis-ready.com.au directly.';}
+      btn.disabled=false;btn.textContent='Send it through \u2192';
+      return false;
+    }
+  </script>
+
+  <!-- CONTACT_WIDGET_END -->
+</body>
+</html>

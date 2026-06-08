@@ -82,6 +82,86 @@ const CAT_COLOR = {
 
 const posts = [
   {
+    slug: 'ndis-ready-toolkit-explained',
+    cat: 'Day to day',
+    title: 'The NDIS Ready toolkit, explained: what every tool does and when to use it',
+    dek: 'We built five free tools to take you from “am I even viable?” to “I’d pass an audit tomorrow.” Here is exactly what each one does, when to reach for it, and how they work together.',
+    read: '9 min read',
+    date: 'June 2026',
+    body: `
+<p>When you run a small NDIS provider business, the hardest part isn't the support work — it's everything around it. Are the numbers even going to stack up? Which documents do you actually need? Would your team survive an auditor's questions? Most providers answer these questions far too late, usually the week before an audit, when there's no time left to fix anything.</p>
+
+<p>So we built a set of free tools to answer those questions <em>early</em> — while you can still do something about the answers. This post walks through every tool in the NDIS Ready toolkit: what it does, when to use it, and how they fit together. You can open the whole suite any time on the <a href="/tools-suite.html">tools page</a>.</p>
+
+<h2>The short version</h2>
+<p>There are five pieces. Four are free tools you can use right now, and one is the document pack that sits underneath everything. Here's the map:</p>
+<ul>
+  <li><strong>Business Health Check</strong> — confirms your service is financially viable before you commit.</li>
+  <li><strong>Audit Readiness Self-Assessment</strong> — scores you against the Practice Standards and shows your document gaps.</li>
+  <li><strong>Mock Audit Interview Simulator</strong> — tests whether your day-to-day practice would hold up when an auditor questions your team.</li>
+  <li><strong>AI Note &amp; Incident Writer</strong> — turns rough shift notes into clean, audit-ready records, every day.</li>
+  <li><strong>Your personalised document pack</strong> — the 65+ policies, registers and forms that close the gaps the tools find.</li>
+</ul>
+<p>Read on for when to reach for each one.</p>
+
+<h2>1. Business Health Check — start here</h2>
+<p>Before you spend a dollar or write a single policy, the first question to answer is brutally simple: <strong>does this business actually make money?</strong> A surprising number of providers discover — months in — that their cost per support hour quietly exceeds the NDIS price limit they're billing against. By then they've already hired staff and signed participants.</p>
+<p>The Business Health Check fixes that. You plug in your real numbers — wages, on-costs, overheads, the supports you deliver — and in under a minute it shows your true cost per support hour and your actual margin against the relevant NDIS price limits. No spreadsheets, no accountant required for a first read.</p>
+<p><strong>When to use it:</strong> right at the very start, before you register or take on participants — and again any time your costs change (a pay rise, a new award level, rising overheads). If the numbers don't work, that's the most valuable thing you can learn on day one rather than month six. It's free to run, and the full report comes with the document pack. You can read more about the thinking behind it in our piece on <a href="/blog/is-your-ndis-business-making-money.html">whether your NDIS business is actually making money</a>.</p>
+
+<h2>2. Audit Readiness Self-Assessment — find your gaps</h2>
+<p>Once you know the business is viable, the next question is: <strong>what's missing?</strong> The NDIS Practice Standards span seven quality areas, and most new providers genuinely don't know which documents they're short on — they just have a vague, anxious sense that they're not ready.</p>
+<p>The Audit Readiness Self-Assessment turns that anxiety into a ranked list. You score yourself against the Practice Standards across all seven quality areas, and it shows your biggest gaps ordered by priority — with each gap mapped to the exact document that closes it. Instead of “I should probably sort out my compliance,” you get “I'm missing an incident register, a safeguarding policy and a medication management procedure, in that order.”</p>
+<p><strong>When to use it:</strong> after the Health Check, before you book an audit, and then every few months as a check-up. It's the fastest way to see how far you are from audit-ready and exactly what to build next. The score is free; the full mapped report comes with the pack. If the Practice Standards still feel like jargon, our <a href="/blog/ndis-practice-standards-plain-english.html">plain-English guide to the Practice Standards</a> breaks them down.</p>
+
+<h2>3. Mock Audit Interview Simulator — test your practice, not your binder</h2>
+<p>Here's the trap that catches well-prepared providers: they assume an audit is about documents. It isn't. <strong>Auditors interview your team.</strong> They sit down with your support workers and ask what they'd actually do — and if the answers don't match your beautiful policies, that gap is exactly what gets written up.</p>
+<p>The Mock Audit Interview Simulator rehearses that conversation. It asks the kind of questions a real auditor asks on the day — “What do you do if a participant has a fall?”, “How would you raise a complaint?”, “Where's the incident register?” — and shows you where your day-to-day practice diverges from your paperwork, before the real auditor finds it.</p>
+<p><strong>When to use it:</strong> in the weeks before an audit, and as a training exercise for new staff. It's the single best way to surface the “we wrote the policy but nobody actually does it that way” problem while you still have time to fix it. To understand what's coming, read <a href="/blog/what-an-ndis-auditor-asks.html">what an NDIS auditor actually asks you</a>.</p>
+
+<h2>4. AI Note &amp; Incident Writer — for every single day after</h2>
+<p>The first three tools are about getting <em>ready</em>. This one is about <em>staying</em> ready. Progress notes and incident reports are where compliance is won or lost in the long run — an auditor can pull any note from any shift, and rushed, vague or subjective notes are a constant source of non-conformities.</p>
+<p>The AI Note &amp; Incident Writer takes the rough notes your workers jot down at the end of a shift and returns a clean, objective NDIS progress note or incident report in seconds — in the plain, factual language auditors expect. This is real AI, used transparently and assistively: it drafts, but you always review and approve before anything is used. It doesn't invent facts; it tidies up what your worker recorded.</p>
+<p><strong>When to use it:</strong> every day, on every shift, by every worker. It's the tool that keeps your evidence trail clean without adding hours of admin. It's free to try, and unlimited with the document pack. Our guide on <a href="/blog/how-to-write-a-progress-note.html">writing a progress note that protects you</a> explains exactly what “good” looks like.</p>
+
+<blockquote>Tools test your readiness. Documents prove it. You need both.</blockquote>
+
+<h2>5. Your personalised document pack — the foundation</h2>
+<p>The four tools above will tell you, with uncomfortable precision, exactly what you're missing. The document pack is what fills those gaps. It's 65+ policies, procedures, registers and forms — every document the NDIS Commission expects, written to the Practice Standards and <strong>personalised to your organisation</strong>, not generic templates with a blank where your name should go. They arrive as submission-ready Word files that are yours to keep and edit.</p>
+<p>This is the piece that turns “I know what I'm missing” into “I have it.” And it's worth being honest about why generic templates aren't enough on their own — we wrote a whole piece on <a href="/blog/why-templates-dont-pass-audits.html">why templates alone won't pass your audit</a>.</p>
+
+<h2>How the toolkit works together</h2>
+<p>Used in order, the pieces form a simple path from “should I even do this?” to “I'd pass an audit tomorrow”:</p>
+<ul>
+  <li><strong>Step 1 — Check the numbers.</strong> Run the Business Health Check to confirm your service is financially viable. No point building compliance for a business that loses money on every hour.</li>
+  <li><strong>Step 2 — Find your gaps.</strong> Run the Audit Readiness Self-Assessment to see which documents you're missing, then the Mock Audit Interview to see where your day-to-day practice wouldn't hold up.</li>
+  <li><strong>Step 3 — Close them.</strong> Your personalised document pack gives you every policy, register and form you need — and the AI Writer keeps your notes audit-ready from then on.</li>
+</ul>
+<p>Each tool is useful on its own, but together they cover the full lifecycle: viability, readiness, practice, and the daily evidence trail.</p>
+
+<div class="callout">
+  <p><strong>Want to see the whole suite in one place?</strong> The tools page lays out every tool with a one-line summary and a direct link to open each one. Most are free to try right now — no account, no card.</p>
+  <a class="cta-btn" href="/tools-suite.html">Explore the full toolkit &rarr;</a>
+</div>
+
+<h2>Which tool should you open first?</h2>
+<p>It depends on where you are:</p>
+<ul>
+  <li><strong>Thinking about starting a provider business?</strong> Open the Business Health Check first. Confirm it's viable before anything else.</li>
+  <li><strong>Already running, getting ready to register or re-audit?</strong> Start with the Audit Readiness Self-Assessment, then the Mock Audit Interview.</li>
+  <li><strong>Already registered and just want to stay clean?</strong> Put the AI Note &amp; Incident Writer in front of every worker, every shift.</li>
+  <li><strong>Not sure what applies to you at all?</strong> Take the free 2-minute quiz — it builds a personalised checklist based on the supports you offer.</li>
+</ul>
+<p>Whatever stage you're at, the point is the same: find out where you stand <em>before</em> it costs you. The tools are free, they take minutes, and they're built specifically for small providers who'd rather get on with the work than wrestle with compliance jargon.</p>
+`,
+    cta: {
+      title: 'Open the full toolkit',
+      text: 'Every tool in one place — the Business Health Check, Audit Readiness, Mock Audit and AI Writer. Most are free to try right now.',
+      btn: 'Explore the tools',
+      href: '/tools-suite.html',
+    },
+  },
+  {
     slug: 'ndis-sil-registration-checklist',
     cat: 'Getting registered',
     title: 'The NDIS SIL registration checklist for 2026',
