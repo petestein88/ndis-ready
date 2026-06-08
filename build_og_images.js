@@ -29,20 +29,51 @@ const CAT_PILL = {
   'Staff': 'background:#f3eefe;color:#5b4b86;',
 };
 
-// cards: {file, kind:'post'|'home', cat, title, sub}
-const cards = [
+// Pull the canonical blog post list straight from build_blog.js so every post
+// automatically gets an OG card. Adding a post in one place is now enough.
+const { posts } = require('./build_blog.js');
+
+// Optional per-slug overrides for a shorter title/sub on the social card
+// (some blog titles/deks are too long to read well at 1200x630). If a slug
+// isn't listed here we fall back to the post's own title + a trimmed dek.
+const CARD_OVERRIDES = {
+  'ndis-sil-registration-checklist': { title: 'The NDIS SIL registration checklist for 2026', sub: 'Every document you actually need \u2014 nothing missing.' },
+  'ndis-ready-toolkit-explained': { title: 'The NDIS Ready toolkit, explained', sub: 'What every free tool does, and when to reach for it.' },
+  'ndis-practice-standards-plain-english': { title: 'NDIS Practice Standards, explained in plain English', sub: 'What the jargon actually means for a small provider.' },
+  'why-templates-dont-pass-audits': { title: 'Why templates alone won\u2019t pass your audit', sub: 'Auditors check for evidence, not paperwork.' },
+  'what-an-ndis-auditor-asks': { title: 'What an NDIS auditor actually asks you', sub: 'The audit is an interview \u2014 here are the questions.' },
+  'is-your-ndis-business-making-money': { title: 'Is your NDIS business actually making money?', sub: 'The hidden cost per support hour, explained.' },
+  'how-to-write-a-progress-note': { title: 'How to write a progress note that protects you', sub: 'Objective, factual, and audit-proof.' },
+  'unregistered-sil-providers-2026-deadline': { title: 'What unregistered SIL providers must do now', sub: 'Registration is tightening \u2014 get ready early.' },
+  'hiring-your-first-support-worker': { title: 'Hiring your first support worker: the paperwork', sub: 'SCHADS, contracts, rosters and screening.' },
+};
+
+// Strip any HTML entities/tags from a dek and trim to a tidy length for the card.
+function trimSub(s) {
+  let t = String(s).replace(/<[^>]+>/g, '').replace(/&[a-z]+;/g, ' ').trim();
+  if (t.length > 90) t = t.slice(0, 87).replace(/[\s,.;:\u2014-]+$/, '') + '\u2026';
+  return t;
+}
+
+// Site-level cards (not blog posts) stay hand-written.
+const staticCards = [
   { file: 'home.png', kind: 'home', eyebrow: 'NDIS Ready', title: 'Get \u2014 and stay \u2014 audit-ready', sub: 'Personalised compliance documents + live tools for NDIS providers' },
   { file: 'blog.png', kind: 'home', eyebrow: 'The NDIS Ready Blog', title: 'NDIS compliance, in plain English', sub: 'Practical guides for the people actually doing the work' },
-  { file: 'ndis-sil-registration-checklist.png', kind: 'post', cat: 'Getting registered', title: 'The NDIS SIL registration checklist for 2026', sub: 'Every document you actually need \u2014 nothing missing.' },
-  { file: 'ndis-ready-toolkit-explained.png', kind: 'post', cat: 'Day to day', title: 'The NDIS Ready toolkit, explained', sub: 'What every free tool does, and when to reach for it.' },
-  { file: 'ndis-practice-standards-plain-english.png', kind: 'post', cat: 'Audits', title: 'NDIS Practice Standards, explained in plain English', sub: 'What the jargon actually means for a small provider.' },
-  { file: 'why-templates-dont-pass-audits.png', kind: 'post', cat: 'Audits', title: 'Why templates alone won\u2019t pass your audit', sub: 'Auditors check for evidence, not paperwork.' },
-  { file: 'what-an-ndis-auditor-asks.png', kind: 'post', cat: 'Audits', title: 'What an NDIS auditor actually asks you', sub: 'The audit is an interview \u2014 here are the questions.' },
-  { file: 'is-your-ndis-business-making-money.png', kind: 'post', cat: 'Money', title: 'Is your NDIS business actually making money?', sub: 'The hidden cost per support hour, explained.' },
-  { file: 'how-to-write-a-progress-note.png', kind: 'post', cat: 'Day to day', title: 'How to write a progress note that protects you', sub: 'Objective, factual, and audit-proof.' },
-  { file: 'unregistered-sil-providers-2026-deadline.png', kind: 'post', cat: 'Getting registered', title: 'What unregistered SIL providers must do now', sub: 'Registration is tightening \u2014 get ready early.' },
-  { file: 'hiring-your-first-support-worker.png', kind: 'post', cat: 'Staff', title: 'Hiring your first support worker: the paperwork', sub: 'SCHADS, contracts, rosters and screening.' },
 ];
+
+// One card per blog post, derived automatically from the post list.
+const postCards = posts.map(p => {
+  const o = CARD_OVERRIDES[p.slug] || {};
+  return {
+    file: `${p.slug}.png`,
+    kind: 'post',
+    cat: p.cat,
+    title: o.title || p.title,
+    sub: o.sub || trimSub(p.dek),
+  };
+});
+
+const cards = [...staticCards, ...postCards];
 
 function cardHTML(c) {
   const isHome = c.kind === 'home';

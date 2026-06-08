@@ -1248,11 +1248,19 @@ ${cards}
 `;
 }
 
-/* ---------- write files ---------- */
-fs.writeFileSync(path.join(OUT_DIR, 'blog.html'), renderIndex());
-posts.forEach(p => {
-  fs.writeFileSync(path.join(BLOG_DIR, `${p.slug}.html`), renderPost(p));
-});
+/* ---------- exports (so other scripts can reuse the canonical post list) ---------- */
+// Always export the post metadata + category colour map. build_og_images.js imports
+// these so every blog post automatically gets a matching Open Graph social card —
+// no need to maintain a second hand-written list.
+module.exports = { posts, CAT_COLOR };
 
-console.log('Wrote blog.html + ' + posts.length + ' posts:');
-posts.forEach(p => console.log('  /blog/' + p.slug + '.html'));
+/* ---------- write files (only when run directly: `node build_blog.js`) ---------- */
+if (require.main === module) {
+  fs.writeFileSync(path.join(OUT_DIR, 'blog.html'), renderIndex());
+  posts.forEach(p => {
+    fs.writeFileSync(path.join(BLOG_DIR, `${p.slug}.html`), renderPost(p));
+  });
+
+  console.log('Wrote blog.html + ' + posts.length + ' posts:');
+  posts.forEach(p => console.log('  /blog/' + p.slug + '.html'));
+}
