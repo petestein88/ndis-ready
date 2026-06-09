@@ -143,7 +143,7 @@
     footer { background: var(--ink); color: rgba(255,255,255,0.5); padding: 2.5rem 2rem; text-align: center; font-size: 0.85rem; }
     footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
     .footer-logo { font-family: var(--font-brand); font-weight: 800; color: var(--lavender); font-size: 1.3rem; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
-    @media (max-width: 640px) { nav { padding: 1rem 1.25rem; } .hero { padding: 2rem 1.25rem 2rem; } .section { padding: 2.5rem 1.25rem; } }
+    @media (max-width: 640px) { nav { padding: 1rem 1.25rem; } .hero { padding: 2rem 1.25rem 2rem; } .section { padding: 2.5rem 1.25rem; } .nav-right { gap: 0.75rem !important; } .nav-link-secondary { display: none !important; } nav a.nav-cta { font-size: 0.8rem; padding: 0.5rem 0.95rem; } }
   </style>
 <!-- NAV_FAB_PAD_START --><style>@media(min-width:641px){nav{padding-right:13rem !important;}}@media(max-width:640px){nav{padding-right:4.5rem !important;}}</style><!-- NAV_FAB_PAD_END -->
 </head>
@@ -158,11 +158,11 @@
       <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;"><defs><linearGradient id="navLogo_index" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0%" stop-color="#cabdf6"/><stop offset="100%" stop-color="#a18fd6"/></linearGradient></defs><path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="url(#navLogo_index)"/><path d="M50 5 L88 19 L88 51 Q88 77 50 95 Q12 77 12 51 L12 19 Z" fill="none" stroke="#8a76c2" stroke-width="3.5"/><path d="M50 65 Q31 51 31 41 Q31 33 39.5 33 Q45 33 50 39.5 Q55 33 60.5 33 Q69 33 69 41 Q69 51 50 65 Z" fill="#ffffff" opacity="0.95"/></svg>
     NDIS Ready
   </a>
-  <div style="display:flex;align-items:center;gap:1.25rem;">
-    <a href="tools-suite.html" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">Free Tools</a>
-    <a href="blog.html" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">Blog</a>
-    <a href="#pricing" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">Pricing</a>
-    <a href="#faq" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">FAQ</a>
+  <div class="nav-right" style="display:flex;align-items:center;gap:1.25rem;">
+    <a href="tools-suite.html" class="nav-link-secondary" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">Free Tools</a>
+    <a href="blog.html" class="nav-link-secondary" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">Blog</a>
+    <a href="#pricing" class="nav-link-secondary" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">Pricing</a>
+    <a href="#faq" class="nav-link-secondary" style="font-family:var(--font-body);font-size:0.875rem;font-weight:600;color:var(--ink-mid);text-decoration:none;">FAQ</a>
     <a href="quiz.html" class="nav-cta">Take the quiz →</a>
   </div>
 </nav>
@@ -558,6 +558,7 @@
     }
   }
 </script>
+
 
 
 
